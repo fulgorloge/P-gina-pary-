@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VIP Pass // The Sinister Forest</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: #020203;
+      font-family: 'Space Grotesk', sans-serif;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    /* Tarjeta Rojo Metalizado */
+    .metallic-ticket {
+      width: 100%;
+      max-width: 360px;
+      background: linear-gradient(135deg, #4a000e 0%, #80001a 25%, #ff1e4b 50%, #80001a 75%, #330009 100%);
+      background-size: 200% 200%;
+      animation: metallicShift 6s ease infinite;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 20px;
+      padding: 28px 20px;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 15px 35px rgba(255, 0, 60, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.3);
+      overflow: hidden;
+    }
+
+    /* Brillo de reflejo metálico */
+    .metallic-ticket::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        45deg,
+        transparent 45%,
+        rgba(255, 255, 255, 0.25) 50%,
+        transparent 55%
+      );
+      transform: rotate(30deg);
+      pointer-events: none;
+      animation: metallicShine 4s infinite;
+    }
+
+    @keyframes metallicShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes metallicShine {
+      0% { transform: translateY(-100%) rotate(30deg); }
+      100% { transform: translateY(100%) rotate(30deg); }
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.6rem;
+      letter-spacing: 2px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+
+    .event-title {
+      font-size: 1.4rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+      margin-bottom: 20px;
+    }
+
+    .ticket-info-box {
+      background: rgba(0, 0, 0, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      padding: 16px;
+      backdrop-filter: blur(5px);
+      margin-bottom: 15px;
+    }
+
+    .label {
+      font-size: 0.6rem;
+      color: rgba(255, 255, 255, 0.6);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .user-name {
+      font-size: 1.4rem;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+      word-break: break-word;
+    }
+
+    .ticket-code {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #ffb3c1;
+      letter-spacing: 2px;
+    }
+
+    .status-valid {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #00ff88;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-top: 10px;
+    }
+
+    .dot {
+      width: 8px; height: 8px;
+      background: #00ff88;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #00ff88;
+    }
+
+    footer {
+      font-size: 0.6rem;
+      color: rgba(255, 255, 255, 0.7);
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="metallic-ticket">
+    <div class="badge">OFFICIAL VERIFIED PASS</div>
+    <h1 class="event-title">THE SINISTER FOREST</h1>
+
+    <div class="ticket-info-box">
+      <div class="label">TITULAR DEL PASE</div>
+      <div class="user-name" id="display-name">GUEST</div>
+
+      <div class="label">CÓDIGO ÚNICO</div>
+      <div class="ticket-code" id="display-code">TSF-000000</div>
+    </div>
+
+    <div class="status-valid">
+      <span class="dot"></span> TICKET AUTÉNTICO & ACTIVO
+    </div>
+
+    <footer>
+      <p style="margin-top: 12px;">11 AGO // 23:00H | RAW TECHNO</p>
+      <small style="opacity: 0.5;">Presentar DNI / Cédula en puerta</small>
+    </footer>
+  </div>
+
+  <script>
+    // Parámetros dinámicos desde la URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const nameParam = urlParams.get('name') || "GUEST";
+    const codeParam = urlParams.get('code') || "TSF-000000";
+
+    document.getElementById("display-name").innerText = decodeURIComponent(nameParam).toUpperCase();
+    document.getElementById("display-code").innerText = decodeURIComponent(codeParam).toUpperCase();
+  </script>
+</body>
+</html>
