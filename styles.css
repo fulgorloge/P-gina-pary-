@@ -248,7 +248,7 @@ h1.glitch {
 .capacity-bar { margin-bottom: 15px; }
 .capacity-text { font-size: 0.6rem; letter-spacing: 1px; color: var(--accent); font-weight: 700; margin-bottom: 4px; }
 .progress-bg { background: rgba(255,255,255,0.08); height: 4px; border-radius: 4px; overflow: hidden; }
-.progress-fill { background: var(--accent); height: 100%; box-shadow: 0 0 8px var(--accent); }
+.progress-fill { background: var(--accent); height: 100%; box-shadow: 0 0 8px var(--accent); transition: width 0.4s ease; }
 
 .spotify-section { margin-bottom: 15px; border-radius: 12px; overflow: hidden; }
 
