@@ -47,7 +47,12 @@
           <img id="qr-img" src="" alt="Cargando QR..." />
         </div>
         <p class="ticket-code" id="pass-code">CODE: #000000</p>
-        <small style="color:var(--text-muted); font-size:0.6rem;">Escanea el QR para ver tu ticket rojo metalizado</small>
+        <small style="color:var(--text-muted); font-size:0.6rem; display:block; margin-bottom:8px;">Escanea el QR para ver tu ticket rojo metalizado</small>
+        
+        <!-- Botón para reiniciar/cambiar datos -->
+        <button onclick="resetTicketForm()" class="contribution-btn secondary" style="width:100%; font-size:0.6rem; padding:8px;">
+          ✏️ CAMBIAR NOMBRE O GENERAR OTRO
+        </button>
       </div>
     </div>
   </div>
