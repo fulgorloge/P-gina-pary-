@@ -1,15 +1,15 @@
-// Configuración de Fecha Objetivo: 11 AGO - 23:00H
+// Configuración de fecha: 11 de Agosto, 23:00H
 const targetDate = new Date(new Date().getFullYear(), 7, 11, 23, 0, 0).getTime();
 const url = window.location.href;
 
-// 1. Contador Regresivo
+// 1. Conteo Regresivo
 function updateCountdown() {
     const now = new Date().getTime();
     const diff = targetDate - now;
 
     if (diff <= 0) {
-        document.getElementById("countdown").innerHTML = "<h2 style='color:var(--accent); font-size:1.1rem;'>📍 COORDENADAS DESBLOQUEADAS</h2>";
-        document.getElementById("location-details").innerText = "Nos vemos en las sombras. Acceso solo con ID.";
+        document.getElementById("countdown").innerHTML = "<h2 style='color:var(--accent); font-size:1.1rem; letter-spacing:1px;'>📍 COORDENADAS REVELADAS</h2>";
+        document.getElementById("location-details").innerText = "Nos vemos en la pista. Acceso obligatorio con ID.";
         document.getElementById("location-map").classList.remove("hidden");
         clearInterval(timerInterval);
         return;
@@ -23,15 +23,7 @@ function updateCountdown() {
 const timerInterval = setInterval(updateCountdown, 1000);
 updateCountdown();
 
-// 2. Copiar Nequi & Link
-function copyNequi(number) {
-    navigator.clipboard.writeText(number).then(() => showToast("¡Número Nequi copiado!"));
-}
-
-function copyLink() {
-    navigator.clipboard.writeText(url).then(() => showToast("¡Enlace copiado!"));
-}
-
+// 2. Sistema Toast & Copiado
 function showToast(msg) {
     const toast = document.getElementById("toast");
     toast.innerText = msg;
@@ -39,7 +31,15 @@ function showToast(msg) {
     setTimeout(() => toast.classList.remove("show"), 2500);
 }
 
-// 3. Sistema RSVP
+function copyNequi(number) {
+    navigator.clipboard.writeText(number).then(() => showToast("¡Número Nequi copiado!"));
+}
+
+function copyLink() {
+    navigator.clipboard.writeText(url).then(() => showToast("¡Enlace copiado al portapapeles!"));
+}
+
+// 3. Confirmación RSVP
 let isConfirmed = localStorage.getItem("rsvp") === "true";
 const rsvpBtn = document.getElementById("rsvp-btn");
 
@@ -61,67 +61,118 @@ function toggleRSVP() {
 }
 updateRSVPUI();
 
-// 4. Compartir en Redes
+// 4. Compartir Redes
 function share(platform) {
     const text = "¡No te pierdas The Sinister Forest! Techno Night.";
     if (platform === 'whatsapp') window.open(`https://wa.me/?text=${encodeURIComponent(text + " " + url)}`, '_blank');
     if (platform === 'facebook') window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
 }
 
-// 5. EFECTO CANVAS DE PARTÍCULAS (Esporas Rojas)
+// 5. CANVAS INTERACTIVO - Red de Partículas Techno
 const canvas = document.getElementById("particle-canvas");
 const ctx = canvas.getContext("2d");
-let particles = [];
 
-function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+let width, height;
+let particles = [];
+let mouse = { x: null, y: null, radius: 120 };
+
+function resize() {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
 }
-window.addEventListener("resize", resizeCanvas);
-resizeCanvas();
+window.addEventListener("resize", resize);
+resize();
+
+window.addEventListener("mousemove", (e) => {
+    mouse.x = e.x;
+    mouse.y = e.y;
+});
+
+window.addEventListener("mouseleave", () => {
+    mouse.x = null;
+    mouse.y = null;
+});
 
 class Particle {
     constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.size = Math.random() * 2 + 0.5;
-        this.speedX = (Math.random() - 0.5) * 0.5;
-        this.speedY = (Math.random() - 0.5) * 0.5;
-        this.opacity = Math.random() * 0.5 + 0.2;
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.vx = (Math.random() - 0.5) * 1.2;
+        this.vy = (Math.random() - 0.5) * 1.2;
+        this.radius = Math.random() * 2 + 1;
     }
+
     update() {
-        this.x += this.speedX;
-        this.y += this.speedY;
-        if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
-        if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+        this.x += this.vx;
+        this.y += this.vy;
+
+        if (this.x < 0 || this.x > width) this.vx *= -1;
+        if (this.y < 0 || this.y > height) this.vy *= -1;
+
+        // Interacción con Mouse
+        if (mouse.x != null && mouse.y != null) {
+            let dx = mouse.x - this.x;
+            let dy = mouse.y - this.y;
+            let dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < mouse.radius) {
+                let angle = Math.atan2(dy, dx);
+                this.x -= Math.cos(angle) * 2;
+                this.y -= Math.sin(angle) * 2;
+            }
+        }
     }
+
     draw() {
-        ctx.fillStyle = `rgba(255, 0, 60, ${this.opacity})`;
         ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = "#ff003c";
         ctx.fill();
     }
 }
 
-for (let i = 0; i < 60; i++) particles.push(new Particle());
-
-function animateParticles() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    particles.forEach(p => { p.update(); p.draw(); });
-    requestAnimationFrame(animateParticles);
+// Crear partículas según el tamaño de la pantalla
+const count = Math.min(Math.floor((width * height) / 10000), 70);
+for (let i = 0; i < count; i++) {
+    particles.push(new Particle());
 }
-animateParticles();
 
-// 6. EFECTO 3D TILT AL MOVER EL MOUSE
+function animate() {
+    ctx.clearRect(0, 0, width, height);
+
+    for (let i = 0; i < particles.length; i++) {
+        particles[i].update();
+        particles[i].draw();
+
+        // Conectar partículas cercanas con líneas
+        for (let j = i + 1; j < particles.length; j++) {
+            let dx = particles[i].x - particles[j].x;
+            let dy = particles[i].y - particles[j].y;
+            let dist = Math.sqrt(dx * dx + dy * dy);
+
+            if (dist < 100) {
+                ctx.beginPath();
+                ctx.moveTo(particles[i].x, particles[i].y);
+                ctx.lineTo(particles[j].x, particles[j].y);
+                ctx.strokeStyle = `rgba(255, 0, 60, ${1 - dist / 100})`;
+                ctx.lineWidth = 0.6;
+                ctx.stroke();
+            }
+        }
+    }
+    requestAnimationFrame(animate);
+}
+animate();
+
+// 6. EFECTO 3D TILT AL MOVER EL MOUSE (Escritorio)
 const card = document.getElementById("tilt-card");
 document.addEventListener("mousemove", (e) => {
-    if (window.innerWidth < 768) return; // Desactivar en celulares para mayor fluidez
-    const xAxis = (window.innerWidth / 2 - e.pageX) / 40;
-    const yAxis = (window.innerHeight / 2 - e.pageY) / 40;
+    if (window.innerWidth < 768) return;
+    const xAxis = (window.innerWidth / 2 - e.pageX) / 35;
+    const yAxis = (window.innerHeight / 2 - e.pageY) / 35;
     card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
 });
 
-// Vistas activas
-let views = parseInt(localStorage.getItem("views") || "142", 10) + 1;
+// Contador de visitas
+let views = parseInt(localStorage.getItem("views") || "180", 10) + 1;
 localStorage.setItem("views", views);
 document.getElementById("views-count").innerText = String(views).padStart(4, "0");
