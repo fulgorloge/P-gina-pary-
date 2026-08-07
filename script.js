@@ -28,30 +28,60 @@ function toggleStrobe() {
     document.body.classList.toggle("strobe-active");
 }
 
-// 3. Generador de Ticket Pass VIP
+// 3. Sistema Modal & Ticket Pass
 function generateTicket() {
-    let userName = localStorage.getItem("userName");
-    if (!userName) {
-        userName = prompt("Ingresa tu nombre para tu pase VIP:") || "TECHNOPHILE";
-        localStorage.setItem("userName", userName);
+    const modal = document.getElementById("ticket-modal");
+    modal.style.display = "flex";
+
+    const savedName = localStorage.getItem("userName");
+    if (savedName) {
+        showTicketView(savedName);
+    } else {
+        document.getElementById("ticket-form-section").style.display = "block";
+        document.getElementById("ticket-view-section").style.display = "none";
     }
-    
-    let code = localStorage.getItem("userCode") || "TSF-" + Math.floor(100000 + Math.random() * 900000);
-    localStorage.setItem("userCode", code);
+}
+
+function saveAndGenerateTicket() {
+    const input = document.getElementById("user-name-input");
+    const name = input.value.trim();
+
+    if (name === "") {
+        showToast("Ingresa un nombre válido");
+        return;
+    }
+
+    localStorage.setItem("userName", name);
+    showTicketView(name);
+}
+
+function showTicketView(userName) {
+    document.getElementById("ticket-form-section").style.display = "none";
+    document.getElementById("ticket-view-section").style.display = "block";
+
+    let code = localStorage.getItem("userCode");
+    if (!code) {
+        code = "TSF-" + Math.floor(100000 + Math.random() * 900000);
+        localStorage.setItem("userCode", code);
+    }
 
     document.getElementById("pass-user-name").innerText = userName.toUpperCase();
     document.getElementById("pass-code").innerText = "CODE: " + code;
-    
-    // Generación de QR dinámico gratuito
-    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(code + '-' + userName)}`;
-    document.getElementById("qr-img").src = qrUrl;
 
-    document.getElementById("ticket-modal").style.display = "flex";
+    const qrData = encodeURIComponent(`TICKET:${code}|NAME:${userName}`);
+    document.getElementById("qr-img").src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${qrData}`;
 }
 
 function closeTicket() {
     document.getElementById("ticket-modal").style.display = "none";
 }
+
+window.onclick = function(event) {
+    const modal = document.getElementById("ticket-modal");
+    if (event.target === modal) {
+        modal.style.display = "none";
+    }
+};
 
 // 4. Copiar Nequi y Links
 function showToast(msg) {
@@ -98,7 +128,7 @@ function share(platform) {
     if (platform === 'facebook') window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
 }
 
-// 7. CANVAS ESPORAS ROJAS / RUIDO FLOTANTE (Efecto sutil original restaurado)
+// 7. CANVAS ESPORAS ROJAS
 const canvas = document.getElementById("particle-canvas");
 const ctx = canvas.getContext("2d");
 
@@ -113,9 +143,7 @@ window.addEventListener("resize", resize);
 resize();
 
 class Particle {
-    constructor() {
-        this.reset();
-    }
+    constructor() { this.reset(); }
 
     reset() {
         this.x = Math.random() * width;
@@ -129,10 +157,7 @@ class Particle {
     update() {
         this.x += this.vx;
         this.y += this.vy;
-
-        if (this.x < 0 || this.x > width || this.y < 0 || this.y > height) {
-            this.reset();
-        }
+        if (this.x < 0 || this.x > width || this.y < 0 || this.y > height) this.reset();
     }
 
     draw() {
@@ -145,17 +170,11 @@ class Particle {
     }
 }
 
-// Crear 75 esporas
-for (let i = 0; i < 75; i++) {
-    particles.push(new Particle());
-}
+for (let i = 0; i < 75; i++) particles.push(new Particle());
 
 function animate() {
     ctx.clearRect(0, 0, width, height);
-    particles.forEach(p => {
-        p.update();
-        p.draw();
-    });
+    particles.forEach(p => { p.update(); p.draw(); });
     requestAnimationFrame(animate);
 }
 animate();
