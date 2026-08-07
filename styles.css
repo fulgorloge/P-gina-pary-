@@ -24,7 +24,6 @@ body {
   position: relative;
 }
 
-/* Canvas de Esporas Rojas (Asegurado detrás de la tarjeta) */
 #particle-canvas {
   position: fixed;
   top: 0; left: 0;
@@ -33,7 +32,6 @@ body {
   pointer-events: none;
 }
 
-/* Grain Overlay */
 .grain {
   position: fixed;
   top: 0; left: 0; width: 100%; height: 100%;
@@ -43,7 +41,6 @@ body {
   background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)"/></svg>');
 }
 
-/* Container con Glassmorphism */
 .container {
   background: var(--card-bg);
   backdrop-filter: blur(22px);
@@ -60,7 +57,6 @@ body {
   transition: transform 0.15s ease-out;
 }
 
-/* Flash de luces strobe */
 body.strobe-active {
   animation: strobe-flash 0.15s infinite alternate;
 }
@@ -70,7 +66,6 @@ body.strobe-active {
   100% { background-color: #220008; }
 }
 
-/* Header & Strobe Button */
 .header-top {
   display: flex;
   justify-content: space-between;
@@ -117,7 +112,6 @@ body.strobe-active {
 
 .strobe-btn:hover { background: var(--accent); }
 
-/* Glitch Title */
 h1.glitch {
   font-weight: 900;
   font-size: 1.8rem;
@@ -142,7 +136,6 @@ h1.glitch {
 
 .subtitle { font-size: 0.65rem; letter-spacing: 3px; color: var(--text-muted); margin-top: 4px; }
 
-/* Ecualizador */
 .audio-visualizer {
   display: flex; justify-content: center; align-items: flex-end; gap: 4px; height: 24px; margin: 12px 0;
 }
@@ -165,7 +158,6 @@ h1.glitch {
 
 @keyframes equalizer { 0% { transform: scaleY(0.15); } 100% { transform: scaleY(1); } }
 
-/* Aforo */
 .capacity-bar { margin-bottom: 15px; }
 .capacity-text { font-size: 0.6rem; letter-spacing: 1px; color: var(--accent); font-weight: 700; margin-bottom: 4px; }
 .progress-bg { background: rgba(255,255,255,0.08); height: 4px; border-radius: 4px; overflow: hidden; }
@@ -173,13 +165,11 @@ h1.glitch {
 
 .spotify-section { margin-bottom: 15px; border-radius: 12px; overflow: hidden; }
 
-/* Conteo */
 .countdown-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 15px; }
 .time-box { background: rgba(0, 0, 0, 0.55); border: 1px solid rgba(255, 255, 255, 0.08); padding: 10px 2px; border-radius: 12px; }
 .time-number { display: block; font-size: 1.4rem; font-weight: 700; color: #fff; }
 .time-label { font-size: 0.55rem; color: var(--text-muted); text-transform: uppercase; }
 
-/* Botón Calendario */
 .calendar-btn {
   display: block; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border);
   color: #fff; text-decoration: none; font-size: 0.65rem; font-weight: 700; letter-spacing: 1px;
@@ -187,7 +177,6 @@ h1.glitch {
 }
 .calendar-btn:hover { background: rgba(255, 255, 255, 0.15); }
 
-/* Aporte Nequi */
 .contribution-section {
   background: rgba(0, 0, 0, 0.35); border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 16px; padding: 16px 12px; margin-bottom: 15px;
@@ -207,14 +196,12 @@ h1.glitch {
 .contribution-btn.secondary { background: rgba(255, 255, 255, 0.1); }
 .contribution-btn:hover { filter: brightness(1.2); }
 
-/* Ubicación */
 .location-box { background: rgba(255, 255, 255, 0.02); border: 1px dashed rgba(255, 255, 255, 0.15); border-radius: 12px; padding: 14px; margin-bottom: 15px; }
 #location-title { font-size: 0.7rem; font-weight: 700; color: var(--accent); }
 #location-details { font-size: 0.65rem; color: var(--text-muted); margin-top: 4px; }
 .map-button { display: inline-block; margin-top: 8px; background: #fff; color: #000; padding: 6px 12px; border-radius: 6px; font-size: 0.65rem; font-weight: 700; text-decoration: none; }
 .map-button.hidden { display: none; }
 
-/* Botones RSVP & Ticket Pass */
 .action-dual-btn { display: flex; gap: 8px; margin-bottom: 15px; }
 .rsvp-btn, .ticket-btn {
   flex: 1; background: transparent; border: 1px solid var(--accent); color: var(--accent);
@@ -223,7 +210,6 @@ h1.glitch {
 .rsvp-btn.confirmed { background: var(--accent); color: #fff; }
 .ticket-btn { background: var(--accent); color: #fff; box-shadow: 0 0 10px var(--accent-glow); }
 
-/* Redes Sociales y Footer */
 .social-share { padding-top: 12px; border-top: 1px solid var(--glass-border); margin-bottom: 12px; }
 .share-title { font-size: 0.58rem; letter-spacing: 2px; color: var(--text-muted); margin-bottom: 8px; }
 .social-btns { display: flex; gap: 6px; justify-content: center; }
@@ -237,10 +223,12 @@ footer { font-size: 0.6rem; color: var(--text-muted); display: flex; flex-direct
 .modal-content { background: #0a0a0c; border: 1px solid var(--accent); border-radius: 20px; padding: 25px; width: 85%; max-width: 320px; text-align: center; position: relative; box-shadow: 0 0 30px var(--accent-glow); }
 .close-modal { position: absolute; right: 15px; top: 10px; font-size: 1.5rem; color: #fff; cursor: pointer; }
 .ticket-badge { font-size: 0.55rem; letter-spacing: 2px; color: var(--accent); margin-bottom: 5px; font-weight: 700; }
+.ticket-instruction { font-size: 0.7rem; color: var(--text-muted); margin: 15px 0 10px 0; }
+.ticket-input { width: 100%; padding: 10px 14px; background: rgba(255, 255, 255, 0.08); border: 1px solid var(--accent); border-radius: 8px; color: #fff; font-family: var(--font); font-size: 0.8rem; text-align: center; outline: none; }
+.ticket-input:focus { box-shadow: 0 0 10px var(--accent-glow); }
 .ticket-name { font-size: 1.1rem; font-weight: 700; margin: 8px 0; color: #fff; }
 .qr-placeholder img { width: 130px; height: 130px; border-radius: 10px; margin: 10px 0; border: 2px solid #fff; }
 .ticket-code { font-size: 0.65rem; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 4px; }
 
-/* Toast */
 .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--accent); color: #fff; padding: 10px 20px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; opacity: 0; transition: all 0.3s; z-index: 300; }
 .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
