@@ -30,7 +30,7 @@ function toggleStrobe() {
     if (strobeBtn) strobeBtn.classList.toggle("active");
 }
 
-// 3. Sistema Modal & Ticket Pass
+// 3. Sistema Modal & Ticket Pass (Payload JSON para Validación en Puerta)
 function generateTicket() {
     const modal = document.getElementById("ticket-modal");
     modal.style.display = "flex";
@@ -70,8 +70,16 @@ function showTicketView(userName) {
     document.getElementById("pass-user-name").innerText = userName.toUpperCase();
     document.getElementById("pass-code").innerText = "CODE: " + code;
 
-    const qrData = encodeURIComponent(`TICKET:${code}|NAME:${userName}`);
-    document.getElementById("qr-img").src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${qrData}`;
+    // Generar JSON Payload para validación autenticada offline/staff
+    const ticketPayload = JSON.stringify({
+        event: "TSF2026",
+        code: code,
+        name: userName.toUpperCase(),
+        v: 1
+    });
+
+    const qrData = encodeURIComponent(ticketPayload);
+    document.getElementById("qr-img").src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${qrData}`;
 }
 
 function closeTicket() {
