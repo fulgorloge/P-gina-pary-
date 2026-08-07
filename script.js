@@ -2,6 +2,23 @@
 const targetDate = new Date(new Date().getFullYear(), 7, 11, 23, 0, 0).getTime();
 const url = window.location.href;
 
+// --- GESTIÓN DE AFORO DINÁMICO ---
+const MAX_CAPACITY = 100; // Define la capacidad máxima del evento
+let currentTickets = parseInt(localStorage.getItem("totalTicketsIssued") || "0", 10);
+
+function updateCapacityUI() {
+    const percentage = Math.min(Math.round((currentTickets / MAX_CAPACITY) * 100), 100);
+    const capacityCount = document.getElementById("capacity-count");
+    const progressFill = document.querySelector(".progress-fill");
+
+    if (capacityCount) {
+        capacityCount.innerText = `${percentage}% LLENO (${currentTickets}/${MAX_CAPACITY})`;
+    }
+    if (progressFill) {
+        progressFill.style.width = `${percentage}%`;
+    }
+}
+
 // 1. Conteo Regresivo
 function updateCountdown() {
     const now = new Date().getTime();
@@ -58,8 +75,16 @@ function saveAndGenerateTicket() {
         return;
     }
 
-    // Generar un nuevo código cuando cambia o crea usuario
-    const newCode = "TSF-" + Math.floor(100000 + Math.random() * 900000);
+    const existingCode = localStorage.getItem("userCode");
+    
+    // Si el usuario genera un ticket por primera vez, aumentamos el aforo global
+    if (!existingCode) {
+        currentTickets += 1;
+        localStorage.setItem("totalTicketsIssued", currentTickets);
+        updateCapacityUI();
+    }
+
+    const newCode = existingCode || ("TSF-" + Math.floor(100000 + Math.random() * 900000));
     localStorage.setItem("userCode", newCode);
     localStorage.setItem("userName", name);
 
@@ -79,7 +104,6 @@ function showTicketView(userName) {
     document.getElementById("pass-user-name").innerText = userName.toUpperCase();
     document.getElementById("pass-code").innerText = "CODE: " + code;
 
-    // Obtener la URL base para formar el enlace a ticket.html
     const baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/'));
     const ticketUrl = `${baseUrl}/ticket.html?name=${encodeURIComponent(userName)}&code=${encodeURIComponent(code)}`;
 
@@ -134,7 +158,6 @@ function toggleRSVP() {
     updateRSVPUI();
     showToast(isConfirmed ? "¡Asistencia confirmada!" : "Cancelado");
 }
-updateRSVPUI();
 
 // 6. Compartir Redes
 function share(platform) {
@@ -192,7 +215,18 @@ function animate() {
     particles.forEach(p => { p.update(); p.draw(); });
     requestAnimationFrame(animate);
 }
-animate();
+
+// Inicialización de Estados
+document.addEventListener("DOMContentLoaded", () => {
+    updateCapacityUI();
+    updateRSVPUI();
+    animate();
+    
+    // Vistas activas
+    let views = parseInt(localStorage.getItem("views") || "215", 10) + 1;
+    localStorage.setItem("views", views);
+    document.getElementById("views-count").innerText = String(views).padStart(4, "0");
+});
 
 // 8. EFECTO TILT 3D
 const card = document.getElementById("tilt-card");
@@ -202,8 +236,3 @@ document.addEventListener("mousemove", (e) => {
     const yAxis = (window.innerHeight / 2 - e.pageY) / 40;
     card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
 });
-
-// Vistas activas
-let views = parseInt(localStorage.getItem("views") || "215", 10) + 1;
-localStorage.setItem("views", views);
-document.getElementById("views-count").innerText = String(views).padStart(4, "0");
