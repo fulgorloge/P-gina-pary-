@@ -33,7 +33,6 @@ function updateCountdown() {
     
     locationDetailsEl.innerText = ubicacionEvento;
     locationDetailsEl.style.color = "#ffffff";
-
     locationMapBtnEl.href = urlGoogleMaps;
     locationMapBtnEl.style.display = "inline-block";
     
