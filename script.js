@@ -123,7 +123,7 @@ updateRSVPUI();
 
 // 6. Compartir Redes
 function share(platform) {
-    const text = "¡No te pierdas The Sinister Forest! Techno Night.";
+    const text = "¡No te pierdas The Sinister Forest! Techno Night con TUCNAK.";
     if (platform === 'whatsapp') window.open(`https://wa.me/?text=${encodeURIComponent(text + " " + url)}`, '_blank');
     if (platform === 'facebook') window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
 }
