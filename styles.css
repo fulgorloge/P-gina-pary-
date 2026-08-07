@@ -93,7 +93,7 @@ h1 {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 10px;
-  margin-bottom: 30px;
+  margin-bottom: 25px;
 }
 
 .time-box {
@@ -115,6 +115,81 @@ h1 {
   text-transform: uppercase;
   letter-spacing: 1px;
   font-family: Arial, sans-serif;
+}
+
+/* Sección de Aporte / Cover */
+.contribution-section {
+  background: rgba(10, 15, 10, 0.7);
+  border: 1px solid #2a3a2a;
+  border-radius: 6px;
+  padding: 20px 15px;
+  margin-bottom: 25px;
+}
+
+.contribution-badge {
+  display: inline-block;
+  background-color: var(--accent-red);
+  color: #ffffff;
+  font-size: 0.65rem;
+  padding: 4px 10px;
+  border-radius: 20px;
+  letter-spacing: 2px;
+  font-family: Arial, sans-serif;
+  margin-bottom: 8px;
+}
+
+.contribution-amount {
+  font-size: 2.2rem;
+  color: #ffffff;
+  letter-spacing: 1px;
+}
+
+.contribution-amount span {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.contribution-text {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-family: Arial, sans-serif;
+  margin: 10px 0 15px;
+  line-height: 1.4;
+  font-weight: normal;
+}
+
+.contribution-btn {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  background-color: transparent;
+  color: #ffffff;
+  border: 1px solid var(--accent-bright-red);
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+}
+
+.contribution-btn:hover {
+  background-color: var(--accent-bright-red);
+  color: #000000;
+  box-shadow: 0 0 15px rgba(255, 77, 77, 0.4);
+}
+
+.transfer-info {
+  margin-top: 12px;
+  font-size: 0.8rem;
+  color: var(--text-main);
+  font-family: Arial, sans-serif;
+}
+
+.transfer-info span {
+  color: var(--text-muted);
+  font-weight: bold;
 }
 
 /* Tarjeta de Ubicación */
