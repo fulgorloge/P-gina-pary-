@@ -3,48 +3,52 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Meta tags para redes sociales -->
+  <meta property="og:title" content="The Sinister Forest // Techno Night" />
+  <meta property="og:description" content="La experiencia sonora clandestina. Solo technófilos." />
+  <meta property="og:type" content="website" />
+  
   <title>The Sinister Forest // Techno Night</title>
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;600;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
+  <!-- Overlay de ruido (Textura) -->
+  <div class="grain"></div>
+
   <main class="container">
-    <header>
-      <h1>THE SINISTER FOREST</h1>
+    <header class="fade-in">
+      <h1 class="glitch" data-text="THE SINISTER FOREST">THE SINISTER FOREST</h1>
       <p class="subtitle">LA EXPERIENCIA TECHNO // MUSICA TECHNO ONLY</p>
     </header>
     
-    <section class="artist-section">
-      <h2>DJ TUCNAK</h2>
+    <section class="spotify-section fade-in">
+      <iframe src="https://open.spotify.com/embed/track/65ox9ejkqSzkoBrAZ7DG2U?theme=0" width="100%" height="80" frameBorder="0" allow="encrypted-media"></iframe>
     </section>
 
-    <section class="spotify-section">
-      <iframe src="https://open.spotify.com/embed/track/65ox9ejkqSzkoBrAZ7DG2U?theme=0" width="100%" height="152" frameBorder="0" allow="encrypted-media"></iframe>
-    </section>
-
-    <section id="countdown" class="countdown-grid">
+    <section id="countdown" class="countdown-grid fade-in">
       <div class="time-box"><span id="days" class="time-number">00</span><span class="time-label">Días</span></div>
       <div class="time-box"><span id="hours" class="time-number">00</span><span class="time-label">Hrs</span></div>
       <div class="time-box"><span id="minutes" class="time-number">00</span><span class="time-label">Min</span></div>
       <div class="time-box"><span id="seconds" class="time-number">00</span><span class="time-label">Seg</span></div>
     </section>
 
-    <section class="contribution-section">
+    <section class="contribution-section fade-in">
       <div class="contribution-badge">APORTE SUGERIDO</div>
-      <p class="contribution-amount">$10.000 <span>COP</span></p>
-      <a href="https://nequi.com" target="_blank" class="contribution-btn">PAGAR APORTE ONLINE</a>
+      <div class="amount-container">
+        <span class="currency">$</span><span class="amount">10.000</span><span class="unit">COP</span>
+      </div>
+      <a href="https://nequi.com" target="_blank" class="contribution-btn">PAGAR APORTE</a>
     </section>
 
-    <section id="location-card" class="location-box">
-      <p id="location-title">UBICACIÓN AÚN NO REVELADA</p>
-      <p id="location-details">Coordenadas solo por invitación</p>
-      <a id="location-map" class="map-button" href="#" target="_blank">VER EN GOOGLE MAPS</a>
+    <section id="location-card" class="location-box fade-in">
+      <p id="location-title">UBICACIÓN OCULTA</p>
+      <p id="location-details">Coordenadas desbloqueables al finalizar el conteo</p>
+      <a id="location-map" class="map-button" href="#" target="_blank">VER EN MAPS</a>
     </section>
 
-    <!-- Barra Social -->
-    <section class="social-share">
+    <section class="social-share fade-in">
       <p class="share-title">INVITA A TU CÍRCULO</p>
       <div class="social-btns">
         <button onclick="share('whatsapp')" class="s-btn wa">WhatsApp</button>
@@ -53,9 +57,9 @@
       </div>
     </section>
 
-    <footer>
-      <div class="views-counter"><span class="views-icon">👁</span> <span id="views-count">0000</span></div>
-      <p class="footer-info">MARTES 11 AGO — 23:00H | 18+ ID REQ</p>
+    <footer class="fade-in">
+      <div class="views-counter"><span id="views-count">0000</span> conexiones activas</div>
+      <p class="footer-info">11 AGO — 23:00H | 18+ ID REQ</p>
     </footer>
   </main>
 
