@@ -17,47 +17,48 @@
 </head>
 <body>
 
-  <!-- Canvas de Partículas Interactivo -->
+  <!-- Canvas Interactivo de Fondo -->
   <canvas id="particle-canvas"></canvas>
 
-  <!-- Overlay de ruido/textura -->
+  <!-- Capa de Textura Grain -->
   <div class="grain"></div>
 
-  <!-- Toast Notification -->
-  <div id="toast" class="toast">¡Enlace copiado!</div>
+  <!-- Notificación Toast -->
+  <div id="toast" class="toast">¡Copiado con éxito!</div>
 
-  <!-- Tarjeta con Efecto 3D Tilt -->
+  <!-- Contenedor Principal -->
   <main class="container" id="tilt-card">
-    <header class="fade-in">
+    <header>
       <div class="status-tag"><span class="blink-dot"></span> EVENTO CLANDESTINO</div>
       <h1 class="glitch" data-text="THE SINISTER FOREST">THE SINISTER FOREST</h1>
       <p class="subtitle">RAW & INDUSTRIAL TECHNO</p>
     </header>
     
-    <!-- Animación Visualizadora de Audio -->
+    <!-- Ecualizador de Audio Animado -->
     <div class="audio-visualizer">
-      <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
     </div>
 
-    <section class="spotify-section fade-in">
-      <iframe class="spotify-iframe" src="https://open.spotify.com/embed/track/65ox9ejkqSzkoBrAZ7DG2U?theme=0" width="100%" height="80" frameBorder="0" allow="encrypted-media"></iframe>
+    <!-- Spotify Embed Corregido -->
+    <section class="spotify-section">
+      <iframe class="spotify-iframe" src="https://open.spotify.com/embed/track/65ox9ejkqSzkoBrAZ7DG2U?theme=0" width="100%" height="80" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </section>
 
     <!-- Conteo Regresivo -->
-    <section id="countdown" class="countdown-grid fade-in">
+    <section id="countdown" class="countdown-grid">
       <div class="time-box"><span id="days" class="time-number">00</span><span class="time-label">Días</span></div>
       <div class="time-box"><span id="hours" class="time-number">00</span><span class="time-label">Hrs</span></div>
       <div class="time-box"><span id="minutes" class="time-number">00</span><span class="time-label">Min</span></div>
       <div class="time-box"><span id="seconds" class="time-number">00</span><span class="time-label">Seg</span></div>
     </section>
 
-    <!-- Aporte Nequi con copia rápida -->
-    <section class="contribution-section fade-in">
+    <!-- Aporte Sugerido / Nequi -->
+    <section class="contribution-section">
       <div class="contribution-badge">APORTE SUGERIDO // NEQUI</div>
       <div class="amount-container">
         <span class="currency">$</span><span class="amount">10.000</span><span class="unit">COP</span>
       </div>
-      <p class="nequi-number" id="nequi-account">Nequi: <span>300 000 0000</span></p>
+      <p class="nequi-number">Llave Nequi: <span id="nequi-val">300 000 0000</span></p>
       
       <div class="btn-group">
         <button onclick="copyNequi('3000000000')" class="contribution-btn secondary">COPIAR NÚMERO</button>
@@ -65,18 +66,18 @@
       </div>
     </section>
 
-    <!-- Ubicación Oculta -->
-    <section id="location-card" class="location-box fade-in">
+    <!-- Ubicación -->
+    <section id="location-card" class="location-box">
       <p id="location-title">📍 UBICACIÓN OCULTA</p>
-      <p id="location-details">Coordenadas GPS se desbloquean al finalizar la cuenta regresiva.</p>
-      <a id="location-map" class="map-button hidden" href="https://maps.google.com" target="_blank" rel="noopener noreferrer">ABRIR EN GOOGLE MAPS</a>
+      <p id="location-details">Coordenadas desbloqueables al finalizar el conteo.</p>
+      <a id="location-map" class="map-button hidden" href="https://maps.google.com" target="_blank" rel="noopener noreferrer">ABRIR MAPA</a>
     </section>
 
-    <!-- Confirmación Asistencia RSVP -->
+    <!-- Botón RSVP -->
     <button id="rsvp-btn" onclick="toggleRSVP()" class="rsvp-btn">CONFIRMAR ASISTENCIA (RSVP)</button>
 
-    <!-- Social Share -->
-    <section class="social-share fade-in">
+    <!-- Botones Sociales -->
+    <section class="social-share">
       <p class="share-title">DIFUNDE EL CÓDIGO</p>
       <div class="social-btns">
         <button onclick="share('whatsapp')" class="s-btn wa">WhatsApp</button>
@@ -85,8 +86,8 @@
       </div>
     </section>
 
-    <footer class="fade-in">
-      <div class="views-counter"><span id="views-count">0000</span> technófilos conectados</div>
+    <footer>
+      <div class="views-counter"><span id="views-count">0000</span> conexiones activas</div>
       <p class="footer-info">11 AGO — 23:00H | +18 DNI OBLIGATORIO</p>
     </footer>
   </main>
