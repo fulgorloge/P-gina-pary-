@@ -158,6 +158,85 @@ h1.glitch {
 
 @keyframes equalizer { 0% { transform: scaleY(0.15); } 100% { transform: scaleY(1); } }
 
+/* LINEUP - TUCNAK */
+.lineup-section {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 16px 14px;
+  margin-bottom: 15px;
+}
+
+.lineup-title {
+  font-size: 0.6rem;
+  letter-spacing: 2px;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.dj-card.headliner {
+  background: rgba(255, 0, 60, 0.08);
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+  padding: 14px 16px;
+  text-align: center;
+  box-shadow: 0 0 15px var(--accent-glow);
+  transition: transform 0.3s ease;
+}
+
+.dj-card.headliner:hover {
+  transform: scale(1.02);
+}
+
+.dj-tag {
+  font-size: 0.55rem;
+  letter-spacing: 2px;
+  color: var(--accent);
+  font-weight: 700;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.dj-name {
+  font-size: 1.8rem;
+  font-weight: 900;
+  letter-spacing: 3px;
+  color: #fff;
+  text-transform: uppercase;
+  text-shadow: 0 0 10px var(--accent-glow);
+}
+
+.dj-genre {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+  margin-top: 2px;
+}
+
+.dj-socials {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  font-size: 0.6rem;
+  color: var(--text-muted);
+}
+
+.dj-link {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: 1px;
+  transition: color 0.2s;
+}
+
+.dj-link:hover {
+  color: var(--accent);
+}
+
 .capacity-bar { margin-bottom: 15px; }
 .capacity-text { font-size: 0.6rem; letter-spacing: 1px; color: var(--accent); font-weight: 700; margin-bottom: 4px; }
 .progress-bg { background: rgba(255,255,255,0.08); height: 4px; border-radius: 4px; overflow: hidden; }
