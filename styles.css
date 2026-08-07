@@ -110,7 +110,11 @@ body.strobe-active {
   transition: 0.3s;
 }
 
-.strobe-btn:hover { background: var(--accent); }
+.strobe-btn:hover, .strobe-btn.active {
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent-glow);
+  border-color: #ff003c;
+}
 
 h1.glitch {
   font-weight: 900;
@@ -219,10 +223,8 @@ h1.glitch {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 8px;
   margin-top: 10px;
   font-size: 0.6rem;
-  color: var(--text-muted);
 }
 
 .dj-link {
@@ -230,11 +232,17 @@ h1.glitch {
   text-decoration: none;
   font-weight: 700;
   letter-spacing: 1px;
-  transition: color 0.2s;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--glass-border);
+  padding: 4px 12px;
+  border-radius: 20px;
+  transition: all 0.2s;
 }
 
 .dj-link:hover {
   color: var(--accent);
+  border-color: var(--accent);
+  background: rgba(255, 0, 60, 0.12);
 }
 
 .capacity-bar { margin-bottom: 15px; }
@@ -265,7 +273,7 @@ h1.glitch {
 .currency { font-size: 1rem; color: var(--accent); font-weight: 700; }
 .amount { font-size: 2rem; font-weight: 900; }
 .unit { font-size: 0.75rem; color: var(--text-muted); }
-.nequi-number { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 10px; }
+.nequi-number { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 10px; white-space: nowrap; }
 .nequi-number span { color: #fff; font-weight: 700; }
 .btn-group { display: flex; gap: 8px; }
 .contribution-btn {
