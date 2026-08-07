@@ -1,58 +1,43 @@
-// Configuración de la fecha de revelación: Lunes 10 de Agosto a las 23:00 (11:00 PM)
-const currentYear = new Date().getFullYear();
-const targetDate = new Date(currentYear, 7, 10, 23, 0, 0).getTime();
+// Configuración fecha
+const targetDate = new Date(new Date().getFullYear(), 7, 10, 23, 0, 0).getTime();
+const url = window.location.href; // Captura la URL actual
 
-// Ubicación y enlace a Google Maps
-const ubicacionEvento = "Parque Lineal La Frontera — Envigado / El Poblado";
-const urlGoogleMaps = "https://maps.google.com/?q=Parque+Lineal+La+Frontera";
+function share(platform) {
+    const text = "¡No te pierdas The Sinister Forest! Techno Night.";
+    if (platform === 'whatsapp') {
+        window.open(`https://wa.me/?text=${encodeURIComponent(text + " " + url)}`);
+    } else if (platform === 'facebook') {
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`);
+    }
+}
 
-// Elementos del DOM
-const countdownEl = document.getElementById("countdown");
-const locationCardEl = document.getElementById("location-card");
-const locationTitleEl = document.getElementById("location-title");
-const locationDetailsEl = document.getElementById("location-details");
-const locationMapBtnEl = document.getElementById("location-map");
-
-const daysEl = document.getElementById("days");
-const hoursEl = document.getElementById("hours");
-const minutesEl = document.getElementById("minutes");
-const secondsEl = document.getElementById("seconds");
+function copyLink() {
+    navigator.clipboard.writeText(url).then(() => {
+        alert("¡Enlace copiado al portapapeles!");
+    });
+}
 
 function updateCountdown() {
-  const now = new Date().getTime();
-  const difference = targetDate - now;
+    const now = new Date().getTime();
+    const diff = targetDate - now;
 
-  if (difference <= 0) {
-    // Revelar la ubicación
-    countdownEl.style.display = "none";
-    
-    locationCardEl.classList.add("revealed");
-    
-    locationTitleEl.innerText = "📍 UBICACIÓN REVELADA";
-    locationTitleEl.style.color = "var(--accent-bright-red)";
-    
-    locationDetailsEl.innerText = ubicacionEvento;
-    locationDetailsEl.style.color = "#ffffff";
-    locationMapBtnEl.href = urlGoogleMaps;
-    locationMapBtnEl.style.display = "inline-block";
-    
-    clearInterval(timerInterval);
-    return;
-  }
+    if (diff <= 0) {
+        document.getElementById("countdown").innerHTML = "<h2 style='color:var(--accent)'>📍 UBICACIÓN REVELADA</h2>";
+        document.getElementById("location-map").style.display = "inline-block";
+        return;
+    }
 
-  // Cálculos de tiempo
-  const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-
-  // Renderizado en pantalla con formato de 2 dígitos
-  daysEl.innerText = String(days).padStart(2, '0');
-  hoursEl.innerText = String(hours).padStart(2, '0');
-  minutesEl.innerText = String(minutes).padStart(2, '0');
-  secondsEl.innerText = String(seconds).padStart(2, '0');
+    document.getElementById("days").innerText = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0');
+    document.getElementById("hours").innerText = String(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+    document.getElementById("minutes").innerText = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+    document.getElementById("seconds").innerText = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
 }
 
 // Inicialización
+setInterval(updateCountdown, 1000);
 updateCountdown();
-const timerInterval = setInterval(updateCountdown, 1000);
+
+// Contador de vistas
+let views = parseInt(localStorage.getItem("views") || "0") + 1;
+localStorage.setItem("views", views);
+document.getElementById("views-count").innerText = String(views).padStart(4, "0");
