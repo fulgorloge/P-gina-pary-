@@ -39,9 +39,14 @@ function generateTicket() {
     if (savedName) {
         showTicketView(savedName);
     } else {
-        document.getElementById("ticket-form-section").style.display = "block";
-        document.getElementById("ticket-view-section").style.display = "none";
+        resetTicketForm();
     }
+}
+
+function resetTicketForm() {
+    document.getElementById("ticket-form-section").style.display = "block";
+    document.getElementById("ticket-view-section").style.display = "none";
+    document.getElementById("user-name-input").value = "";
 }
 
 function saveAndGenerateTicket() {
@@ -53,7 +58,11 @@ function saveAndGenerateTicket() {
         return;
     }
 
+    // Generar un nuevo código cuando cambia o crea usuario
+    const newCode = "TSF-" + Math.floor(100000 + Math.random() * 900000);
+    localStorage.setItem("userCode", newCode);
     localStorage.setItem("userName", name);
+
     showTicketView(name);
 }
 
