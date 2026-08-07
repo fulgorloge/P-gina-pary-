@@ -32,12 +32,23 @@
       <span class="close-modal" onclick="closeTicket()">&times;</span>
       <div class="ticket-badge">VIP PASS CLANDESTINO</div>
       <h3>THE SINISTER FOREST</h3>
-      <p class="ticket-name" id="pass-user-name">GUEST</p>
-      <div class="qr-placeholder">
-        <img id="qr-img" src="" alt="QR Access" />
+
+      <!-- Formulario para ingresar nombre -->
+      <div id="ticket-form-section">
+        <p class="ticket-instruction">Ingresa tu nombre para generar tu pase de acceso:</p>
+        <input type="text" id="user-name-input" placeholder="Tu Nombre o Alias" maxlength="20" class="ticket-input" />
+        <button onclick="saveAndGenerateTicket()" class="contribution-btn" style="width:100%; margin-top:12px;">GENERAR MI PASE</button>
       </div>
-      <p class="ticket-code" id="pass-code">CODE: #000000</p>
-      <small>Muestra este pase en la entrada</small>
+
+      <!-- Vista del Ticket generado -->
+      <div id="ticket-view-section" style="display: none;">
+        <p class="ticket-name" id="pass-user-name">GUEST</p>
+        <div class="qr-placeholder">
+          <img id="qr-img" src="" alt="Cargando QR..." />
+        </div>
+        <p class="ticket-code" id="pass-code">CODE: #000000</p>
+        <small style="color:var(--text-muted); font-size:0.6rem;">Toma captura de pantalla a este pase</small>
+      </div>
     </div>
   </div>
 
@@ -45,7 +56,6 @@
     <header>
       <div class="header-top">
         <div class="status-tag"><span class="blink-dot"></span> EVENTO CLANDESTINO</div>
-        <!-- BOTÓN 1: MODO RAVE STROBE -->
         <button onclick="toggleStrobe()" class="strobe-btn" title="Modo Luces Club">⚡ STROBE</button>
       </div>
       <h1 class="glitch" data-text="THE SINISTER FOREST">THE SINISTER FOREST</h1>
@@ -57,12 +67,12 @@
       <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
     </div>
 
-    <!-- BOTÓN 2: REPRODUCTOR TECHNO INTEGRADO CON SPOTIFY -->
+    <!-- Reproductor Spotify -->
     <section class="spotify-section">
       <iframe class="spotify-iframe" src="https://open.spotify.com/embed/track/65ox9ejkqSzkoBrAZ7DG2U?theme=0" width="100%" height="80" frameBorder="0" allow="encrypted-media"></iframe>
     </section>
 
-    <!-- Indicador de Aforo / Cupos -->
+    <!-- Indicador de Aforo -->
     <div class="capacity-bar">
       <div class="capacity-text">AFORO LÍMITE: <span id="capacity-count">87% LLENO</span></div>
       <div class="progress-bg"><div class="progress-fill" style="width: 87%;"></div></div>
@@ -76,7 +86,7 @@
       <div class="time-box"><span id="seconds" class="time-number">00</span><span class="time-label">Seg</span></div>
     </section>
 
-    <!-- BOTÓN 3: AGREGAR A GOOGLE CALENDAR -->
+    <!-- Agregar a Google Calendar -->
     <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=The+Sinister+Forest+//+Techno+Night&dates=20260811T230000/20260812T060000&details=Evento+techno+clandestino.&location=Secret+Location" target="_blank" class="calendar-btn">
       📅 AGREGAR A MI CALENDARIO
     </a>
@@ -102,7 +112,7 @@
       <a id="location-map" class="map-button hidden" href="https://maps.google.com" target="_blank" rel="noopener noreferrer">ABRIR MAPA</a>
     </section>
 
-    <!-- BOTÓN 4: GENERAR TICKET PASS Y RSVP -->
+    <!-- Botones de Acción RSVP & Ticket -->
     <div class="action-dual-btn">
       <button id="rsvp-btn" onclick="toggleRSVP()" class="rsvp-btn">CONFIRMAR (RSVP)</button>
       <button onclick="generateTicket()" class="ticket-btn">🎫 OBTENER TICKET PASS</button>
