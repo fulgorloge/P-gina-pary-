@@ -26,6 +26,8 @@ updateCountdown();
 // 2. Modo Strobe Lights
 function toggleStrobe() {
     document.body.classList.toggle("strobe-active");
+    const strobeBtn = document.getElementById("strobe-toggle");
+    if (strobeBtn) strobeBtn.classList.toggle("active");
 }
 
 // 3. Sistema Modal & Ticket Pass
