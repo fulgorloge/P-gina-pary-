@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Sinister Forest // ARCHIVE & GALLERY</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700;900&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- Canvas de Esporas Rojas (Fondo) -->
+  <canvas id="particle-canvas"></canvas>
+
+  <!-- Overlay de Ruido -->
+  <div class="grain"></div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast">¡Foto subida a las sombras!</div>
+
+  <!-- Lightbox de Vista Previa -->
+  <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+    <span class="lightbox-close">&times;</span>
+    <img id="lightbox-img" class="lightbox-content" src="" alt="Ampliada" />
+  </div>
+
+  <main class="container gallery-container">
+    <header class="gallery-header">
+      <a href="index.html" class="back-btn">← VOLVER AL EVENTO</a>
+      <div class="status-tag"><span class="blink-dot"></span> ARCHIVO VIVO</div>
+    </header>
+
+    <h1 class="glitch" data-text="THE SHADOW ARCHIVE">THE SHADOW ARCHIVE</h1>
+    <p class="subtitle" style="margin-bottom: 20px;">CAPTURAS Y MEMORIAS DEL RAVE</p>
+
+    <!-- Dropzone para subir fotos -->
+    <div class="upload-dropzone" id="dropzone" onclick="document.getElementById('file-input').click()">
+      <span class="upload-icon">📷</span>
+      <div class="upload-text">SUBIR TUS FOTOS DE LA NOCHE</div>
+      <div class="upload-subtext">Haz clic o arrastra tus imágenes aquí (PNG, JPG, WEBP)</div>
+      <input type="file" id="file-input" accept="image/*" multiple onchange="handleFiles(this.files)">
+    </div>
+
+    <!-- Grid de Fotografías -->
+    <section class="gallery-grid" id="gallery-grid">
+      <div class="gallery-item" onclick="openLightbox('https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=800')">
+        <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=400" alt="Rave Photo 1" />
+        <div class="gallery-overlay">
+          <span class="uploader-tag">@TUCNAK_RAW</span>
+          <span class="upload-time">23:45 H</span>
+        </div>
+      </div>
+
+      <div class="gallery-item" onclick="openLightbox('https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?q=80&w=800')">
+        <img src="https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?q=80&w=400" alt="Rave Photo 2" />
+        <div class="gallery-overlay">
+          <span class="uploader-tag">@TECHNO_GUEST</span>
+          <span class="upload-time">01:12 H</span>
+        </div>
+      </div>
+
+      <div class="gallery-item" onclick="openLightbox('https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=800')">
+        <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=400" alt="Rave Photo 3" />
+        <div class="gallery-overlay">
+          <span class="uploader-tag">@CLANDESTINO_01</span>
+          <span class="upload-time">02:30 H</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+  <script>
+    // Gestión de Subida de Fotos
+    const galleryGrid = document.getElementById('gallery-grid');
+    const dropzone = document.getElementById('dropzone');
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+      dropzone.addEventListener(eventName, (e) => { e.preventDefault(); dropzone.classList.add('dragover'); });
+    });
+    ['dragleave', 'drop'].forEach(eventName => {
+      dropzone.addEventListener(eventName, (e) => { e.preventDefault(); dropzone.classList.remove('dragover'); });
+    });
+
+    dropzone.addEventListener('drop', (e) => {
+      const dt = e.dataTransfer;
+      handleFiles(dt.files);
+    });
+
+    function handleFiles(files) {
+      const userAlias = localStorage.getItem('userName') || 'ANÓNIMO';
+
+      Array.from(files).forEach(file => {
+        if (!file.type.startsWith('image/')) return;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const imgUrl = e.target.result;
+          
+          const item = document.createElement('div');
+          item.className = 'gallery-item';
+          item.onclick = () => openLightbox(imgUrl);
+
+          const now = new Date();
+          const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')} H`;
+
+          item.innerHTML = `
+            <img src="${imgUrl}" alt="Foto subida" />
+            <div class="gallery-overlay">
+              <span class="uploader-tag">@${userAlias.toUpperCase()}</span>
+              <span class="upload-time">${timeStr}</span>
+            </div>
+          `;
+
+          galleryGrid.prepend(item);
+          showToast('¡Foto añadida al archivo!');
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function openLightbox(url) {
+      document.getElementById('lightbox-img').src = url;
+      document.getElementById('lightbox').style.display = 'flex';
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightbox').style.display = 'none';
+    }
+  </script>
+</body>
+</html>
