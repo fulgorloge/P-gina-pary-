@@ -74,7 +74,7 @@
       </div>
     </div>
 
-    <!-- Reproductor Audio Nativo Personalizado (En lugar de Spotify) -->
+    <!-- Reproductor Audio Nativo Personalizado -->
     <div class="audio-player-box">
       <div class="audio-info">
         <div class="audio-text">
@@ -131,10 +131,10 @@
       </div>
     </section>
 
-    <!-- Ubicación Secreta (Revelación Martes 11) -->
-    <div class="location-box">
+    <!-- Ubicación Secreta (Se oculta hasta que venza el tiempo el Lunes) -->
+    <div class="location-box" id="location-box-container">
       <p id="location-title">🔒 UBICACIÓN SECRETA</p>
-      <p id="location-details">SE REVELA EL MARTES 11 // ATENTO A LAS REDES</p>
+      <p id="location-details">REVELACIÓN AL FINALIZAR EL CONTEO // ATENTO A LAS REDES</p>
     </div>
 
     <!-- Acceso a la Galería Vault -->
@@ -224,11 +224,13 @@
 
     // Reproductor Audio Nativo
     const homeAudio = document.getElementById('home-audio-element');
-    homeAudio.addEventListener('timeupdate', () => {
-      if (!homeAudio.duration) return;
-      const pct = (homeAudio.currentTime / homeAudio.duration) * 100;
-      document.getElementById('home-audio-progress').style.width = `${pct}%`;
-    });
+    if (homeAudio) {
+      homeAudio.addEventListener('timeupdate', () => {
+        if (!homeAudio.duration) return;
+        const pct = (homeAudio.currentTime / homeAudio.duration) * 100;
+        document.getElementById('home-audio-progress').style.width = `${pct}%`;
+      });
+    }
 
     function toggleHomeAudio() {
       const btn = document.getElementById('home-play-btn');
@@ -334,19 +336,39 @@
       alert('Evento añadido a la agenda.');
     }
 
+    // CUENTA REGRESIVA CON OBJETIVO LUNES 10 DE AGOSTO DE 2026, 23:59:59
     function startCountdown() {
-      const target = new Date().getTime() + (7 * 24 * 60 * 60 * 1000);
-      setInterval(() => {
+      const targetDate = new Date('2026-08-10T23:59:59').getTime();
+
+      const updateTimer = () => {
         const now = new Date().getTime();
-        const diff = target - now;
+        const diff = targetDate - now;
 
         if (diff > 0) {
           document.getElementById('cd-days').innerText = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0');
           document.getElementById('cd-hours').innerText = String(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
           document.getElementById('cd-minutes').innerText = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
           document.getElementById('cd-seconds').innerText = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
+        } else {
+          document.getElementById('cd-days').innerText = '00';
+          document.getElementById('cd-hours').innerText = '00';
+          document.getElementById('cd-minutes').innerText = '00';
+          document.getElementById('cd-seconds').innerText = '00';
+
+          // REVELACIÓN DE MAPA Y DIRECCIÓN AL FINALIZAR EL TIEMPO
+          const locBox = document.getElementById('location-box-container');
+          locBox.innerHTML = `
+            <p id="location-title" style="color:#00ff66;">📍 UBICACIÓN REVELADA</p>
+            <p id="location-details" style="color:#fff; font-weight:bold; margin-bottom:10px;">Parque Lineal La Frontera // Envigado, Antioquia</p>
+            <a href="https://maps.google.com/?q=Parque+Lineal+La+Frontera+Envigado" target="_blank" class="calendar-btn" style="margin-bottom:0; background:var(--accent);">
+              VER EN GOOGLE MAPS
+            </a>
+          `;
         }
-      }, 1000);
+      };
+
+      updateTimer();
+      setInterval(updateTimer, 1000);
     }
     startCountdown();
   </script>
