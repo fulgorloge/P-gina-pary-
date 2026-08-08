@@ -1,238 +1,498 @@
-// Configuración de fecha: 11 de Agosto, 23:00H
-const targetDate = new Date(new Date().getFullYear(), 7, 11, 23, 0, 0).getTime();
-const url = window.location.href;
-
-// --- GESTIÓN DE AFORO DINÁMICO ---
-const MAX_CAPACITY = 100; // Define la capacidad máxima del evento
-let currentTickets = parseInt(localStorage.getItem("totalTicketsIssued") || "0", 10);
-
-function updateCapacityUI() {
-    const percentage = Math.min(Math.round((currentTickets / MAX_CAPACITY) * 100), 100);
-    const capacityCount = document.getElementById("capacity-count");
-    const progressFill = document.querySelector(".progress-fill");
-
-    if (capacityCount) {
-        capacityCount.innerText = `${percentage}% LLENO (${currentTickets}/${MAX_CAPACITY})`;
-    }
-    if (progressFill) {
-        progressFill.style.width = `${percentage}%`;
-    }
+:root {
+  --bg: #020203;
+  --card-bg: rgba(12, 12, 15, 0.78);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --accent: #ff003c;
+  --accent-glow: rgba(255, 0, 60, 0.55);
+  --text: #ffffff;
+  --text-muted: rgba(255, 255, 255, 0.5);
+  --font: 'Space Grotesk', sans-serif;
 }
 
-// 1. Conteo Regresivo
-function updateCountdown() {
-    const now = new Date().getTime();
-    const diff = targetDate - now;
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-    if (diff <= 0) {
-        document.getElementById("countdown").innerHTML = "<h2 style='color:var(--accent); font-size:1.1rem;'>📍 COORDENADAS REVELADAS</h2>";
-        document.getElementById("location-details").innerText = "Nos vemos en las sombras. ID obligatorio.";
-        document.getElementById("location-map").classList.remove("hidden");
-        clearInterval(timerInterval);
-        return;
-    }
-
-    document.getElementById("days").innerText = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0');
-    document.getElementById("hours").innerText = String(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
-    document.getElementById("minutes").innerText = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
-    document.getElementById("seconds").innerText = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
-}
-const timerInterval = setInterval(updateCountdown, 1000);
-updateCountdown();
-
-// 2. Modo Strobe Lights
-function toggleStrobe() {
-    document.body.classList.toggle("strobe-active");
-    const strobeBtn = document.getElementById("strobe-toggle");
-    if (strobeBtn) strobeBtn.classList.toggle("active");
+body {
+  background-color: var(--bg);
+  font-family: var(--font);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  overflow-x: hidden;
+  position: relative;
 }
 
-// 3. Sistema Modal & Ticket Pass (QR con Redirección a ticket.html)
-function generateTicket() {
-    const modal = document.getElementById("ticket-modal");
-    modal.style.display = "flex";
-
-    const savedName = localStorage.getItem("userName");
-    if (savedName) {
-        showTicketView(savedName);
-    } else {
-        resetTicketForm();
-    }
+#particle-canvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  z-index: 1;
+  pointer-events: none;
 }
 
-function resetTicketForm() {
-    document.getElementById("ticket-form-section").style.display = "block";
-    document.getElementById("ticket-view-section").style.display = "none";
-    document.getElementById("user-name-input").value = "";
+.grain {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.04;
+  background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)"/></svg>');
 }
 
-function saveAndGenerateTicket() {
-    const input = document.getElementById("user-name-input");
-    const name = input.value.trim();
-
-    if (name === "") {
-        showToast("Ingresa un nombre válido");
-        return;
-    }
-
-    const existingCode = localStorage.getItem("userCode");
-    
-    // Si el usuario genera un ticket por primera vez, aumentamos el aforo global
-    if (!existingCode) {
-        currentTickets += 1;
-        localStorage.setItem("totalTicketsIssued", currentTickets);
-        updateCapacityUI();
-    }
-
-    const newCode = existingCode || ("TSF-" + Math.floor(100000 + Math.random() * 900000));
-    localStorage.setItem("userCode", newCode);
-    localStorage.setItem("userName", name);
-
-    showTicketView(name);
+.container {
+  background: var(--card-bg);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 35px var(--accent-glow);
+  border-radius: 24px;
+  width: 100%;
+  max-width: 440px;
+  padding: 30px 22px;
+  text-align: center;
+  position: relative;
+  z-index: 10;
+  transition: transform 0.15s ease-out;
 }
 
-function showTicketView(userName) {
-    document.getElementById("ticket-form-section").style.display = "none";
-    document.getElementById("ticket-view-section").style.display = "block";
-
-    let code = localStorage.getItem("userCode");
-    if (!code) {
-        code = "TSF-" + Math.floor(100000 + Math.random() * 900000);
-        localStorage.setItem("userCode", code);
-    }
-
-    document.getElementById("pass-user-name").innerText = userName.toUpperCase();
-    document.getElementById("pass-code").innerText = "CODE: " + code;
-
-    const baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/'));
-    const ticketUrl = `${baseUrl}/ticket.html?name=${encodeURIComponent(userName)}&code=${encodeURIComponent(code)}`;
-
-    const qrData = encodeURIComponent(ticketUrl);
-    document.getElementById("qr-img").src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${qrData}`;
+body.strobe-active {
+  animation: strobe-flash 0.15s infinite alternate;
 }
 
-function closeTicket() {
-    document.getElementById("ticket-modal").style.display = "none";
+@keyframes strobe-flash {
+  0% { background-color: #020203; }
+  100% { background-color: #220008; }
 }
 
-window.onclick = function(event) {
-    const modal = document.getElementById("ticket-modal");
-    if (event.target === modal) {
-        modal.style.display = "none";
-    }
-};
-
-// 4. Copiar Nequi y Links
-function showToast(msg) {
-    const toast = document.getElementById("toast");
-    toast.innerText = msg;
-    toast.classList.add("show");
-    setTimeout(() => toast.classList.remove("show"), 2500);
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
 }
 
-function copyNequi(number) {
-    navigator.clipboard.writeText(number).then(() => showToast("¡Número Nequi copiado!"));
+.status-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.58rem;
+  letter-spacing: 1px;
+  color: var(--accent);
+  background: rgba(255, 0, 60, 0.12);
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid var(--accent-glow);
+  font-weight: 700;
 }
 
-function copyLink() {
-    navigator.clipboard.writeText(url).then(() => showToast("¡Enlace copiado!"));
+.blink-dot {
+  width: 6px; height: 6px;
+  background-color: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--accent);
+  animation: blink 0.8s infinite alternate;
 }
 
-// 5. Confirmación RSVP
-let isConfirmed = localStorage.getItem("rsvp") === "true";
-const rsvpBtn = document.getElementById("rsvp-btn");
+@keyframes blink { from { opacity: 0.2; } to { opacity: 1; } }
 
-function updateRSVPUI() {
-    if (isConfirmed) {
-        rsvpBtn.innerText = "✓ CONFIRMADO";
-        rsvpBtn.classList.add("confirmed");
-    } else {
-        rsvpBtn.innerText = "CONFIRMAR (RSVP)";
-        rsvpBtn.classList.remove("confirmed");
-    }
+.strobe-btn {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid var(--glass-border);
+  color: #fff;
+  font-family: var(--font);
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
-function toggleRSVP() {
-    isConfirmed = !isConfirmed;
-    localStorage.setItem("rsvp", isConfirmed);
-    updateRSVPUI();
-    showToast(isConfirmed ? "¡Asistencia confirmada!" : "Cancelado");
+.strobe-btn:hover, .strobe-btn.active {
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent-glow);
+  border-color: #ff003c;
 }
 
-// 6. Compartir Redes
-function share(platform) {
-    const text = "¡No te pierdas The Sinister Forest! Techno Night con TUCNAK.";
-    if (platform === 'whatsapp') window.open(`https://wa.me/?text=${encodeURIComponent(text + " " + url)}`, '_blank');
-    if (platform === 'facebook') window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+h1.glitch {
+  font-weight: 900;
+  font-size: 1.8rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  position: relative;
+  color: #fff;
+  text-shadow: 0 0 10px var(--accent-glow);
 }
 
-// 7. CANVAS ESPORAS ROJAS
-const canvas = document.getElementById("particle-canvas");
-const ctx = canvas.getContext("2d");
-
-let width, height;
-let particles = [];
-
-function resize() {
-    width = canvas.width = window.innerWidth;
-    height = canvas.height = window.innerHeight;
-}
-window.addEventListener("resize", resize);
-resize();
-
-class Particle {
-    constructor() { this.reset(); }
-
-    reset() {
-        this.x = Math.random() * width;
-        this.y = Math.random() * height;
-        this.size = Math.random() * 2.5 + 0.5;
-        this.vx = (Math.random() - 0.5) * 0.4;
-        this.vy = (Math.random() - 0.5) * 0.4;
-        this.opacity = Math.random() * 0.6 + 0.1;
-    }
-
-    update() {
-        this.x += this.vx;
-        this.y += this.vy;
-        if (this.x < 0 || this.x > width || this.y < 0 || this.y > height) this.reset();
-    }
-
-    draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 0, 60, ${this.opacity})`;
-        ctx.shadowBlur = 8;
-        ctx.shadowColor = "#ff003c";
-        ctx.fill();
-    }
+.glitch::before, .glitch::after {
+  content: attr(data-text);
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  clip: rect(0, 0, 0, 0);
 }
 
-for (let i = 0; i < 75; i++) particles.push(new Particle());
+.glitch::before { left: -2px; text-shadow: 2px 0 #00ffff; animation: glitch-1 2s infinite linear alternate-reverse; }
+.glitch::after { left: 2px; text-shadow: -2px 0 var(--accent); animation: glitch-2 2.5s infinite linear alternate-reverse; }
 
-function animate() {
-    ctx.clearRect(0, 0, width, height);
-    particles.forEach(p => { p.update(); p.draw(); });
-    requestAnimationFrame(animate);
+@keyframes glitch-1 { 0% { clip: rect(10px, 9999px, 30px, 0); } 50% { clip: rect(40px, 9999px, 60px, 0); } 100% { clip: rect(20px, 9999px, 40px, 0); } }
+@keyframes glitch-2 { 0% { clip: rect(50px, 9999px, 20px, 0); } 50% { clip: rect(10px, 9999px, 50px, 0); } 100% { clip: rect(30px, 9999px, 10px, 0); } }
+
+.subtitle { font-size: 0.65rem; letter-spacing: 3px; color: var(--text-muted); margin-top: 4px; }
+
+.audio-visualizer {
+  display: flex; justify-content: center; align-items: flex-end; gap: 4px; height: 24px; margin: 12px 0;
 }
 
-// Inicialización de Estados
-document.addEventListener("DOMContentLoaded", () => {
-    updateCapacityUI();
-    updateRSVPUI();
-    animate();
-    
-    // Vistas activas
-    let views = parseInt(localStorage.getItem("views") || "215", 10) + 1;
-    localStorage.setItem("views", views);
-    document.getElementById("views-count").innerText = String(views).padStart(4, "0");
-});
+.audio-visualizer span {
+  width: 4px; height: 100%; background: var(--accent); border-radius: 3px;
+  transform-origin: bottom; animation: equalizer 1s infinite ease-in-out alternate;
+  box-shadow: 0 0 6px var(--accent);
+}
 
-// 8. EFECTO TILT 3D
-const card = document.getElementById("tilt-card");
-document.addEventListener("mousemove", (e) => {
-    if (window.innerWidth < 768) return;
-    const xAxis = (window.innerWidth / 2 - e.pageX) / 40;
-    const yAxis = (window.innerHeight / 2 - e.pageY) / 40;
-    card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
-});
+.audio-visualizer span:nth-child(1) { animation-delay: 0.1s; }
+.audio-visualizer span:nth-child(2) { animation-delay: 0.4s; }
+.audio-visualizer span:nth-child(3) { animation-delay: 0.2s; }
+.audio-visualizer span:nth-child(4) { animation-delay: 0.6s; }
+.audio-visualizer span:nth-child(5) { animation-delay: 0.3s; }
+.audio-visualizer span:nth-child(6) { animation-delay: 0.5s; }
+.audio-visualizer span:nth-child(7) { animation-delay: 0.2s; }
+.audio-visualizer span:nth-child(8) { animation-delay: 0.7s; }
+.audio-visualizer span:nth-child(9) { animation-delay: 0.3s; }
+
+@keyframes equalizer { 0% { transform: scaleY(0.15); } 100% { transform: scaleY(1); } }
+
+.lineup-section {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 16px 14px;
+  margin-bottom: 15px;
+}
+
+.lineup-title {
+  font-size: 0.6rem;
+  letter-spacing: 2px;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.dj-card.headliner {
+  background: rgba(255, 0, 60, 0.08);
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+  padding: 14px 16px;
+  text-align: center;
+  box-shadow: 0 0 15px var(--accent-glow);
+  transition: transform 0.3s ease;
+}
+
+.dj-card.headliner:hover { transform: scale(1.02); }
+
+.dj-tag {
+  font-size: 0.55rem;
+  letter-spacing: 2px;
+  color: var(--accent);
+  font-weight: 700;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.dj-name {
+  font-size: 1.8rem;
+  font-weight: 900;
+  letter-spacing: 3px;
+  color: #fff;
+  text-transform: uppercase;
+  text-shadow: 0 0 10px var(--accent-glow);
+}
+
+.dj-genre {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+  margin-top: 2px;
+}
+
+.dj-socials {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  font-size: 0.6rem;
+}
+
+.dj-link {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--glass-border);
+  padding: 4px 12px;
+  border-radius: 20px;
+  transition: all 0.2s;
+}
+
+.dj-link:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: rgba(255, 0, 60, 0.12);
+}
+
+.capacity-bar { margin-bottom: 15px; }
+.capacity-text { font-size: 0.6rem; letter-spacing: 1px; color: var(--accent); font-weight: 700; margin-bottom: 4px; }
+.progress-bg { background: rgba(255,255,255,0.08); height: 4px; border-radius: 4px; overflow: hidden; }
+.progress-fill { background: var(--accent); height: 100%; box-shadow: 0 0 8px var(--accent); transition: width 0.4s ease; }
+
+/* Custom Audio Player Container */
+.audio-player-box {
+  margin-bottom: 15px;
+  border-radius: 14px;
+  background: rgba(12, 12, 15, 0.9);
+  border: 1px solid var(--accent);
+  box-shadow: 0 0 15px var(--accent-glow);
+  padding: 12px 16px;
+}
+
+.audio-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.audio-text { text-align: left; }
+.audio-tag { font-size: 0.55rem; color: var(--accent); font-weight: 700; letter-spacing: 1px; }
+.audio-title { font-size: 0.75rem; font-weight: 700; color: #fff; }
+
+.audio-controls { display: flex; align-items: center; gap: 10px; }
+.play-btn-circle {
+  width: 36px; height: 36px;
+  background: var(--accent);
+  border: none;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 0 10px var(--accent-glow);
+  transition: transform 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.play-btn-circle:hover { transform: scale(1.08); }
+
+.audio-progress-bar {
+  flex: 1;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.audio-progress-fill {
+  width: 0%;
+  height: 100%;
+  background: var(--accent);
+  box-shadow: 0 0 6px var(--accent);
+}
+
+.countdown-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 15px; }
+.time-box { background: rgba(0, 0, 0, 0.55); border: 1px solid rgba(255, 255, 255, 0.08); padding: 10px 2px; border-radius: 12px; }
+.time-number { display: block; font-size: 1.4rem; font-weight: 700; color: #fff; }
+.time-label { font-size: 0.55rem; color: var(--text-muted); text-transform: uppercase; }
+
+.calendar-btn {
+  display: block; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border);
+  color: #fff; text-decoration: none; font-size: 0.65rem; font-weight: 700; letter-spacing: 1px;
+  padding: 10px; border-radius: 10px; margin-bottom: 15px; transition: 0.3s;
+}
+.calendar-btn:hover { background: rgba(255, 255, 255, 0.15); }
+
+.contribution-section {
+  background: rgba(0, 0, 0, 0.35); border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px; padding: 16px 12px; margin-bottom: 15px;
+}
+.contribution-badge { font-size: 0.58rem; letter-spacing: 2px; color: var(--text-muted); }
+.amount-container { display: flex; justify-content: center; align-items: baseline; gap: 4px; margin: 4px 0; }
+.currency { font-size: 1rem; color: var(--accent); font-weight: 700; }
+.amount { font-size: 2rem; font-weight: 900; }
+.unit { font-size: 0.75rem; color: var(--text-muted); }
+.nequi-number { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 10px; white-space: nowrap; }
+.nequi-number span { color: #fff; font-weight: 700; }
+.btn-group { display: flex; gap: 8px; }
+.contribution-btn {
+  flex: 1; background: var(--accent); color: #fff; padding: 10px 6px; border-radius: 8px;
+  text-decoration: none; font-weight: 700; font-size: 0.68rem; border: none; cursor: pointer; transition: 0.3s;
+}
+.contribution-btn.secondary { background: rgba(255, 255, 255, 0.1); }
+.contribution-btn:hover { filter: brightness(1.2); }
+
+.location-box { background: rgba(255, 255, 255, 0.02); border: 1px dashed rgba(255, 255, 255, 0.15); border-radius: 12px; padding: 14px; margin-bottom: 15px; }
+#location-title { font-size: 0.7rem; font-weight: 700; color: var(--accent); }
+#location-details { font-size: 0.65rem; color: var(--text-muted); margin-top: 4px; }
+
+.gallery-nav-btn {
+  display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%;
+  background: rgba(255, 0, 60, 0.12); border: 1px solid var(--accent); color: #fff;
+  text-decoration: none; font-family: var(--font); font-size: 0.75rem; font-weight: 700;
+  letter-spacing: 2px; padding: 12px; border-radius: 12px; margin-bottom: 15px;
+  text-transform: uppercase; box-shadow: 0 0 15px rgba(255, 0, 60, 0.2); transition: all 0.3s ease;
+}
+
+.gallery-nav-btn:hover { background: var(--accent); box-shadow: 0 0 25px var(--accent-glow); transform: translateY(-2px); }
+
+.action-dual-btn { display: flex; gap: 8px; margin-bottom: 15px; }
+.rsvp-btn, .ticket-btn {
+  flex: 1; background: transparent; border: 1px solid var(--accent); color: var(--accent);
+  padding: 10px 4px; border-radius: 8px; font-family: var(--font); font-weight: 700; font-size: 0.65rem; cursor: pointer; transition: 0.3s;
+}
+.rsvp-btn.confirmed { background: var(--accent); color: #fff; }
+.ticket-btn { background: var(--accent); color: #fff; box-shadow: 0 0 10px var(--accent-glow); }
+
+.social-share { padding-top: 12px; border-top: 1px solid var(--glass-border); margin-bottom: 12px; }
+.share-title { font-size: 0.58rem; letter-spacing: 2px; color: var(--text-muted); margin-bottom: 8px; }
+.social-btns { display: flex; gap: 6px; justify-content: center; }
+.s-btn { cursor: pointer; padding: 8px 10px; border-radius: 12px; border: none; font-size: 0.65rem; font-weight: 700; font-family: var(--font); color: #fff; }
+.wa { background: #128C7E; } .fb { background: #1877F2; } .copy { background: rgba(255,255,255,0.1); }
+
+footer { font-size: 0.6rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 4px; }
+
+.modal { display: none; position: fixed; z-index: 200; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); justify-content: center; align-items: center; }
+.modal-content { background: #0a0a0c; border: 1px solid var(--accent); border-radius: 20px; padding: 25px; width: 85%; max-width: 320px; text-align: center; position: relative; box-shadow: 0 0 30px var(--accent-glow); }
+.close-modal { position: absolute; right: 15px; top: 10px; font-size: 1.5rem; color: #fff; cursor: pointer; }
+.ticket-badge { font-size: 0.55rem; letter-spacing: 2px; color: var(--accent); margin-bottom: 5px; font-weight: 700; }
+.ticket-instruction { font-size: 0.7rem; color: var(--text-muted); margin: 15px 0 10px 0; }
+.ticket-input { width: 100%; padding: 10px 14px; background: rgba(255, 255, 255, 0.08); border: 1px solid var(--accent); border-radius: 8px; color: #fff; font-family: var(--font); font-size: 0.8rem; text-align: center; outline: none; }
+.ticket-input:focus { box-shadow: 0 0 10px var(--accent-glow); }
+.ticket-name { font-size: 1.1rem; font-weight: 700; margin: 8px 0; color: #fff; }
+.qr-placeholder img { width: 130px; height: 130px; border-radius: 10px; margin: 10px 0; border: 2px solid #fff; }
+.ticket-code { font-size: 0.65rem; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 4px; }
+
+.toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--accent); color: #fff; padding: 10px 20px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; opacity: 0; transition: all 0.3s; z-index: 300; }
+.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+/* SPOTIFY THEME & VAULT GALERIA */
+body.spotify-theme { background-color: #000000; color: #ffffff; min-height: 100vh; margin: 0; padding: 0; overflow-x: hidden; display: block; }
+.spotify-app-layout { display: flex; height: calc(100vh - 90px); width: 100vw; background: #000; position: relative; z-index: 10; }
+.spotify-sidebar { width: 240px; background: #000000; padding: 24px 16px; display: flex; flex-direction: column; gap: 20px; border-right: 1px solid rgba(255,255,255,0.05); }
+.sidebar-logo { display: flex; align-items: center; gap: 10px; font-weight: 900; font-size: 1.1rem; color: var(--accent); letter-spacing: 1px; }
+.sidebar-nav { display: flex; flex-direction: column; gap: 8px; }
+.nav-item { display: flex; align-items: center; gap: 14px; color: #b3b3b3; text-decoration: none; font-size: 0.85rem; font-weight: 700; padding: 10px 12px; border-radius: 8px; transition: 0.2s; }
+.nav-item:hover, .nav-item.active { color: #fff; background: #121212; }
+.sidebar-divider { height: 1px; background: rgba(255,255,255,0.1); }
+.library-title { font-size: 0.65rem; font-weight: 800; color: #b3b3b3; letter-spacing: 1.5px; }
+.playlist-item { display: flex; align-items: center; gap: 12px; padding: 8px; border-radius: 8px; cursor: pointer; background: rgba(255,0,60,0.08); border: 1px solid var(--accent); }
+.playlist-thumb { width: 36px; height: 36px; background: var(--accent); border-radius: 6px; display: flex; justify-content: center; align-items: center; }
+.p-name { font-size: 0.75rem; font-weight: bold; }
+.p-sub { font-size: 0.6rem; color: #b3b3b3; }
+
+.spotify-main-content { flex: 1; background: linear-gradient(180deg, #220008 0%, #121212 300px); overflow-y: auto; padding: 20px 32px 100px 32px; }
+.spotify-topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+.spotify-back-btn { display: inline-flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.7); color: #fff; text-decoration: none; padding: 8px 16px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; transition: 0.2s; }
+.spotify-back-btn:hover { background: #000; transform: scale(1.03); }
+.spotify-user-pill { display: flex; align-items: center; gap: 8px; background: #000000; padding: 6px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; }
+.user-badge-dot { width: 8px; height: 8px; background: #00ff66; border-radius: 50%; box-shadow: 0 0 8px #00ff66; }
+
+.playlist-hero { display: flex; align-items: flex-end; gap: 24px; margin-bottom: 24px; }
+.hero-cover { width: 160px; height: 160px; background: var(--accent); border-radius: 12px; display: flex; justify-content: center; align-items: center; box-shadow: 0 15px 35px var(--accent-glow); }
+.hero-icon { font-size: 4rem; }
+.badge-public { font-size: 0.65rem; font-weight: 800; color: #b3b3b3; letter-spacing: 2px; }
+.hero-title { font-size: 2.8rem; font-weight: 900; letter-spacing: -1px; margin: 4px 0; }
+.hero-description { font-size: 0.8rem; color: #b3b3b3; max-width: 500px; margin-bottom: 12px; }
+.hero-meta { font-size: 0.8rem; }
+.author-bold { font-weight: bold; color: var(--accent); }
+
+.playlist-actions { display: flex; align-items: center; gap: 20px; margin-bottom: 24px; }
+.big-play-btn { width: 56px; height: 56px; background: var(--accent); border: none; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 8px 20px var(--accent-glow); transition: transform 0.2s; }
+.big-play-btn:hover { transform: scale(1.06); }
+.upload-trigger-btn { display: flex; align-items: center; gap: 10px; background: rgba(255, 255, 255, 0.08); border: 1px dashed var(--accent); padding: 10px 20px; border-radius: 25px; cursor: pointer; font-size: 0.75rem; font-weight: bold; letter-spacing: 1px; transition: 0.2s; }
+.upload-trigger-btn:hover { background: var(--accent); border-color: var(--accent); }
+.plus-icon { font-size: 1.2rem; font-weight: bold; }
+
+.filter-pills { display: flex; gap: 10px; margin-bottom: 24px; }
+.pill { background: rgba(255, 255, 255, 0.08); border: none; color: #fff; padding: 8px 18px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; cursor: pointer; font-family: var(--font); transition: 0.2s; }
+.pill.active, .pill:hover { background: var(--accent); }
+
+.spotify-cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 18px; }
+.spotify-card { background: #181818; padding: 14px; border-radius: 12px; display: flex; flex-direction: column; cursor: pointer; transition: background 0.3s ease; }
+.spotify-card:hover { background: #282828; }
+.spotify-card.playing { border: 1px solid var(--accent); box-shadow: 0 0 20px var(--accent-glow); }
+
+.card-cover { width: 100%; aspect-ratio: 1 / 1; border-radius: 8px; overflow: hidden; position: relative; background: #000; }
+.card-cover img, .card-cover video { width: 100%; height: 100%; object-fit: cover; }
+.media-type-badge { position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,0.8); color: var(--accent); font-size: 0.55rem; font-weight: bold; padding: 3px 8px; border-radius: 4px; }
+
+.card-equalizer-bars { position: absolute; bottom: 12px; left: 12px; display: flex; align-items: flex-end; gap: 3px; height: 16px; opacity: 0; transition: opacity 0.3s ease; z-index: 4; }
+.card-equalizer-bars span { width: 3px; height: 100%; background: var(--accent); border-radius: 2px; transform-origin: bottom; animation: mini-eq 0.8s infinite ease-in-out alternate; }
+.card-equalizer-bars span:nth-child(2) { animation-delay: 0.2s; }
+.card-equalizer-bars span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes mini-eq { 0% { transform: scaleY(0.2); } 100% { transform: scaleY(1); } }
+.spotify-card.playing .card-equalizer-bars { opacity: 1; }
+
+.card-play-button { position: absolute; bottom: 10px; right: 10px; width: 44px; height: 44px; background: var(--accent); border: none; border-radius: 50%; display: flex; justify-content: center; align-items: center; opacity: 0; transform: translateY(10px); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 8px 16px rgba(0,0,0,0.6); cursor: pointer; }
+.spotify-card:hover .card-play-button { opacity: 1; transform: translateY(0); }
+
+.card-body { margin-top: 12px; }
+.card-title { font-size: 0.85rem; font-weight: bold; color: #fff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.card-sub { font-size: 0.7rem; color: #b3b3b3; margin-top: 4px; }
+
+.card-actions-bar { display: flex; align-items: center; justify-content: space-between; padding: 8px 0 4px 0; border-top: 1px solid rgba(255, 255, 255, 0.06); margin-top: 8px; }
+.like-btn, .comment-toggle-btn { background: none; border: none; color: #b3b3b3; font-family: var(--font); font-size: 0.72rem; font-weight: 700; display: flex; align-items: center; gap: 5px; cursor: pointer; transition: all 0.2s ease; padding: 4px 8px; border-radius: 12px; }
+.like-btn:hover, .comment-toggle-btn:hover { color: #fff; background: rgba(255, 255, 255, 0.08); }
+.like-btn .heart-icon { font-size: 1rem; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.like-btn.liked { color: var(--accent); }
+.like-btn.liked .heart-icon { animation: heart-pop 0.3s ease-out; }
+@keyframes heart-pop { 0% { transform: scale(1); } 50% { transform: scale(1.4); } 100% { transform: scale(1); } }
+
+.media-modal { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.92); backdrop-filter: blur(15px); z-index: 600; justify-content: center; align-items: center; padding: 20px; }
+.media-modal-container { background: #181818; border-radius: 16px; border: 1px solid var(--accent); max-width: 700px; width: 100%; overflow: hidden; box-shadow: 0 0 30px var(--accent-glow); position: relative; }
+.lightbox-close { position: absolute; top: 12px; right: 16px; font-size: 1.8rem; color: #fff; cursor: pointer; z-index: 700; transition: color 0.2s; }
+.lightbox-close:hover { color: var(--accent); }
+
+.modal-media-content { width: 100%; max-height: 55vh; object-fit: contain; background: #000; display: block; }
+.modal-info-bar { padding: 16px 20px; background: #181818; display: flex; justify-content: space-between; align-items: center; }
+.track-name { font-size: 1rem; font-weight: bold; color: #fff; }
+.track-artist { font-size: 0.75rem; color: var(--accent); margin-top: 2px; }
+.modal-actions-wrapper { display: flex; align-items: center; gap: 12px; }
+
+.modal-comments-section { padding: 16px 20px; background: #121212; border-top: 1px solid rgba(255, 255, 255, 0.08); max-height: 200px; display: flex; flex-direction: column; }
+.comments-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; padding-right: 6px; max-height: 120px; }
+.comment-item { font-size: 0.72rem; line-height: 1.3; color: #e0e0e0; background: rgba(255, 255, 255, 0.03); padding: 6px 10px; border-radius: 8px; word-break: break-word; }
+.comment-user { font-weight: 700; color: var(--accent); margin-right: 6px; }
+.comment-input-box { display: flex; gap: 8px; }
+.comment-input { flex: 1; background: rgba(255, 255, 255, 0.08); border: 1px solid var(--glass-border); border-radius: 20px; padding: 8px 14px; color: #fff; font-family: var(--font); font-size: 0.75rem; outline: none; }
+.comment-input:focus { border-color: var(--accent); }
+.comment-send-btn { background: var(--accent); color: #fff; border: none; padding: 8px 14px; border-radius: 20px; font-family: var(--font); font-weight: 700; font-size: 0.7rem; cursor: pointer; transition: 0.2s; }
+.comment-send-btn:hover { filter: brightness(1.2); }
+
+.spotify-bottom-player { position: fixed; bottom: 0; left: 0; width: 100vw; height: 90px; background: #000000; border-top: 1px solid rgba(255, 255, 255, 0.1); display: flex; justify-content: space-between; align-items: center; padding: 0 24px; z-index: 500; }
+.player-left { display: flex; align-items: center; gap: 14px; width: 25%; }
+.player-thumb { width: 50px; height: 50px; background: var(--accent); border-radius: 8px; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; }
+.player-track-title { font-size: 0.85rem; font-weight: bold; }
+.player-track-artist { font-size: 0.7rem; color: #b3b3b3; }
+.player-center { display: flex; flex-direction: column; align-items: center; gap: 6px; width: 40%; }
+.player-controls { display: flex; align-items: center; gap: 16px; }
+.ctrl-btn { background: none; border: none; color: #b3b3b3; font-size: 1rem; cursor: pointer; }
+.ctrl-btn:hover { color: #fff; }
+.ctrl-btn.main-play { width: 34px; height: 34px; background: #fff; color: #000; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 0.8rem; font-weight: bold; }
+.progress-bar-wrapper { display: flex; align-items: center; gap: 10px; width: 100%; }
+.time-text { font-size: 0.65rem; color: #b3b3b3; }
+.progress-bar { flex: 1; height: 4px; background: #4d4d4d; border-radius: 2px; overflow: hidden; cursor: pointer; }
+.progress-fill { width: 0%; height: 100%; background: var(--accent); }
+.player-right { display: flex; align-items: center; gap: 10px; width: 20%; justify-content: flex-end; }
+.volume-bar { width: 80px; height: 4px; background: #4d4d4d; border-radius: 2px; }
+.volume-fill { width: 70%; height: 100%; background: #fff; }
+
+@media (max-width: 768px) {
+  .spotify-sidebar { display: none; }
+  .playlist-hero { flex-direction: column; align-items: flex-start; }
+  .hero-cover { width: 120px; height: 120px; }
+  .hero-title { font-size: 2rem; }
+}
