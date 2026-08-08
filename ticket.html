@@ -2,19 +2,19 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>VIP Access // The Sinister Forest</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Sinister Forest // Official VIP Pass</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@800;900&family=Orbitron:wght@700;900&family=Space+Grotesk:wght@500;700;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Orbitron:wght@600;800;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-dark: #020104;
-      --red-bright: #ff003c;
-      --red-dark: #3a000a;
-      --cyan-neon: #00f0ff;
-      --gold-light: #ffe599;
-      --gold-dark: #b8860b;
+      --bg-dark: #050406;
+      --gold-brass: #d4af37;
+      --gold-light: #fce08f;
+      --neon-green: #00ff88;
+      --neon-cyan: #00f0ff;
+      --metal-border: linear-gradient(135deg, #a3a3a3 0%, #3a3a3a 30%, #e6e6e6 50%, #1a1a1a 70%, #888888 100%);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -22,418 +22,376 @@
     body {
       background-color: var(--bg-dark);
       background-image: 
-        radial-gradient(circle at 50% 20%, rgba(255, 0, 60, 0.3) 0%, transparent 70%),
-        radial-gradient(circle at 80% 80%, rgba(0, 240, 255, 0.12) 0%, transparent 60%);
+        radial-gradient(circle at 50% 30%, rgba(120, 0, 30, 0.4) 0%, transparent 70%),
+        radial-gradient(circle at 50% 90%, rgba(0, 0, 0, 0.9) 0%, transparent 80%);
       font-family: 'Space Grotesk', sans-serif;
       color: #fff;
       min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 20px 12px;
-      overflow-x: hidden;
+      padding: 30px 15px;
     }
 
-    /* --- CONTENEDOR TICKET 3D --- */
-    .ticket-wrapper {
+    /* --- MARCO CONTENEDOR 3D --- */
+    .pass-container {
       position: relative;
       width: 100%;
-      max-width: 390px;
-      filter: drop-shadow(0 25px 50px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 30px rgba(255, 0, 60, 0.25));
+      max-width: 410px;
+      border-radius: 28px;
+      padding: 4px;
+      background: var(--metal-border);
+      box-shadow: 
+        0 35px 70px rgba(0,0,0,0.95),
+        0 0 40px rgba(255, 0, 60, 0.25),
+        inset 0 0 15px rgba(255, 255, 255, 0.3);
     }
 
-    /* Muescas laterales de boleto físico */
-    .notch {
-      position: absolute;
-      top: 67%;
-      width: 22px; height: 22px;
-      background-color: var(--bg-dark);
-      border-radius: 50%;
-      z-index: 20;
-      box-shadow: inset 0 0 8px #000;
-    }
-    .notch-left { left: -11px; border-right: 1px solid rgba(255, 255, 255, 0.2); }
-    .notch-right { right: -11px; border-left: 1px solid rgba(255, 255, 255, 0.2); }
-
-    /* Línea de prepuntorado / corte */
-    .cut-line {
-      position: absolute;
-      top: 67%; left: 22px; right: 22px;
-      border-top: 2px dashed rgba(255, 255, 255, 0.2);
-      transform: translateY(10px);
-      z-index: 15;
-    }
-
-    /* Cuerpo del Ticket con Marco Biselado */
-    .ticket-card {
-      position: relative;
-      background: linear-gradient(145deg, #2b0008 0%, #0d0003 40%, #5e0013 70%, #1a0005 100%);
-      border-radius: 24px;
-      padding: 3px;
-      overflow: hidden;
-      box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.15);
-    }
-
-    /* Borde metálico exterior brillante */
-    .ticket-card::before {
+    /* Borde Trazado / Bisel Interno */
+    .pass-container::before {
       content: '';
       position: absolute;
-      inset: 0;
-      border-radius: 24px;
-      padding: 2px;
-      background: linear-gradient(135deg, rgba(255,255,255,0.4), rgba(255,0,60,0.6), rgba(0,240,255,0.4), rgba(255,255,255,0.1));
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      pointer-events: none;
-      z-index: 12;
-    }
-
-    .inner-ticket {
-      position: relative;
-      background: 
-        radial-gradient(circle at 50% 0%, rgba(160, 0, 35, 0.85) 0%, rgba(10, 2, 5, 0.98) 80%),
-        repeating-linear-gradient(90deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 4px);
+      inset: 6px;
       border-radius: 22px;
-      padding: 26px 18px;
-      overflow: hidden;
-    }
-
-    /* Reflejo metálico fluido */
-    .shine-effect {
-      position: absolute;
-      inset: -100%;
-      background: linear-gradient(120deg, transparent 40%, rgba(255,255,255,0.12) 50%, transparent 60%);
-      transform: rotate(25deg);
-      animation: shineSweep 7s infinite ease-in-out;
+      border: 1px solid rgba(255, 255, 255, 0.2);
       pointer-events: none;
-      z-index: 5;
-    }
-
-    @keyframes shineSweep {
-      0% { transform: translateY(-100%) rotate(25deg); }
-      30%, 100% { transform: translateY(100%) rotate(25deg); }
-    }
-
-    /* --- CABECERA --- */
-    .header {
-      text-align: center;
-      margin-bottom: 20px;
-      position: relative;
       z-index: 10;
     }
 
-    .badge {
+    /* Interior Metalizado Rojo Cepillado */
+    .inner-pass {
+      position: relative;
+      background: 
+        radial-gradient(ellipse at 50% 40%, rgba(160, 0, 30, 0.95) 0%, rgba(60, 0, 10, 0.98) 60%, rgba(10, 1, 3, 0.99) 100%),
+        repeating-radial-gradient(circle at 50% 50%, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 3px);
+      border-radius: 24px;
+      padding: 24px 20px 18px;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    /* Ilustración de Bosque Oscuro Grabado */
+    .forest-relief {
+      position: absolute;
+      inset: 0;
+      opacity: 0.22;
+      pointer-events: none;
+      background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="300" viewBox="0 0 100 100"%3E%3Cpath d="M10 100 Q 25 50 20 0 M20 60 Q 40 40 50 0 M20 80 Q 50 60 80 100 M80 100 Q 70 40 90 0 M70 50 Q 50 30 40 0" stroke="%23ffffff" stroke-width="1.2" fill="none"/%3E%3C/svg%3E');
+      background-size: 200px;
+      filter: drop-shadow(2px 2px 2px #000);
+    }
+
+    /* Perforación Superior para Cordón */
+    .lanyard-hole {
+      width: 46px;
+      height: 10px;
+      background: #020203;
+      border: 2px solid #555;
+      border-radius: 20px;
+      margin: 0 auto 12px;
+      box-shadow: inset 0 2px 5px rgba(0,0,0,0.9), 0 1px 1px rgba(255,255,255,0.3);
+      position: relative;
+      z-index: 5;
+    }
+
+    /* Encabezado */
+    .title-main {
+      font-family: 'Cinzel', serif;
+      font-size: 1.6rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #fff;
+      text-shadow: 0 3px 8px rgba(0,0,0,0.9), 0 0 2px rgba(255,255,255,0.5);
+      line-height: 1.1;
+      position: relative;
+      z-index: 5;
+    }
+
+    .badge-verified {
       display: inline-flex;
       align-items: center;
       gap: 6px;
       background: rgba(0, 0, 0, 0.7);
-      border: 1px solid rgba(0, 240, 255, 0.5);
-      padding: 5px 14px;
+      border: 1px solid var(--neon-green);
+      padding: 3px 12px;
       border-radius: 50px;
       font-family: 'Orbitron', sans-serif;
-      font-size: 0.6rem;
-      letter-spacing: 2px;
-      color: var(--cyan-neon);
-      box-shadow: 0 0 12px rgba(0, 240, 255, 0.25);
-      margin-bottom: 10px;
+      font-size: 0.58rem;
+      color: var(--neon-green);
+      box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+      margin: 8px 0 16px;
       text-transform: uppercase;
-    }
-
-    .dot {
-      width: 6px; height: 6px;
-      background: var(--cyan-neon);
-      border-radius: 50%;
-      box-shadow: 0 0 8px var(--cyan-neon);
-      animation: blink 1.2s infinite alternate;
-    }
-
-    @keyframes blink { from { opacity: 0.3; } to { opacity: 1; } }
-
-    .title-main {
-      font-family: 'Cinzel', serif;
-      font-size: 1.75rem;
-      font-weight: 900;
-      letter-spacing: 3px;
-      line-height: 1.05;
-      text-transform: uppercase;
-      background: linear-gradient(180deg, #ffffff 20%, #ff8095 70%, #ff003c 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.9));
-    }
-
-    /* --- PANELS NEÓN NEGRO PROFUNDO --- */
-    .panel {
       position: relative;
-      background: rgba(8, 3, 6, 0.8);
-      border-radius: 16px;
-      padding: 14px 16px;
-      margin-bottom: 14px;
-      backdrop-filter: blur(12px);
-      box-shadow: inset 0 0 15px rgba(0,0,0,0.9), 0 8px 20px rgba(0,0,0,0.5);
-      z-index: 10;
+      z-index: 5;
     }
 
-    /* Bordes brillantes para alta visibilidad */
-    .panel::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: 16px;
-      padding: 1px;
-      background: linear-gradient(135deg, rgba(255,255,255,0.25), rgba(255,0,60,0.3) 50%, rgba(0,240,255,0.25));
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      pointer-events: none;
+    .check-icon {
+      width: 12px; height: 12px;
+      background: var(--neon-green);
+      border-radius: 50%;
+      display: flex; justify-content: center; align-items: center;
+      color: #000; font-weight: 900; font-size: 8px;
     }
 
-    /* USER HERO BLOCK */
-    .user-block {
+    /* --- BLOQUE HERO: CALAVERA & DATOS --- */
+    .hero-panel {
+      position: relative;
+      z-index: 5;
+      background: rgba(10, 5, 8, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 18px;
+      padding: 14px;
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 16px;
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.9), 0 8px 20px rgba(0,0,0,0.6);
+      margin-bottom: 14px;
     }
 
-    .medallion {
-      width: 72px; height: 72px;
-      min-width: 72px;
+    .skull-medallion {
+      width: 85px; height: 85px;
+      min-width: 85px;
       border-radius: 14px;
-      background: radial-gradient(circle at 50% 30%, #0c2b36 0%, #02070a 80%);
-      border: 1px solid var(--cyan-neon);
+      background: radial-gradient(circle, #082018 0%, #020805 80%);
+      border: 1px solid var(--neon-green);
       display: flex; justify-content: center; align-items: center;
-      box-shadow: 0 0 15px rgba(0, 240, 255, 0.3), inset 0 0 12px #000;
+      box-shadow: 0 0 15px rgba(0, 255, 136, 0.25), inset 0 0 10px #000;
       position: relative;
     }
 
-    .medallion svg {
-      width: 48px; height: 48px;
-      filter: drop-shadow(0 0 6px var(--cyan-neon));
+    .skull-svg {
+      width: 58px; height: 58px;
+      filter: drop-shadow(0 0 6px var(--neon-green));
     }
 
-    .user-info { flex: 1; overflow: hidden; }
+    .user-details {
+      text-align: left;
+      flex: 1;
+      overflow: hidden;
+    }
 
     .label {
       font-size: 0.58rem;
-      font-weight: 700;
       color: rgba(255, 255, 255, 0.5);
       text-transform: uppercase;
       letter-spacing: 1.5px;
+      font-weight: 700;
     }
 
     .val-name {
       font-size: 1.25rem;
-      font-weight: 800;
+      font-weight: 900;
       color: #fff;
       text-transform: uppercase;
       letter-spacing: 1px;
+      margin-bottom: 6px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      margin-top: 1px;
     }
 
     .val-code {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.85rem;
-      color: #ff8095;
-      letter-spacing: 1.5px;
-      margin-top: 3px;
-    }
-
-    /* QR CODE BLOCK */
-    .qr-block {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      margin-bottom: 28px; /* Espacio antes de la línea de corte */
-    }
-
-    .qr-box {
-      width: 78px; height: 78px;
-      min-width: 78px;
-      background: #fff;
-      padding: 5px;
-      border-radius: 10px;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.6);
-    }
-
-    .qr-box img { width: 100%; height: 100%; display: block; }
-
-    .scanner-laser {
-      position: absolute;
-      left: 0; top: 0;
-      width: 100%; height: 2px;
-      background: var(--cyan-neon);
-      box-shadow: 0 0 8px var(--cyan-neon);
-      animation: scanPass 2.2s ease-in-out infinite alternate;
-    }
-
-    @keyframes scanPass { 0% { top: 5%; } 100% { top: 90%; } }
-
-    .status-text {
-      color: #00ffaa;
       font-family: 'Orbitron', sans-serif;
-      font-size: 0.7rem;
+      font-size: 0.82rem;
+      color: rgba(255, 255, 255, 0.85);
       letter-spacing: 1px;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      margin-bottom: 3px;
-      text-shadow: 0 0 8px rgba(0, 255, 170, 0.4);
     }
 
-    .status-sub {
-      font-size: 0.62rem;
-      color: rgba(255, 255, 255, 0.55);
-      line-height: 1.3;
-    }
-
-    /* PANELES VIP (STUB INFERIOR) */
-    .vip-grid {
+    /* --- SECCIÓN QR & ZONAS VIP --- */
+    .middle-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-top: 12px;
-      margin-bottom: 16px;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 12px;
       position: relative;
-      z-index: 10;
+      z-index: 5;
+      margin-bottom: 14px;
     }
 
-    .vip-box {
-      background: linear-gradient(135deg, rgba(25, 18, 8, 0.8), rgba(8, 6, 3, 0.9));
-      border: 1px solid var(--gold-dark);
-      border-radius: 12px;
+    /* CÓDIGO QR ESTILIZADO VERDE */
+    .qr-card {
+      background: rgba(10, 5, 8, 0.85);
+      border: 1px solid rgba(0, 255, 136, 0.4);
+      border-radius: 16px;
+      padding: 10px;
+      box-shadow: inset 0 0 15px rgba(0,0,0,0.9), 0 0 10px rgba(0,255,136,0.15);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .qr-wrapper {
+      background: #000;
+      border: 1px solid var(--neon-green);
+      padding: 6px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+      width: 100%;
+      max-width: 110px;
+    }
+
+    .qr-wrapper img {
+      width: 100%; height: 100%; display: block;
+      filter: invert(100%) hue-rotate(90deg) brightness(1.2); /* Tono verde exacto */
+    }
+
+    .qr-label {
+      font-size: 0.52rem;
+      color: var(--neon-green);
+      letter-spacing: 1px;
+      margin-top: 6px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    /* PANELES VIP / MESA EMBOSS */
+    .vip-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .emboss-box {
+      background: linear-gradient(145deg, rgba(20, 15, 8, 0.9), rgba(5, 4, 2, 0.95));
+      border: 1px solid var(--gold-brass);
+      border-radius: 14px;
       padding: 10px 12px;
-      box-shadow: inset 0 1px 0 var(--gold-light), 0 4px 10px rgba(0,0,0,0.5);
+      text-align: left;
+      position: relative;
+      box-shadow: inset 0 1px 1px var(--gold-light), 0 5px 12px rgba(0,0,0,0.7);
     }
 
-    .vip-tag {
+    .gold-tag {
       font-family: 'Orbitron', sans-serif;
-      font-size: 0.55rem;
+      font-size: 0.58rem;
       color: var(--gold-light);
       text-transform: uppercase;
       letter-spacing: 1px;
+      font-weight: 700;
     }
 
-    .vip-val {
-      font-size: 1rem;
-      font-weight: 800;
+    .gold-val {
+      font-size: 1.05rem;
+      font-weight: 900;
       color: #fff;
       text-transform: uppercase;
       letter-spacing: 0.5px;
       margin-top: 2px;
     }
 
-    /* FOOTER */
-    .footer {
-      text-align: center;
+    .sub-tag {
+      font-size: 0.52rem;
+      color: rgba(255, 255, 255, 0.45);
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    /* --- FOOTER DE LA CREDENCIAL --- */
+    footer {
       position: relative;
-      z-index: 10;
+      z-index: 5;
+      background: rgba(0, 0, 0, 0.4);
+      border-top: 1px dashed rgba(255, 255, 255, 0.2);
+      padding-top: 10px;
+      margin-top: 4px;
     }
 
-    .event-info {
-      font-family: 'JetBrains Mono', monospace;
+    .event-meta {
+      font-family: 'Orbitron', sans-serif;
       font-size: 0.72rem;
-      font-weight: 700;
-      color: rgba(255, 255, 255, 0.9);
-      letter-spacing: 1px;
-      margin-bottom: 3px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: 1.5px;
+      margin-bottom: 2px;
     }
 
-    .event-notice {
+    .event-rules {
       font-size: 0.58rem;
-      color: rgba(255, 255, 255, 0.4);
+      color: rgba(255, 255, 255, 0.5);
       letter-spacing: 0.5px;
     }
   </style>
 </head>
 <body>
 
-  <div class="ticket-wrapper">
-    <!-- Muescas y línea de prepuntorado de boleto real -->
-    <div class="notch notch-left"></div>
-    <div class="notch notch-right"></div>
-    <div class="cut-line"></div>
+  <div class="pass-container">
+    <div class="inner-pass">
+      <div class="forest-relief"></div>
 
-    <div class="ticket-card">
-      <div class="inner-ticket">
-        <div class="shine-effect"></div>
+      <!-- Agujero de Cordón VIP -->
+      <div class="lanyard-hole"></div>
 
-        <!-- Header -->
-        <header class="header">
-          <div class="badge">
-            <span class="dot"></span> Official Pass
-          </div>
-          <h1 class="title-main">The Sinister<br>Forest</h1>
-        </header>
+      <!-- Título -->
+      <h1 class="title-main">The Sinister Forest</h1>
+      
+      <!-- Badge de Verificación -->
+      <div class="badge-verified">
+        <span class="check-icon">✓</span> Official Verified Pass
+      </div>
 
-        <!-- Datos Titular -->
-        <div class="panel user-block">
-          <div class="medallion">
-            <svg viewBox="0 0 100 100" fill="none">
-              <path d="M50 14 C30 14 18 28 18 48 C18 59 24 69 32 75 L32 86 L68 86 L68 75 C76 69 82 59 82 48 C82 28 70 14 50 14 Z" fill="#040b10" stroke="#00f0ff" stroke-width="2"/>
-              <circle cx="37" cy="46" r="8.5" fill="#00f0ff" fill-opacity="0.3" stroke="#00f0ff" stroke-width="1.5"/>
-              <circle cx="63" cy="46" r="8.5" fill="#00f0ff" fill-opacity="0.3" stroke="#00f0ff" stroke-width="1.5"/>
-              <circle cx="37" cy="46" r="2.5" fill="#ffffff"/>
-              <circle cx="63" cy="46" r="2.5" fill="#ffffff"/>
-              <path d="M50 56 L46 64 L54 64 Z" fill="#00f0ff"/>
-              <path d="M40 76 V 84 M47 76 V 84 M53 76 V 84 M60 76 V 84" stroke="#00f0ff" stroke-width="1.5" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <div class="user-info">
-            <div class="label">Titular del Pase</div>
-            <div class="val-name" id="display-name">JP</div>
-            <div class="label" style="margin-top: 5px;">Código Único</div>
-            <div class="val-code" id="display-code">TSF-448791</div>
-          </div>
+      <!-- Hero Section (Calavera + Usuario) -->
+      <div class="hero-panel">
+        <div class="skull-medallion">
+          <svg class="skull-svg" viewBox="0 0 100 100" fill="none">
+            <path d="M50 14 C30 14 18 28 18 48 C18 59 24 69 32 75 L32 86 L68 86 L68 75 C76 69 82 59 82 48 C82 28 70 14 50 14 Z" fill="#020805" stroke="#00ff88" stroke-width="2"/>
+            <circle cx="37" cy="46" r="8.5" fill="#00ff88" fill-opacity="0.25" stroke="#00ff88" stroke-width="1.5"/>
+            <circle cx="63" cy="46" r="8.5" fill="#00ff88" fill-opacity="0.25" stroke="#00ff88" stroke-width="1.5"/>
+            <circle cx="37" cy="46" r="2.5" fill="#ffffff"/>
+            <circle cx="63" cy="46" r="2.5" fill="#ffffff"/>
+            <path d="M50 56 L46 64 L54 64 Z" fill="#00ff88"/>
+            <path d="M40 76 V 84 M47 76 V 84 M53 76 V 84 M60 76 V 84" stroke="#00ff88" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
         </div>
 
-        <!-- QR Autenticación -->
-        <div class="panel qr-block">
-          <div class="qr-box">
-            <div class="scanner-laser"></div>
+        <div class="user-details">
+          <div class="label">Holder</div>
+          <div class="val-name" id="display-name">GUEST</div>
+          <div class="label">Pass Code</div>
+          <div class="val-code" id="display-code">TSF-000000</div>
+        </div>
+      </div>
+
+      <!-- Bloque QR + Zonas VIP -->
+      <div class="middle-grid">
+        <!-- Código QR Verde -->
+        <div class="qr-card">
+          <div class="qr-wrapper">
             <img id="qr-img" src="" alt="QR Pass" />
           </div>
-          <div>
-            <div class="status-text">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              Pase Auténtico
-            </div>
-            <div class="status-sub">Cifrado de extremo a extremo. Válido para 1 acceso individual.</div>
-          </div>
+          <div class="qr-label">TSF Access • Valid</div>
         </div>
 
-        <!-- Secciones VIP Doradas (Talón inferior) -->
-        <div class="vip-grid">
-          <div class="vip-box">
-            <div class="vip-tag">Zona VIP</div>
-            <div class="vip-val">El Abismo</div>
+        <!-- CajasVIP / Mesa -->
+        <div class="vip-stack">
+          <div class="emboss-box">
+            <div class="gold-tag">Zona VIP</div>
+            <div class="gold-val">El Abismo</div>
+            <div class="sub-tag">Acceso Exclusivo</div>
           </div>
-          <div class="vip-box">
-            <div class="vip-tag">Mesa Reservada</div>
-            <div class="vip-val">Z-13</div>
+
+          <div class="emboss-box">
+            <div class="gold-tag">Mesa</div>
+            <div class="gold-val">Z-13</div>
+            <div class="sub-tag">Mesa Reservada</div>
           </div>
         </div>
-
-        <!-- Footer -->
-        <footer class="footer">
-          <div class="event-info">11 AGO // 23:00H | RAW TECHNO</div>
-          <div class="event-notice">OBLIGATORIO PRESENTAR DNI EN PUERTA</div>
-        </footer>
-
       </div>
+
+      <!-- Pie de página -->
+      <footer>
+        <div class="event-meta">11 AGO // 23:00H | RAW TECHNO</div>
+        <div class="event-rules">Ticket Auténtico & Activo • Presentar DNI</div>
+      </footer>
+
     </div>
   </div>
 
   <script>
-    // Obtener parámetros de URL dinámicos
+    // Parámetros de la URL
     const urlParams = new URLSearchParams(window.location.search);
-    const nameParam = urlParams.get('name') || "JP";
-    const codeParam = urlParams.get('code') || "TSF-448791";
+    const nameParam = urlParams.get('name') || "GUEST";
+    const codeParam = urlParams.get('code') || "TSF-000000";
 
     const cleanName = decodeURIComponent(nameParam).toUpperCase();
     const cleanCode = decodeURIComponent(codeParam).toUpperCase();
@@ -441,9 +399,9 @@
     document.getElementById("display-name").innerText = cleanName;
     document.getElementById("display-code").innerText = cleanCode;
 
-    // Generar código QR dinámico
-    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=TSF:${cleanCode}:${cleanName}&color=040b10`;
-    document.getElementById("qr-img").src = qrUrl;
+    // QR dinámico
+    const qrApi = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=TSF-PASS:${cleanCode}:${cleanName}&color=000000&bgcolor=ffffff`;
+    document.getElementById("qr-img").src = qrApi;
   </script>
 </body>
 </html>
