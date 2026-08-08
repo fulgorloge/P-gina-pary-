@@ -43,7 +43,6 @@
       z-index: 1;
     }
 
-    /* Flash de impacto al rasgar */
     #flash-overlay {
       position: fixed;
       top: 0; left: 0; width: 100vw; height: 100vh;
@@ -88,7 +87,6 @@
       background: var(--gold-gradient);
       border-radius: 16px;
       position: relative;
-      transition: background 0.5s ease;
     }
 
     .ticket {
@@ -132,6 +130,7 @@
       100% { transform: scale(1.2); opacity: 1; }
     }
 
+    /* Muescas circulares laterales alineadas a la línea */
     .notch {
       position: absolute;
       width: 22px; height: 22px;
@@ -143,15 +142,43 @@
       transition: transform 0.5s ease, opacity 0.5s ease;
     }
 
-    .notch-left { left: -11px; bottom: 120px; }
-    .notch-right { right: -11px; bottom: 120px; }
+    /* Posición exacta de las muescas en móvil (coincide con la junta) */
+    .notch-left { left: -11px; top: calc(100% - 73px - 11px); }
+    .notch-right { right: -11px; top: calc(100% - 73px - 11px); }
 
-    /* LÍNEA INTERACTIVA DE CORTE */
+    /* SECCIONES DEL TICKET */
+    .main-section {
+      padding: 24px 18px 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      transition: transform 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.8s ease;
+      transform-origin: top center;
+    }
+
+    .stub-section {
+      height: 73px;
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: rgba(0, 0, 0, 0.4);
+      text-align: center;
+      position: relative;
+      transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1), opacity 1s ease, filter 1s ease;
+      transform-origin: bottom center;
+    }
+
+    /* LÍNEA INTERACTIVA DE CORTE UBICADA EXACTAMENTE EN LA JUNTA DE LAS DOS SECCIONES */
     .stub-border-interactive {
       position: absolute;
-      left: 14px; right: 14px; bottom: 131px;
+      left: 12px; right: 12px;
+      top: calc(100% - 73px - 14px);
       height: 28px;
-      transform: translateY(50%);
       z-index: 30;
       cursor: ns-resize;
       display: flex;
@@ -163,7 +190,7 @@
     .stub-border-line {
       width: 100%;
       height: 2px;
-      border-top: 2px dashed rgba(212, 175, 55, 0.8);
+      border-top: 2px dashed rgba(212, 175, 55, 0.85);
       position: relative;
     }
 
@@ -178,7 +205,6 @@
       transition: width 0.02s linear;
     }
 
-    /* Indicador Neón de Navaja */
     .blade-indicator {
       position: absolute;
       width: 20px; height: 20px;
@@ -195,42 +221,10 @@
       transform: translate(-50%, -50%) scale(1);
     }
 
-    /* SECCIONES Y FÍSICA DE CORTE */
-    .main-section {
-      padding: 24px 18px 28px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      position: relative;
-      transition: transform 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.8s ease;
-      transform-origin: top center;
-    }
+    /* ANIMACIONES DE TORSIÓN Y RASGADO */
+    .ticket.bending .main-section { transform: rotateX(10deg) translateY(-4px) scale(0.995); }
+    .ticket.bending .stub-section { transform: rotateX(-14deg) translateY(6px) scale(0.995); }
 
-    .stub-section {
-      padding: 20px 16px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      background: rgba(0, 0, 0, 0.4);
-      text-align: center;
-      position: relative;
-      transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1), opacity 1s ease, filter 1s ease;
-      transform-origin: bottom center;
-    }
-
-    /* Animación de Torsión durante el arrastre */
-    .ticket.bending .main-section {
-      transform: rotateX(10deg) translateY(-4px) scale(0.995);
-    }
-
-    .ticket.bending .stub-section {
-      transform: rotateX(-14deg) translateY(6px) scale(0.995);
-    }
-
-    /* ESTADO DESGARRADO REAL (CLIP-PATH EN ZIGZAG) */
     .ticket.torn .main-section {
       transform: translateY(-25px) translateZ(30px) rotate(-2deg);
       box-shadow: 0 25px 50px rgba(0, 0, 0, 0.95);
@@ -375,35 +369,14 @@
       letter-spacing: 1.2px;
     }
 
-    /* ESCRITORIO */
+    /* ADAPTACIÓN ESCRITORIO (DISEÑO HORIZONTAL) */
     @media (min-width: 580px) {
-      .stub-border-interactive {
-        left: auto; right: 145px; top: 14px; bottom: 14px;
-        width: 28px; height: auto;
-        transform: translateX(50%);
-        cursor: ew-resize;
-      }
-
-      .stub-border-line {
-        width: 2px; height: 100%;
-        border-top: none;
-        border-left: 2px dashed rgba(212, 175, 55, 0.8);
-      }
-
-      .cut-progress {
-        width: 6px; height: 0%;
-        left: -2px; top: 0;
-        background: linear-gradient(180deg, #ff003c 0%, #ff8000 50%, #fff3a8 100%);
-      }
-
       .ticket { flex-direction: row; }
       .main-section { flex: 1; padding: 20px; }
-      .badge { position: absolute; top: 12px; left: 15px; margin-bottom: 0; }
-      .main-header { margin-top: 10px; }
-      .date-info { width: auto; }
-
+      
       .stub-section {
         width: 155px;
+        height: auto;
         padding: 20px 10px;
         justify-content: space-between;
         border-left: 1px solid rgba(212, 175, 55, 0.2);
@@ -415,9 +388,34 @@
         font-size: 0.55rem;
       }
 
+      /* Alineación de la línea interactiva en la junta vertical de escritorio */
+      .stub-border-interactive {
+        left: auto;
+        right: calc(155px - 14px);
+        top: 12px; bottom: 12px;
+        width: 28px; height: auto;
+        cursor: ew-resize;
+      }
+
+      .stub-border-line {
+        width: 2px; height: 100%;
+        border-top: none;
+        border-left: 2px dashed rgba(212, 175, 55, 0.85);
+      }
+
+      .cut-progress {
+        width: 6px; height: 0%;
+        left: -2px; top: 0;
+        background: linear-gradient(180deg, #ff003c 0%, #ff8000 50%, #fff3a8 100%);
+      }
+
+      .badge { position: absolute; top: 12px; left: 15px; margin-bottom: 0; }
+      .main-header { margin-top: 10px; }
+      .date-info { width: auto; }
+
       .notch-left, .notch-right { display: none; }
-      .notch-top { display: block; right: 145px; top: -11px; }
-      .notch-bottom { display: block; right: 145px; bottom: -11px; }
+      .notch-top { display: block; right: calc(155px - 11px); top: -11px; }
+      .notch-bottom { display: block; right: calc(155px - 11px); bottom: -11px; top: auto; }
 
       .ticket.bending .main-section { transform: rotateY(-10deg) translateX(-4px); }
       .ticket.bending .stub-section { transform: rotateY(14deg) translateX(6px); }
@@ -461,7 +459,7 @@
       <div class="notch notch-left notch-top"></div>
       <div class="notch notch-right notch-bottom"></div>
 
-      <!-- Línea táctil de recorte -->
+      <!-- Línea táctil de recorte exactamente alineada -->
       <div class="stub-border-interactive" id="cut-line">
         <div class="blade-indicator" id="blade-indicator"></div>
         <div class="stub-border-line">
@@ -513,7 +511,7 @@
     document.getElementById("display-name").innerText = decodeURIComponent(rawName).toUpperCase();
     document.getElementById("display-code").innerText = decodeURIComponent(rawCode).toUpperCase();
 
-    // INTERACCIÓN Y FÍSICA DE CORTE
+    // LÓGICA DE CORTE SOBRE LA LÍNEA EXACTA
     const cutLine = document.getElementById('cut-line');
     const cutProgress = document.getElementById('cut-progress');
     const bladeIndicator = document.getElementById('blade-indicator');
@@ -525,7 +523,6 @@
     let isTorn = false;
     let lastProgress = 0;
 
-    // MOTOR DE AUDIO SINTÉTICO MULTICAPA
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     
     function playMicroScratchSound(pitch = 1) {
@@ -639,7 +636,6 @@
         lastProgress = pct;
       }
 
-      // CORTE COMPLETADO AL 88%
       if (pct >= 0.88) {
         isTorn = true;
         isCutting = false;
@@ -651,7 +647,6 @@
         instructionText.style.color = "#00ffaa";
         instructionText.style.animation = "none";
 
-        // Flash de pantalla
         flashOverlay.style.opacity = '1';
         setTimeout(() => flashOverlay.style.opacity = '0', 120);
 
@@ -661,7 +656,7 @@
       }
     }
 
-    // MOTOR DE PARTÍCULAS 2D (CHISPAS Y HUMO)
+    // CANVAS DE CHISPAS
     const canvas = document.getElementById('particles-canvas');
     const ctx = canvas.getContext('2d');
     let sparkParticles = [];
@@ -703,7 +698,6 @@
       }
     }
 
-    // Partículas de Fondo Estáticas
     const bgParticles = Array.from({ length: 25 }, () => ({
       x: Math.random() * window.innerWidth,
       y: Math.random() * window.innerHeight,
@@ -716,7 +710,6 @@
     function renderLoop() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Partículas de fondo
       bgParticles.forEach(p => {
         p.y -= p.speed;
         p.alpha += p.decay;
@@ -731,12 +724,11 @@
         ctx.fill();
       });
 
-      // Partículas de chispas de corte
       for (let i = sparkParticles.length - 1; i >= 0; i--) {
         const sp = sparkParticles[i];
         sp.x += sp.vx;
         sp.y += sp.vy;
-        sp.vy += 0.2; // Gravedad
+        sp.vy += 0.2;
         sp.alpha -= sp.decay;
 
         if (sp.alpha <= 0) {
