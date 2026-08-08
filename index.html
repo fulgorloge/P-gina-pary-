@@ -3,468 +3,277 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Sinister Forest // Spotify Vault</title>
-  
+  <title>The Sinister Forest // Underground Techno</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700;900&display=swap" rel="stylesheet">
-  
+
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body class="spotify-theme">
+<body>
 
+  <canvas id="particle-canvas"></canvas>
   <div class="grain"></div>
-  <div id="toast" class="toast">¡Media añadido a la playlist!</div>
+  <div id="toast" class="toast">¡Información copiada!</div>
 
-  <!-- Modal Multimedia + Interacciones Instagram -->
-  <div id="media-modal" class="media-modal" onclick="closeMediaModal(event)">
-    <span class="lightbox-close" onclick="closeMediaModal(event)">&times;</span>
-    <div class="media-modal-container" onclick="event.stopPropagation()">
-      <div id="modal-media-wrapper"></div>
-      <div class="modal-info-bar">
-        <div class="media-track-info">
-          <p id="modal-title" class="track-name">SINISTER_TRACK.mp4</p>
-          <p id="modal-uploader" class="track-artist">@USER</p>
-        </div>
-        <div class="modal-actions-wrapper">
-          <button id="modal-like-btn" class="like-btn" onclick="toggleModalLike()">
-            <span class="heart-icon">🤍</span>
-            <span id="modal-like-count">0</span>
-          </button>
-        </div>
+  <!-- Modal Ticket / Registro -->
+  <div id="ticket-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeModal()">&times;</span>
+      <p class="ticket-badge">ACCESS PASS // CONFIRMED</p>
+      <h3 class="ticket-name" id="modal-user-display">GUEST_RAVER</h3>
+      <p class="ticket-instruction">Ingresa tu alias para generar tu pase único:</p>
+      <input type="text" id="user-alias-input" class="ticket-input" placeholder="Tu Nombre / Alias" oninput="updateTicketAlias(this.value)" />
+      
+      <div class="qr-placeholder">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=SINISTER_FOREST_2026_ACCESS" alt="QR Access Code" id="ticket-qr" />
       </div>
-      <div class="modal-comments-section">
-        <div id="modal-comments-list" class="comments-list"></div>
-        <div class="comment-input-box">
-          <input type="text" id="modal-comment-input" class="comment-input" placeholder="Añade un comentario..." onkeypress="handleCommentKeyPress(event)" />
-          <button class="comment-send-btn" onclick="submitModalComment()">Publicar</button>
-        </div>
-      </div>
+      <p class="ticket-code" id="ticket-code-val">PASS-#8921-TSF</p>
     </div>
   </div>
 
-  <div class="spotify-app-layout">
-    <aside class="spotify-sidebar">
-      <div class="sidebar-logo">
-        <span class="brand-icon">⚡</span>
-        <span class="brand-name">SINISTER VAULT</span>
-      </div>
+  <div class="container">
 
-      <nav class="sidebar-nav">
-        <a href="index.html" class="nav-item">
-          <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-          <span>Inicio Evento</span>
-        </a>
-        <a href="#" class="nav-item active">
-          <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
-          <span>Galería & Clips</span>
-        </a>
-      </nav>
+    <!-- Header & Strobe Switch -->
+    <div class="header-top">
+      <span class="status-tag">
+        <span class="blink-dot"></span> EVENTO CLANDESTINO
+      </span>
+      <button class="strobe-btn" id="strobe-toggle" onclick="toggleStrobe()">STROBE OFF</button>
+    </div>
 
-      <div class="sidebar-divider"></div>
+    <!-- Título Glitch -->
+    <h1 class="glitch" data-text="THE SINISTER FOREST">THE SINISTER FOREST</h1>
+    <p class="subtitle">UNDERGROUND TECHNO EXPERIENCE</p>
 
-      <div class="sidebar-library">
-        <p class="library-title">TU BIBLIOTECA</p>
-        <div class="playlist-item active-playlist">
-          <div class="playlist-thumb">🔥</div>
-          <div class="playlist-info">
-            <p class="p-name">Main Stage Memories</p>
-            <p class="p-sub">Playlist Clandestina</p>
-          </div>
+    <!-- Ecualizador Animado -->
+    <div class="audio-visualizer">
+      <span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span>
+    </div>
+
+    <!-- Lineup Section -->
+    <section class="lineup-section">
+      <p class="lineup-title">HEADLINER & LINEUP</p>
+      <div class="dj-card headliner">
+        <span class="dj-tag">SPECIAL SET</span>
+        <h2 class="dj-name">DJ TUCNAK</h2>
+        <p class="dj-genre">RAW / PEAK TIME / HARD TECHNO</p>
+        <div class="dj-socials">
+          <a href="#" class="dj-link" target="_blank">INSTAGRAM</a>
         </div>
       </div>
-    </aside>
+    </section>
 
-    <main class="spotify-main-content">
-      <header class="spotify-topbar">
-        <a href="index.html" class="spotify-back-btn">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
-          <span>Volver al Evento</span>
-        </a>
-        <div class="spotify-user-pill">
-          <span class="user-badge-dot"></span>
-          <span id="header-user-name">GUEST_RAVER</span>
-        </div>
-      </header>
-
-      <section class="playlist-hero">
-        <div class="hero-cover">
-          <span class="hero-icon">🎬</span>
-        </div>
-        <div class="hero-details">
-          <span class="badge-public">PLAYLIST PÚBLICA DE LA NOCHE</span>
-          <h1 class="hero-title">THE SINISTER VAULT</h1>
-          <p class="hero-description">Archivo fotográfico y videoclips compartidos por la comunidad en vivo durante la noche de techno.</p>
-          <div class="hero-meta">
-            <span class="author-bold">DJ TUCNAK</span> • <span id="item-count-badge">2 archivos cargados</span>
-          </div>
-        </div>
-      </section>
-
-      <section class="playlist-actions">
-        <button class="big-play-btn" onclick="playAllMedia()" title="Reproducir todo">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="black"><path d="M8 5v14l11-7z"/></svg>
-        </button>
-
-        <div class="upload-trigger-btn" onclick="document.getElementById('file-input').click()">
-          <span class="plus-icon">+</span>
-          <span>SUBIR FOTOS O VIDEOS</span>
-          <input type="file" id="file-input" accept="image/*,video/*" multiple onchange="handleFiles(this.files)">
-        </div>
-      </section>
-
-      <div class="filter-pills">
-        <button class="pill active" onclick="filterMedia('all')">Todos los archivos</button>
-        <button class="pill" onclick="filterMedia('image')">📸 Fotos</button>
-        <button class="pill" onclick="filterMedia('video')">🎬 Videos Clips</button>
+    <!-- Bar de Capacidad -->
+    <div class="capacity-bar">
+      <div class="capacity-text">AFORO CONFIRMADO: <span id="capacity-count">82%</span></div>
+      <div class="progress-bg">
+        <div class="progress-fill" style="width: 82%;"></div>
       </div>
+    </div>
 
-      <section class="spotify-cards-grid" id="media-grid">
+    <!-- Spotify Preview Section -->
+    <section class="spotify-section">
+      <iframe src="https://open.spotify.com/embed/playlist/37i9dQZF1DX6J98pCioJ1e?utm_source=generator&theme=0" width="100%" height="80" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </section>
 
-        <!-- Elemento 1: Video -->
-        <div class="spotify-card media-element" data-id="item-1" data-type="video" data-src="https://www.w3schools.com/html/mov_bbb.mp4" data-title="Drop Principal Opening" data-uploader="@TUCNAK_RAW" data-likes="24" data-comments='[{"user":"@RAVER_99","text":"¡Ese drop estuvo brutal! 🔥"}]'>
-          <div class="card-cover">
-            <video src="https://www.w3schools.com/html/mov_bbb.mp4" muted loop preload="metadata"></video>
-            <span class="media-type-badge">VIDEO</span>
-            <div class="card-equalizer-bars"><span></span><span></span><span></span></div>
-            <button class="card-play-button" onclick="playMedia(event, this)">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="black"><path d="M8 5v14l11-7z"/></svg>
-            </button>
-          </div>
-          <div class="card-body">
-            <p class="card-title">Drop Principal Opening</p>
-            <p class="card-sub">@TUCNAK_RAW • 1.2k reproducciones</p>
-            <div class="card-actions-bar">
-              <button class="like-btn" onclick="toggleCardLike(event, this)">
-                <span class="heart-icon">🤍</span> <span class="like-count">24</span>
-              </button>
-              <button class="comment-toggle-btn" onclick="openMediaFromCard(event, this)">
-                💬 <span class="comment-count">1</span>
-              </button>
-            </div>
-          </div>
-        </div>
+    <!-- Cuenta Regresiva -->
+    <div class="countdown-grid">
+      <div class="time-box">
+        <span class="time-number" id="cd-days">00</span>
+        <span class="time-label">Días</span>
+      </div>
+      <div class="time-box">
+        <span class="time-number" id="cd-hours">00</span>
+        <span class="time-label">Horas</span>
+      </div>
+      <div class="time-box">
+        <span class="time-number" id="cd-minutes">00</span>
+        <span class="time-label">Min</span>
+      </div>
+      <div class="time-box">
+        <span class="time-number" id="cd-seconds">00</span>
+        <span class="time-label">Seg</span>
+      </div>
+    </div>
 
-        <!-- Elemento 2: Imagen -->
-        <div class="spotify-card media-element" data-id="item-2" data-type="image" data-src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=800" data-title="Luces & Estrobos Main Room" data-uploader="@TECHNO_GUEST" data-likes="42" data-comments='[]'>
-          <div class="card-cover">
-            <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=400" alt="Luces Room" />
-            <span class="media-type-badge">FOTO</span>
-            <div class="card-equalizer-bars"><span></span><span></span><span></span></div>
-            <button class="card-play-button" onclick="playMedia(event, this)">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="black"><path d="M8 5v14l11-7z"/></svg>
-            </button>
-          </div>
-          <div class="card-body">
-            <p class="card-title">Luces & Estrobos Main Room</p>
-            <p class="card-sub">@TECHNO_GUEST • 01:12 H</p>
-            <div class="card-actions-bar">
-              <button class="like-btn" onclick="toggleCardLike(event, this)">
-                <span class="heart-icon">🤍</span> <span class="like-count">42</span>
-              </button>
-              <button class="comment-toggle-btn" onclick="openMediaFromCard(event, this)">
-                💬 <span class="comment-count">0</span>
-              </button>
-            </div>
-          </div>
-        </div>
+    <!-- Botón Agendar a Calendario -->
+    <a href="#" class="calendar-btn" onclick="addToCalendar(event)">
+      📅 AGREGAR A MI CALENDARIO
+    </a>
 
-      </section>
-    </main>
+    <!-- Aportes & Nequi -->
+    <section class="contribution-section">
+      <p class="contribution-badge">COVER / COOPERACIÓN VOLUNTARIA</p>
+      <div class="amount-container">
+        <span class="currency">$</span>
+        <span class="amount">15.000</span>
+        <span class="unit">COP</span>
+      </div>
+      <p class="nequi-number">NEQUI / DAVIPLATA: <span id="nequi-val">300 000 0000</span></p>
+      <div class="btn-group">
+        <button class="contribution-btn" onclick="copyNequi()">COPIAR NÚMERO</button>
+        <button class="contribution-btn secondary" onclick="openNequiApp()">APORTAR AHORA</button>
+      </div>
+    </section>
+
+    <!-- Ubicación -->
+    <div class="location-box">
+      <p id="location-title">📍 UBICACIÓN REVELADA</p>
+      <p id="location-details">Parque Lineal La Frontera // Envigado, Antioquia</p>
+      <a href="https://maps.google.com" target="_blank" class="map-button" id="map-link">VER EN GOOGLE MAPS</a>
+    </div>
+
+    <!-- Acceso a la Galería Vault (Spotify Layout) -->
+    <a href="galeria.html" class="gallery-nav-btn">
+      <span>🎬</span> IR A LA GALERÍA & CLIPS DE LA NOCHE
+    </a>
+
+    <!-- Acciones Duales: RSVP + Ticket -->
+    <div class="action-dual-btn">
+      <button class="rsvp-btn" id="rsvp-trigger" onclick="toggleRSVP()">CONFIRMAR ASISTENCIA</button>
+      <button class="ticket-btn" onclick="openModal()">MI TICKET DIGITAL</button>
+    </div>
+
+    <!-- Botones Redes / Compartir -->
+    <div class="social-share">
+      <p class="share-title">DIFUNDIR EN EL UNDERGROUND</p>
+      <div class="social-btns">
+        <button class="s-btn wa" onclick="shareWhatsApp()">WhatsApp</button>
+        <button class="s-btn fb" onclick="shareFacebook()">Facebook</button>
+        <button class="s-btn copy" onclick="copyLink()">Copiar Link</button>
+      </div>
+    </div>
+
+    <footer>
+      <p>THE SINISTER FOREST © 2026</p>
+      <p>RIGHTS RESERVED // NO LIGHTS, NO PHONES, JUST MUSIC</p>
+    </footer>
+
   </div>
 
-  <audio id="global-player-audio" style="display:none;"></audio>
-
-  <footer class="spotify-bottom-player">
-    <div class="player-left">
-      <div class="player-thumb" id="player-thumb-bg">⚡</div>
-      <div class="player-track-details">
-        <p class="player-track-title" id="player-title">Selecciona un archivo</p>
-        <p class="player-track-artist" id="player-artist">The Sinister Vault</p>
-      </div>
-    </div>
-
-    <div class="player-center">
-      <div class="player-controls">
-        <button class="ctrl-btn" onclick="prevMedia()">⏮</button>
-        <button class="ctrl-btn main-play" id="main-play-toggle" onclick="togglePlayerPlay()">▶</button>
-        <button class="ctrl-btn" onclick="nextMedia()">⏭</button>
-      </div>
-      <div class="progress-bar-wrapper">
-        <span class="time-text" id="curr-time">0:00</span>
-        <div class="progress-bar" onclick="seekAudio(event)">
-          <div class="progress-fill" id="player-progress"></div>
-        </div>
-        <span class="time-text" id="total-time">0:00</span>
-      </div>
-    </div>
-
-    <div class="player-right">
-      <span class="volume-icon">🔊</span>
-      <div class="volume-bar"><div class="volume-fill"></div></div>
-    </div>
-  </footer>
-
-  <script src="script.js"></script>
+  <!-- Lógica Principal Index -->
   <script>
-    const mediaGrid = document.getElementById('media-grid');
-    const userAlias = localStorage.getItem('userName') || 'GUEST_RAVER';
-    const globalAudio = document.getElementById('global-player-audio');
-    let currentActiveCard = null;
+    // Particle Canvas Background
+    const canvas = document.getElementById('particle-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
 
-    document.getElementById('header-user-name').innerText = userAlias.toUpperCase();
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
 
-    globalAudio.addEventListener('timeupdate', () => {
-      if (!globalAudio.duration) return;
-      const progress = (globalAudio.currentTime / globalAudio.duration) * 100;
-      document.getElementById('player-progress').style.width = `${progress}%`;
-      document.getElementById('curr-time').innerText = formatTime(globalAudio.currentTime);
-      document.getElementById('total-time').innerText = formatTime(globalAudio.duration);
-    });
-
-    function formatTime(sec) {
-      const m = Math.floor(sec / 60);
-      const s = Math.floor(sec % 60);
-      return `${m}:${s < 10 ? '0' : ''}${s}`;
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2 + 0.5;
+        this.speedX = (Math.random() - 0.5) * 0.8;
+        this.speedY = (Math.random() - 0.5) * 0.8;
+        this.color = Math.random() > 0.5 ? '#ff003c' : '#ffffff';
+        this.opacity = Math.random() * 0.5 + 0.2;
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.x < 0) this.x = canvas.width;
+        if (this.x > canvas.width) this.x = 0;
+        if (this.y < 0) this.y = canvas.height;
+        if (this.y > canvas.height) this.y = 0;
+      }
+      draw() {
+        ctx.fillStyle = this.color;
+        ctx.globalAlpha = this.opacity;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
     }
 
-    function seekAudio(e) {
-      if (!globalAudio.duration) return;
-      const rect = e.currentTarget.getBoundingClientRect();
-      const pos = (e.clientX - rect.left) / rect.width;
-      globalAudio.currentTime = pos * globalAudio.duration;
+    for (let i = 0; i < 60; i++) particles.push(new Particle());
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => { p.update(); p.draw(); });
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+
+    // Toggle Estroboscopio
+    let strobeActive = false;
+    function toggleStrobe() {
+      strobeActive = !strobeActive;
+      document.body.classList.toggle('strobe-active', strobeActive);
+      const btn = document.getElementById('strobe-toggle');
+      btn.classList.toggle('active', strobeActive);
+      btn.innerText = strobeActive ? 'STROBE ON' : 'STROBE OFF';
     }
 
-    function toggleCardLike(e, btn) {
-      e.stopPropagation();
-      const card = btn.closest('.spotify-card');
-      let likes = parseInt(card.getAttribute('data-likes')) || 0;
-      const isLiked = btn.classList.contains('liked');
+    // Modal Pass / Ticket
+    function openModal() {
+      document.getElementById('ticket-modal').style.display = 'flex';
+    }
+    function closeModal() {
+      document.getElementById('ticket-modal').style.display = 'none';
+    }
 
-      if (isLiked) {
-        btn.classList.remove('liked');
-        btn.querySelector('.heart-icon').innerText = '🤍';
-        likes--;
+    function updateTicketAlias(val) {
+      const name = val.trim() || 'GUEST_RAVER';
+      document.getElementById('modal-user-display').innerText = name.toUpperCase();
+      localStorage.setItem('userName', name);
+      
+      const qrImg = document.getElementById('ticket-qr');
+      qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=SINISTER_PASS_${encodeURIComponent(name)}`;
+    }
+
+    // RSVP Toggle
+    let rsvpConfirmed = false;
+    function toggleRSVP() {
+      rsvpConfirmed = !rsvpConfirmed;
+      const btn = document.getElementById('rsvp-trigger');
+      if (rsvpConfirmed) {
+        btn.classList.add('confirmed');
+        btn.innerText = '✓ ASISTENCIA CONFIRMADA';
+        showToast('¡Asistencia confirmada!');
       } else {
-        btn.classList.add('liked');
-        btn.querySelector('.heart-icon').innerText = '❤️';
-        likes++;
-      }
-
-      card.setAttribute('data-likes', likes);
-      btn.querySelector('.like-count').innerText = likes;
-
-      if (currentActiveCard === card) syncModalLikeState(card);
-    }
-
-    function toggleModalLike() {
-      if (!currentActiveCard) return;
-      const cardLikeBtn = currentActiveCard.querySelector('.like-btn');
-      toggleCardLike(new Event('click'), cardLikeBtn);
-      syncModalLikeState(currentActiveCard);
-    }
-
-    function syncModalLikeState(card) {
-      const likes = card.getAttribute('data-likes');
-      const isLiked = card.querySelector('.like-btn').classList.contains('liked');
-      const modalBtn = document.getElementById('modal-like-btn');
-
-      document.getElementById('modal-like-count').innerText = likes;
-      if (isLiked) {
-        modalBtn.classList.add('liked');
-        modalBtn.querySelector('.heart-icon').innerText = '❤️';
-      } else {
-        modalBtn.classList.remove('liked');
-        modalBtn.querySelector('.heart-icon').innerText = '🤍';
+        btn.classList.remove('confirmed');
+        btn.innerText = 'CONFIRMAR ASISTENCIA';
       }
     }
 
-    function renderComments(card) {
-      const commentsJSON = card.getAttribute('data-comments') || '[]';
-      const comments = JSON.parse(commentsJSON);
-      const container = document.getElementById('modal-comments-list');
-      container.innerHTML = '';
-
-      if (comments.length === 0) {
-        container.innerHTML = '<p style="font-size: 0.68rem; color: #777;">No hay comentarios. Sé el primero en comentar.</p>';
-        return;
-      }
-
-      comments.forEach(c => {
-        const item = document.createElement('div');
-        item.className = 'comment-item';
-        item.innerHTML = `<span class="comment-user">${c.user}:</span><span>${c.text}</span>`;
-        container.appendChild(item);
-      });
-      container.scrollTop = container.scrollHeight;
+    // Nequi / Copiar
+    function copyNequi() {
+      const num = document.getElementById('nequi-val').innerText;
+      navigator.clipboard.writeText(num.replace(/\s+/g, ''));
+      showToast('Número Nequi copiado');
     }
 
-    function submitModalComment() {
-      if (!currentActiveCard) return;
-      const input = document.getElementById('modal-comment-input');
-      const text = input.value.trim();
-      if (!text) return;
-
-      const commentsJSON = currentActiveCard.getAttribute('data-comments') || '[]';
-      const comments = JSON.parse(commentsJSON);
-      comments.push({ user: `@${userAlias.toUpperCase()}`, text: text });
-
-      currentActiveCard.setAttribute('data-comments', JSON.stringify(comments));
-      currentActiveCard.querySelector('.comment-count').innerText = comments.length;
-
-      renderComments(currentActiveCard);
-      input.value = '';
+    function openNequiApp() {
+      window.location.href = 'nequi://';
+      setTimeout(() => {
+        showToast('Abriendo Nequi o copia el número');
+      }, 1000);
     }
 
-    function handleCommentKeyPress(e) {
-      if (e.key === 'Enter') submitModalComment();
+    // Compartir
+    function shareWhatsApp() {
+      const text = encodeURIComponent('🔥 Asiste a THE SINISTER FOREST - Underground Techno Experience. ¡Nos vemos en el rave!');
+      window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
     }
 
-    function openMediaFromCard(e, btn) {
-      e.stopPropagation();
-      const card = btn.closest('.spotify-card');
-      const playBtn = card.querySelector('.card-play-button');
-      playBtn.click();
+    function shareFacebook() {
+      const url = encodeURIComponent(window.location.href);
+      window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
     }
 
-    function playMedia(e, btn) {
-      e.stopPropagation();
-      if (currentActiveCard) currentActiveCard.classList.remove('playing');
-
-      const card = btn.closest('.spotify-card');
-      const src = card.getAttribute('data-src');
-      const title = card.getAttribute('data-title');
-      const uploader = card.getAttribute('data-uploader');
-      const type = card.getAttribute('data-type');
-
-      currentActiveCard = card;
-      currentActiveCard.classList.add('playing');
-
-      document.getElementById('player-title').innerText = title;
-      document.getElementById('player-artist').innerText = uploader;
-      document.getElementById('main-play-toggle').innerText = '⏸';
-
-      syncModalLikeState(card);
-      renderComments(card);
-
-      if (type === 'video') {
-        globalAudio.src = src;
-        globalAudio.play();
-        openVideoModal(src, uploader, title);
-      } else {
-        globalAudio.pause();
-        document.getElementById('player-progress').style.width = '100%';
-        openImageModal(src, uploader, title);
-      }
-    }
-
-    function openImageModal(url, user, title) {
-      document.getElementById('modal-media-wrapper').innerHTML = `<img src="${url}" class="modal-media-content" />`;
-      document.getElementById('modal-title').innerText = title;
-      document.getElementById('modal-uploader').innerText = user;
-      document.getElementById('media-modal').style.display = 'flex';
-    }
-
-    function openVideoModal(url, user, title) {
-      document.getElementById('modal-media-wrapper').innerHTML = `<video src="${url}" class="modal-media-content" controls autoplay></video>`;
-      document.getElementById('modal-title').innerText = title;
-      document.getElementById('modal-uploader').innerText = user;
-      document.getElementById('media-modal').style.display = 'flex';
-    }
-
-    function closeMediaModal(e) {
-      document.getElementById('modal-media-wrapper').innerHTML = '';
-      document.getElementById('media-modal').style.display = 'none';
-      if (globalAudio.paused) {
-        document.getElementById('main-play-toggle').innerText = '▶';
-        if (currentActiveCard) currentActiveCard.classList.remove('playing');
-      }
-    }
-
-    function handleFiles(files) {
-      Array.from(files).forEach(file => {
-        const isVideo = file.type.startsWith('video/');
-        const isImage = file.type.startsWith('image/');
-
-        if (!isVideo && !isImage) return;
-
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          const fileDataUrl = e.target.result;
-          const cardId = `item-${Date.now()}`;
-          const card = document.createElement('div');
-          card.className = 'spotify-card media-element';
-          card.setAttribute('data-id', cardId);
-          card.setAttribute('data-type', isVideo ? 'video' : 'image');
-          card.setAttribute('data-src', fileDataUrl);
-          card.setAttribute('data-title', file.name.substring(0, 18));
-          card.setAttribute('data-uploader', `@${userAlias.toUpperCase()}`);
-          card.setAttribute('data-likes', '0');
-          card.setAttribute('data-comments', '[]');
-
-          card.innerHTML = `
-            <div class="card-cover">
-              ${isVideo ? `<video src="${fileDataUrl}" muted loop preload="metadata"></video>` : `<img src="${fileDataUrl}" alt="Media" />`}
-              <span class="media-type-badge">${isVideo ? 'VIDEO' : 'FOTO'}</span>
-              <div class="card-equalizer-bars"><span></span><span></span><span></span></div>
-              <button class="card-play-button" onclick="playMedia(event, this)">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="black"><path d="M8 5v14l11-7z"/></svg>
-              </button>
-            </div>
-            <div class="card-body">
-              <p class="card-title">${file.name.substring(0, 18)}...</p>
-              <p class="card-sub">@${userAlias.toUpperCase()} • Ahora</p>
-              <div class="card-actions-bar">
-                <button class="like-btn" onclick="toggleCardLike(event, this)">
-                  <span class="heart-icon">🤍</span> <span class="like-count">0</span>
-                </button>
-                <button class="comment-toggle-btn" onclick="openMediaFromCard(event, this)">
-                  💬 <span class="comment-count">0</span>
-                </button>
-              </div>
-            </div>
-          `;
-
-          mediaGrid.prepend(card);
-          updateCount();
-          showToast('¡Archivo subido exitosamente!');
-        };
-        reader.readAsDataURL(file);
-      });
-    }
-
-    function togglePlayerPlay() {
-      const btn = document.getElementById('main-play-toggle');
-      if (globalAudio.src) {
-        if (globalAudio.paused) {
-          globalAudio.play();
-          btn.innerText = '⏸';
-        } else {
-          globalAudio.pause();
-          btn.innerText = '▶';
-        }
-      }
-    }
-
-    function filterMedia(type) {
-      document.querySelectorAll('.filter-pills .pill').forEach(btn => btn.classList.remove('active'));
-      event.target.classList.add('active');
-      document.querySelectorAll('.media-element').forEach(item => {
-        item.style.display = (type === 'all' || item.getAttribute('data-type') === type) ? 'flex' : 'none';
-      });
-    }
-
-    function updateCount() {
-      const count = document.querySelectorAll('.media-element').length;
-      document.getElementById('item-count-badge').innerText = `${count} archivos cargados`;
-    }
-
-    function playAllMedia() {
-      const firstCard = document.querySelector('.spotify-card');
-      if (firstCard) {
-        const playBtn = firstCard.querySelector('.card-play-button');
-        playBtn.click();
-      }
+    function copyLink() {
+      navigator.clipboard.writeText(window.location.href);
+      showToast('Enlace del evento copiado');
     }
 
     function showToast(msg) {
@@ -473,6 +282,28 @@
       toast.classList.add('show');
       setTimeout(() => toast.classList.remove('show'), 3000);
     }
+
+    function addToCalendar(e) {
+      e.preventDefault();
+      alert('Evento añadido a la agenda.');
+    }
+
+    // Temporizador regresivo de muestra
+    function startCountdown() {
+      const target = new Date().getTime() + (7 * 24 * 60 * 60 * 1000);
+      setInterval(() => {
+        const now = new Date().getTime();
+        const diff = target - now;
+
+        if (diff > 0) {
+          document.getElementById('cd-days').innerText = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0');
+          document.getElementById('cd-hours').innerText = String(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+          document.getElementById('cd-minutes').innerText = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+          document.getElementById('cd-seconds').innerText = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
+        }
+      }, 1000);
+    }
+    startCountdown();
   </script>
 </body>
 </html>
