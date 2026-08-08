@@ -73,7 +73,6 @@
       to { opacity: 1; transform: scale(1.02); }
     }
 
-    /* CONTENEDOR 3D FLIP */
     .ticket-wrapper {
       position: relative;
       z-index: 2;
@@ -102,7 +101,6 @@
       backface-visibility: hidden;
     }
 
-    /* REVERSO DEL TIQUETE */
     .ticket-back {
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -165,7 +163,6 @@
       color: var(--gold-light);
     }
 
-    /* BOTÓN FLIP PARA GIRAR */
     .flip-trigger-btn {
       position: absolute;
       top: 10px; right: 10px;
@@ -198,27 +195,26 @@
       overflow: hidden;
     }
 
-    .hologram-watermark {
+    .hologram-watermark-pattern {
       position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%) rotate(-15deg);
+      top: -50%; left: -50%; width: 200%; height: 200%;
+      transform: rotate(-25deg);
       font-family: var(--font-techno);
-      font-size: 2.2rem;
-      font-weight: 900;
-      letter-spacing: 6px;
-      text-transform: uppercase;
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 3px;
+      line-height: 1.8;
       pointer-events: none;
       z-index: 3;
-      white-space: nowrap;
-      opacity: 0.12;
+      opacity: 0.18;
+      word-break: break-all;
       background: linear-gradient(
         var(--holo-angle, 45deg),
-        #ff0055, #00ffff, #ffff00, #ff00ff, #00ffaa
+        #ff007f 0%, #7f00ff 33%, #00f3ff 66%, #ff007f 100%
       );
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       mix-blend-mode: screen;
-      transition: transform 0.1s ease-out;
     }
 
     .ticket::before {
@@ -321,7 +317,7 @@
       box-shadow: 0 0 15px #ff003c, 0 0 25px #ff8000;
       width: 0%;
       border-radius: 4px;
-      transition: width 0.02s linear;
+      transition: width 0.1s ease-out, height 0.1s ease-out;
     }
 
     .blade-indicator {
@@ -581,7 +577,6 @@
     <div class="star-flare flare-4"></div>
 
     <div class="flip-card-inner">
-      <!-- FRENTE DEL TIQUETE -->
       <div class="ticket-frame" id="ticket-frame">
         <div class="notch notch-left notch-top"></div>
         <div class="notch notch-right notch-bottom"></div>
@@ -594,7 +589,9 @@
         </div>
 
         <div class="ticket" id="ticket">
-          <div class="hologram-watermark" id="watermark">VALIDATED VIP</div>
+          <div class="hologram-watermark-pattern" id="watermark">
+            VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP
+          </div>
 
           <div class="main-section">
             <div class="badge">
@@ -628,7 +625,6 @@
         </div>
       </div>
 
-      <!-- REVERSO DEL TIQUETE -->
       <div class="ticket-back">
         <div class="ticket-back-content">
           <div class="back-title">
@@ -677,12 +673,10 @@
     let isTorn = false;
     let lastProgress = 0;
 
-    // GIRO 3D FLIP
     flipBtn.addEventListener('click', () => {
       ticketWrapper.classList.toggle('flipped');
     });
 
-    // MARCA DE AGUA
     if (window.DeviceOrientationEvent) {
       window.addEventListener('deviceorientation', (e) => {
         const gamma = e.gamma || 0;
@@ -695,12 +689,12 @@
       watermark.style.setProperty('--holo-angle', `${(e.clientX / window.innerWidth) * 360}deg`);
     });
 
-    // AUDIO
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     
+    // SONIDO CONTINUO MIENTRAS DURA EL DESLIZAMIENTO
     function playMicroScratchSound(pitch = 1) {
       if (audioCtx.state === 'suspended') audioCtx.resume();
-      const bufferSize = audioCtx.sampleRate * 0.04;
+      const bufferSize = audioCtx.sampleRate * 0.05;
       const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
       const data = buffer.getChannelData(0);
       for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1) * Math.sin(i / 2);
@@ -709,13 +703,28 @@
       noise.buffer = buffer;
       const filter = audioCtx.createBiquadFilter();
       filter.type = 'bandpass';
-      filter.frequency.value = 1800 * pitch;
-      filter.Q.value = 4;
+      filter.frequency.value = 1600 * pitch;
+      filter.Q.value = 3.5;
       const gain = audioCtx.createGain();
-      gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.04);
+      gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
       noise.connect(filter); filter.connect(gain); gain.connect(audioCtx.destination);
       noise.start();
+    }
+
+    function playSnapBackSound() {
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(80, audioCtx.currentTime + 0.12);
+      gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.12);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.12);
     }
 
     function playImpactTearSound() {
@@ -753,6 +762,9 @@
 
     function handleEnd() {
       if (isTorn) return;
+      if (isCutting && lastProgress > 0.05) {
+        playSnapBackSound();
+      }
       isCutting = false;
       ticket.classList.remove('bending');
       cutLine.classList.remove('cutting');
@@ -783,9 +795,10 @@
       if (isHorizontal) cutProgress.style.height = (pct * 100) + '%';
       else cutProgress.style.width = (pct * 100) + '%';
 
-      if (Math.abs(pct - lastProgress) > 0.035) {
-        playMicroScratchSound(0.9 + pct * 0.5);
-        if (navigator.vibrate) navigator.vibrate(10);
+      // AUDIO EN TIEMPO REAL A CADA PASO DE AVANCE
+      if (Math.abs(pct - lastProgress) > 0.02) {
+        playMicroScratchSound(0.8 + pct * 0.7);
+        if (navigator.vibrate) navigator.vibrate(8);
         emitFrictionSparks(clientX, clientY);
         lastProgress = pct;
       }
