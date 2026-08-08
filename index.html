@@ -18,7 +18,7 @@
   <div id="toast" class="toast">¡Información copiada!</div>
 
   <!-- Modal Ticket / Registro -->
-  <div id="ticket-modal" class="modal">
+  <div id="ticket-modal" class="modal" onclick="if(event.target===this) closeModal()">
     <div class="modal-content">
       <span class="close-modal" onclick="closeModal()">&times;</span>
       <p class="ticket-badge">ACCESS PASS // CONFIRMED</p>
@@ -61,7 +61,7 @@
         <h2 class="dj-name">DJ TUCNAK</h2>
         <p class="dj-genre">RAW / PEAK TIME / HARD TECHNO</p>
         <div class="dj-socials">
-          <a href="#" class="dj-link" target="_blank">INSTAGRAM</a>
+          <a href="https://instagram.com" class="dj-link" target="_blank">INSTAGRAM</a>
         </div>
       </div>
     </section>
@@ -70,7 +70,7 @@
     <div class="capacity-bar">
       <div class="capacity-text">AFORO CONFIRMADO: <span id="capacity-count">82%</span></div>
       <div class="progress-bg">
-        <div class="progress-fill" style="width: 82%;"></div>
+        <div class="progress-fill" id="capacity-progress" style="width: 82%;"></div>
       </div>
     </div>
 
@@ -123,10 +123,10 @@
     <div class="location-box">
       <p id="location-title">📍 UBICACIÓN REVELADA</p>
       <p id="location-details">Parque Lineal La Frontera // Envigado, Antioquia</p>
-      <a href="https://maps.google.com" target="_blank" class="map-button" id="map-link">VER EN GOOGLE MAPS</a>
+      <a href="https://www.google.com/maps/search/?api=1&query=Parque+Lineal+La+Frontera+Envigado" target="_blank" class="map-button" id="map-link">VER EN GOOGLE MAPS</a>
     </div>
 
-    <!-- Acceso a la Galería Vault (Spotify Layout) -->
+    <!-- Acceso a la Galería Vault -->
     <a href="galeria.html" class="gallery-nav-btn">
       <span>🎬</span> IR A LA GALERÍA & CLIPS DE LA NOCHE
     </a>
@@ -154,8 +154,17 @@
 
   </div>
 
-  <!-- Lógica Principal Index -->
   <script>
+    // Iniciar datos guardados
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedUser = localStorage.getItem('userName');
+      if (savedUser) {
+        document.getElementById('modal-user-display').innerText = savedUser.toUpperCase();
+        document.getElementById('user-alias-input').value = savedUser;
+        document.getElementById('ticket-qr').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=SINISTER_PASS_${encodeURIComponent(savedUser)}`;
+      }
+    });
+
     // Particle Canvas Background
     const canvas = document.getElementById('particle-canvas');
     const ctx = canvas.getContext('2d');
@@ -236,13 +245,20 @@
     function toggleRSVP() {
       rsvpConfirmed = !rsvpConfirmed;
       const btn = document.getElementById('rsvp-trigger');
+      const capCount = document.getElementById('capacity-count');
+      const capBar = document.getElementById('capacity-progress');
+
       if (rsvpConfirmed) {
         btn.classList.add('confirmed');
         btn.innerText = '✓ ASISTENCIA CONFIRMADA';
+        capCount.innerText = '83%';
+        capBar.style.width = '83%';
         showToast('¡Asistencia confirmada!');
       } else {
         btn.classList.remove('confirmed');
         btn.innerText = 'CONFIRMAR ASISTENCIA';
+        capCount.innerText = '82%';
+        capBar.style.width = '82%';
       }
     }
 
@@ -288,7 +304,7 @@
       alert('Evento añadido a la agenda.');
     }
 
-    // Temporizador regresivo de muestra
+    // Temporizador regresivo
     function startCountdown() {
       const target = new Date().getTime() + (7 * 24 * 60 * 60 * 1000);
       setInterval(() => {
