@@ -43,6 +43,17 @@
       z-index: 1;
     }
 
+    /* Flash de impacto al rasgar */
+    #flash-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: radial-gradient(circle, rgba(255, 243, 168, 0.8) 0%, rgba(255, 0, 60, 0.4) 50%, transparent 100%);
+      pointer-events: none;
+      z-index: 99;
+      opacity: 0;
+      transition: opacity 0.1s ease-out;
+    }
+
     .instructions {
       position: relative;
       z-index: 10;
@@ -135,11 +146,11 @@
     .notch-left { left: -11px; bottom: 120px; }
     .notch-right { right: -11px; bottom: 120px; }
 
-    /* LÍNEA INTERACTIVA DE CORTE CON EFECTO NEÓN */
+    /* LÍNEA INTERACTIVA DE CORTE */
     .stub-border-interactive {
       position: absolute;
       left: 14px; right: 14px; bottom: 131px;
-      height: 24px;
+      height: 28px;
       transform: translateY(50%);
       z-index: 30;
       cursor: ns-resize;
@@ -154,39 +165,37 @@
       height: 2px;
       border-top: 2px dashed rgba(212, 175, 55, 0.8);
       position: relative;
-      transition: border-color 0.3s;
     }
 
     .cut-progress {
       position: absolute;
       left: 0; top: -2px;
-      height: 5px;
+      height: 6px;
       background: linear-gradient(90deg, #ff003c 0%, #ff8000 50%, #fff3a8 100%);
-      box-shadow: 0 0 12px #ff003c, 0 0 20px #ff8000;
+      box-shadow: 0 0 15px #ff003c, 0 0 25px #ff8000;
       width: 0%;
       border-radius: 4px;
-      transition: width 0.03s ease-out;
+      transition: width 0.02s linear;
     }
 
-    /* Puntero de la navaja táctil */
+    /* Indicador Neón de Navaja */
     .blade-indicator {
       position: absolute;
-      width: 16px; height: 16px;
+      width: 20px; height: 20px;
       background: #ffffff;
       border-radius: 50%;
-      box-shadow: 0 0 15px #ff003c, 0 0 25px #ffffff;
+      box-shadow: 0 0 15px #ff003c, 0 0 30px #ffffff, 0 0 45px #ff8000;
       transform: translate(-50%, -50%) scale(0);
       pointer-events: none;
       z-index: 40;
-      transition: transform 0.15s ease-out;
+      transition: transform 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
-    .stub-border-interactive:active .blade-indicator,
     .stub-border-interactive.cutting .blade-indicator {
       transform: translate(-50%, -50%) scale(1);
     }
 
-    /* SECCIONES Y FÍSICA DE RASGADO */
+    /* SECCIONES Y FÍSICA DE CORTE */
     .main-section {
       padding: 24px 18px 28px;
       display: flex;
@@ -194,7 +203,7 @@
       align-items: center;
       text-align: center;
       position: relative;
-      transition: transform 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.8s ease, filter 0.8s ease;
+      transition: transform 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.8s ease;
       transform-origin: top center;
     }
 
@@ -208,40 +217,42 @@
       background: rgba(0, 0, 0, 0.4);
       text-align: center;
       position: relative;
-      transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.9s ease, filter 0.9s ease;
+      transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1), opacity 1s ease, filter 1s ease;
       transform-origin: bottom center;
     }
 
     /* Animación de Torsión durante el arrastre */
     .ticket.bending .main-section {
-      transform: rotateX(8deg) translateY(-3px);
+      transform: rotateX(10deg) translateY(-4px) scale(0.995);
     }
 
     .ticket.bending .stub-section {
-      transform: rotateX(-12deg) translateY(5px);
+      transform: rotateX(-14deg) translateY(6px) scale(0.995);
     }
 
-    /* Animación de CORTE COMPLETADO (Cae el talón) */
+    /* ESTADO DESGARRADO REAL (CLIP-PATH EN ZIGZAG) */
     .ticket.torn .main-section {
-      transform: translateY(-25px) translateZ(20px) rotate(-2.5deg);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9);
+      transform: translateY(-25px) translateZ(30px) rotate(-2deg);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.95);
+      clip-path: polygon(
+        0% 0%, 100% 0%, 100% calc(100% - 6px),
+        95% 100%, 90% calc(100% - 6px), 85% 100%, 80% calc(100% - 6px), 75% 100%, 70% calc(100% - 6px),
+        65% 100%, 60% calc(100% - 6px), 55% 100%, 50% calc(100% - 6px), 45% 100%, 40% calc(100% - 6px),
+        35% 100%, 30% calc(100% - 6px), 25% 100%, 20% calc(100% - 6px), 15% 100%, 10% calc(100% - 6px),
+        5% 100%, 0% calc(100% - 6px)
+      );
     }
 
     .ticket.torn .stub-section {
-      transform: translateY(180px) rotate(18deg) translateZ(-50px);
+      transform: translateY(220px) rotate(25deg) translateZ(-80px);
       opacity: 0;
-      filter: blur(4px);
+      filter: blur(6px);
       pointer-events: none;
-    }
-
-    /* Borde dentado irregular de desgarro */
-    .ticket.torn .main-section::after {
-      content: '';
-      position: absolute;
-      bottom: -6px; left: 0; right: 0;
-      height: 6px;
-      background-image: repeating-linear-gradient(-45deg, transparent, transparent 4px, #120004 4px, #120004 8px);
-      z-index: 20;
+      clip-path: polygon(
+        0% 6px, 5% 0%, 10% 6px, 15% 0%, 20% 6px, 25% 0%, 30% 6px, 35% 0%, 40% 6px, 45% 0%, 50% 6px,
+        55% 0%, 60% 6px, 65% 0%, 70% 6px, 75% 0%, 80% 6px, 85% 0%, 90% 6px, 95% 0%, 100% 6px,
+        100% 100%, 0% 100%
+      );
     }
 
     .ticket.torn .stub-border-interactive,
@@ -368,7 +379,7 @@
     @media (min-width: 580px) {
       .stub-border-interactive {
         left: auto; right: 145px; top: 14px; bottom: 14px;
-        width: 24px; height: auto;
+        width: 28px; height: auto;
         transform: translateX(50%);
         cursor: ew-resize;
       }
@@ -380,7 +391,7 @@
       }
 
       .cut-progress {
-        width: 5px; height: 0%;
+        width: 6px; height: 0%;
         left: -2px; top: 0;
         background: linear-gradient(180deg, #ff003c 0%, #ff8000 50%, #fff3a8 100%);
       }
@@ -408,32 +419,34 @@
       .notch-top { display: block; right: 145px; top: -11px; }
       .notch-bottom { display: block; right: 145px; bottom: -11px; }
 
-      .ticket.bending .main-section {
-        transform: rotateY(-8deg) translateX(-3px);
-      }
-
-      .ticket.bending .stub-section {
-        transform: rotateY(12deg) translateX(5px);
-      }
+      .ticket.bending .main-section { transform: rotateY(-10deg) translateX(-4px); }
+      .ticket.bending .stub-section { transform: rotateY(14deg) translateX(6px); }
 
       .ticket.torn .main-section {
-        transform: translateX(-25px) translateZ(20px) rotate(-2.5deg);
+        transform: translateX(-25px) translateZ(30px) rotate(-2deg);
+        clip-path: polygon(
+          0% 0%, 100% 0%, calc(100% - 6px) 5%, 100% 10%, calc(100% - 6px) 15%, 100% 20%,
+          calc(100% - 6px) 25%, 100% 30%, calc(100% - 6px) 35%, 100% 40%, calc(100% - 6px) 45%,
+          100% 50%, calc(100% - 6px) 55%, 100% 60%, calc(100% - 6px) 65%, 100% 70%,
+          calc(100% - 6px) 75%, 100% 80%, calc(100% - 6px) 85%, 100% 90%, calc(100% - 6px) 95%,
+          100% 100%, 0% 100%
+        );
       }
 
       .ticket.torn .stub-section {
-        transform: translateX(180px) rotate(22deg) translateZ(-50px);
-      }
-
-      .ticket.torn .main-section::after {
-        top: 0; bottom: 0; right: -6px; left: auto;
-        width: 6px; height: auto;
-        background-image: repeating-linear-gradient(45deg, transparent, transparent 4px, #120004 4px, #120004 8px);
+        transform: translateX(220px) rotate(25deg) translateZ(-80px);
+        clip-path: polygon(
+          6px 0%, 0% 5%, 6px 10%, 0% 15%, 6px 20%, 0% 25%, 6px 30%, 0% 35%, 6px 40%,
+          0% 45%, 6px 50%, 0% 55%, 6px 60%, 0% 65%, 6px 70%, 0% 75%, 6px 80%,
+          0% 85%, 6px 90%, 0% 95%, 6px 100%, 100% 100%, 100% 0%
+        );
       }
     }
   </style>
 </head>
 <body>
 
+  <div id="flash-overlay"></div>
   <canvas id="particles-canvas"></canvas>
 
   <div class="instructions" id="instruction-text">✂️ DESLIZA SOBRE LA LÍNEA PARA CORTAR EL TIQUETE ✂️</div>
@@ -500,30 +513,29 @@
     document.getElementById("display-name").innerText = decodeURIComponent(rawName).toUpperCase();
     document.getElementById("display-code").innerText = decodeURIComponent(rawCode).toUpperCase();
 
-    // INTERACCIÓN DE CORTE AVANZADA
+    // INTERACCIÓN Y FÍSICA DE CORTE
     const cutLine = document.getElementById('cut-line');
     const cutProgress = document.getElementById('cut-progress');
     const bladeIndicator = document.getElementById('blade-indicator');
     const ticket = document.getElementById('ticket');
-    const ticketFrame = document.getElementById('ticket-frame');
     const instructionText = document.getElementById('instruction-text');
+    const flashOverlay = document.getElementById('flash-overlay');
 
     let isCutting = false;
     let isTorn = false;
     let lastProgress = 0;
 
-    // AUDIO CON SÍNTESIS DE CRU
+    // MOTOR DE AUDIO SINTÉTICO MULTICAPA
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     
-    function playRipSound(pitch = 1) {
+    function playMicroScratchSound(pitch = 1) {
       if (audioCtx.state === 'suspended') audioCtx.resume();
       
-      const bufferSize = audioCtx.sampleRate * 0.05; // micro-sonido continuo
+      const bufferSize = audioCtx.sampleRate * 0.04;
       const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
       const data = buffer.getChannelData(0);
-      
       for (let i = 0; i < bufferSize; i++) {
-        data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / bufferSize, 2);
+        data[i] = (Math.random() * 2 - 1) * Math.sin(i / 2);
       }
       
       const noise = audioCtx.createBufferSource();
@@ -531,12 +543,12 @@
       
       const filter = audioCtx.createBiquadFilter();
       filter.type = 'bandpass';
-      filter.frequency.value = 1200 * pitch + (Math.random() * 400 - 200);
-      filter.Q.value = 3;
+      filter.frequency.value = 1800 * pitch + (Math.random() * 300 - 150);
+      filter.Q.value = 4;
 
       const gain = audioCtx.createGain();
-      gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+      gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.04);
 
       noise.connect(filter);
       filter.connect(gain);
@@ -544,14 +556,14 @@
       noise.start();
     }
 
-    function playFinalTearSound() {
+    function playImpactTearSound() {
       if (audioCtx.state === 'suspended') audioCtx.resume();
       
-      const bufferSize = audioCtx.sampleRate * 0.4;
+      const bufferSize = audioCtx.sampleRate * 0.5;
       const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
       const data = buffer.getChannelData(0);
       for (let i = 0; i < bufferSize; i++) {
-        data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.3));
+        data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.25));
       }
       
       const noise = audioCtx.createBufferSource();
@@ -559,12 +571,12 @@
       
       const filter = audioCtx.createBiquadFilter();
       filter.type = 'lowpass';
-      filter.frequency.setValueAtTime(2500, audioCtx.currentTime);
-      filter.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 0.4);
+      filter.frequency.setValueAtTime(3500, audioCtx.currentTime);
+      filter.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.5);
 
       const gain = audioCtx.createGain();
-      gain.gain.setValueAtTime(0.8, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+      gain.gain.setValueAtTime(0.9, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
 
       noise.connect(filter);
       filter.connect(gain);
@@ -620,15 +632,14 @@
         cutProgress.style.width = (pct * 100) + '%';
       }
 
-      // Generar sonidos y vibración progresivos al avanzar
-      if (Math.abs(pct - lastProgress) > 0.04) {
-        playRipSound(0.8 + pct * 0.6);
-        if (navigator.vibrate) navigator.vibrate(12);
-        createSpark(clientX, clientY);
+      if (Math.abs(pct - lastProgress) > 0.035) {
+        playMicroScratchSound(0.9 + pct * 0.5);
+        if (navigator.vibrate) navigator.vibrate(10);
+        emitFrictionSparks(clientX, clientY);
         lastProgress = pct;
       }
 
-      // CORTE COMPLETADO AL LLEGAR AL 88%
+      // CORTE COMPLETADO AL 88%
       if (pct >= 0.88) {
         isTorn = true;
         isCutting = false;
@@ -640,57 +651,20 @@
         instructionText.style.color = "#00ffaa";
         instructionText.style.animation = "none";
 
-        playFinalTearSound();
-        if (navigator.vibrate) navigator.vibrate([30, 50, 80]);
-        createBurstSparks(clientX, clientY);
+        // Flash de pantalla
+        flashOverlay.style.opacity = '1';
+        setTimeout(() => flashOverlay.style.opacity = '0', 120);
+
+        playImpactTearSound();
+        if (navigator.vibrate) navigator.vibrate([40, 60, 100]);
+        emitBurstSparks(clientX, clientY);
       }
     }
 
-    // EFECTOS VISUALES DE CHISPAS
-    function createSpark(x, y) {
-      const spark = document.createElement('div');
-      spark.style.position = 'fixed';
-      spark.style.left = x + 'px';
-      spark.style.top = y + 'px';
-      spark.style.width = (Math.random() * 4 + 2) + 'px';
-      spark.style.height = spark.style.width;
-      spark.style.background = '#fff3a8';
-      spark.style.borderRadius = '50%';
-      spark.style.boxShadow = '0 0 10px #ff003c, 0 0 18px #ff8000';
-      spark.style.pointerEvents = 'none';
-      spark.style.zIndex = '100';
-      
-      const vx = (Math.random() - 0.5) * 40;
-      const vy = (Math.random() - 0.5) * 40;
-      
-      document.body.appendChild(spark);
-
-      spark.animate([
-        { transform: 'translate(0, 0) scale(1)', opacity: 1 },
-        { transform: `translate(${vx}px, ${vy}px) scale(0)`, opacity: 0 }
-      ], {
-        duration: 350,
-        easing: 'cubic-bezier(0, .9, .57, 1)'
-      }).onfinish = () => spark.remove();
-    }
-
-    function createBurstSparks(x, y) {
-      for (let i = 0; i < 20; i++) {
-        setTimeout(() => createSpark(x, y), i * 12);
-      }
-    }
-
-    cutLine.addEventListener('mousedown', handleStart);
-    window.addEventListener('mousemove', handleMove);
-    window.addEventListener('mouseup', handleEnd);
-
-    cutLine.addEventListener('touchstart', handleStart, { passive: true });
-    window.addEventListener('touchmove', handleMove, { passive: true });
-    window.addEventListener('touchend', handleEnd);
-
-    // CANVAS DE PARTÍCULAS
+    // MOTOR DE PARTÍCULAS 2D (CHISPAS Y HUMO)
     const canvas = document.getElementById('particles-canvas');
     const ctx = canvas.getContext('2d');
+    let sparkParticles = [];
 
     function resizeCanvas() {
       canvas.width = window.innerWidth;
@@ -699,27 +673,55 @@
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    const particles = Array.from({ length: 25 }, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
+    function emitFrictionSparks(x, y) {
+      for (let i = 0; i < 3; i++) {
+        sparkParticles.push({
+          x: x, y: y,
+          vx: (Math.random() - 0.5) * 5,
+          vy: (Math.random() - 0.5) * 5 - 2,
+          size: Math.random() * 2.5 + 1,
+          alpha: 1,
+          color: Math.random() > 0.3 ? '#fff3a8' : '#ff003c',
+          decay: Math.random() * 0.03 + 0.02
+        });
+      }
+    }
+
+    function emitBurstSparks(x, y) {
+      for (let i = 0; i < 40; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = Math.random() * 12 + 2;
+        sparkParticles.push({
+          x: x, y: y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          size: Math.random() * 3.5 + 1.5,
+          alpha: 1,
+          color: Math.random() > 0.4 ? '#fff3a8' : (Math.random() > 0.5 ? '#ff8000' : '#ff003c'),
+          decay: Math.random() * 0.02 + 0.01
+        });
+      }
+    }
+
+    // Partículas de Fondo Estáticas
+    const bgParticles = Array.from({ length: 25 }, () => ({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
       radius: Math.random() * 1.5 + 0.5,
       alpha: Math.random(),
       speed: Math.random() * 0.3 + 0.1,
       decay: Math.random() * 0.01 + 0.005
     }));
 
-    function animateParticles() {
+    function renderLoop() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      particles.forEach(p => {
+      // Partículas de fondo
+      bgParticles.forEach(p => {
         p.y -= p.speed;
         p.alpha += p.decay;
-
         if (p.alpha > 1 || p.alpha < 0) p.decay = -p.decay;
-        if (p.y < 0) {
-          p.y = canvas.height;
-          p.x = Math.random() * canvas.width;
-        }
+        if (p.y < 0) { p.y = canvas.height; p.x = Math.random() * canvas.width; }
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
@@ -729,9 +731,40 @@
         ctx.fill();
       });
 
-      requestAnimationFrame(animateParticles);
+      // Partículas de chispas de corte
+      for (let i = sparkParticles.length - 1; i >= 0; i--) {
+        const sp = sparkParticles[i];
+        sp.x += sp.vx;
+        sp.y += sp.vy;
+        sp.vy += 0.2; // Gravedad
+        sp.alpha -= sp.decay;
+
+        if (sp.alpha <= 0) {
+          sparkParticles.splice(i, 1);
+          continue;
+        }
+
+        ctx.beginPath();
+        ctx.arc(sp.x, sp.y, sp.size, 0, Math.PI * 2);
+        ctx.fillStyle = sp.color;
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = sp.color;
+        ctx.globalAlpha = Math.max(0, sp.alpha);
+        ctx.fill();
+        ctx.globalAlpha = 1.0;
+      }
+
+      requestAnimationFrame(renderLoop);
     }
-    animateParticles();
+    renderLoop();
+
+    cutLine.addEventListener('mousedown', handleStart);
+    window.addEventListener('mousemove', handleMove);
+    window.addEventListener('mouseup', handleEnd);
+
+    cutLine.addEventListener('touchstart', handleStart, { passive: true });
+    window.addEventListener('touchmove', handleMove, { passive: true });
+    window.addEventListener('touchend', handleEnd);
   </script>
 </body>
 </html>
