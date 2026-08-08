@@ -74,21 +74,18 @@
       </div>
     </div>
 
-    <!-- Reproductor Audio Nativo Personalizado -->
-    <div class="audio-player-box">
-      <div class="audio-info">
-        <div class="audio-text">
-          <p class="audio-tag">PREVIEW AUDIO</p>
-          <p class="audio-title">DJ TUCNAK - RAW SESSION</p>
-        </div>
-        <button class="play-btn-circle" id="home-play-btn" onclick="toggleHomeAudio()">▶</button>
-      </div>
-      <div class="audio-controls">
-        <div class="audio-progress-bar" onclick="seekHomeAudio(event)">
-          <div class="audio-progress-fill" id="home-audio-progress"></div>
-        </div>
-      </div>
-      <audio id="home-audio-element" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" preload="metadata"></audio>
+    <!-- Reproductor de Spotify Embed -->
+    <div class="spotify-embed-container">
+      <iframe 
+        style="border-radius:12px;" 
+        src="https://open.spotify.com/embed/track/1H5ol1dPZSqbalE0bl22VH?utm_source=generator&theme=0" 
+        width="100%" 
+        height="152" 
+        frameBorder="0" 
+        allowfullscreen="" 
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+        loading="lazy">
+      </iframe>
     </div>
 
     <!-- Cuenta Regresiva -->
@@ -116,7 +113,7 @@
       📅 AGREGAR A MI CALENDARIO
     </a>
 
-    <!-- Aportes & Nequi (Actualizado con 310 548 4102) -->
+    <!-- Aportes & Nequi -->
     <section class="contribution-section">
       <p class="contribution-badge">COVER / COOPERACIÓN VOLUNTARIA</p>
       <div class="amount-container">
@@ -131,7 +128,7 @@
       </div>
     </section>
 
-    <!-- Ubicación Secreta (Se oculta hasta que venza el tiempo el Lunes) -->
+    <!-- Ubicación Secreta -->
     <div class="location-box" id="location-box-container">
       <p id="location-title">🔒 UBICACIÓN SECRETA</p>
       <p id="location-details">REVELACIÓN AL FINALIZAR EL CONTEO // ATENTO A LAS REDES</p>
@@ -222,34 +219,6 @@
     }
     animateParticles();
 
-    // Reproductor Audio Nativo
-    const homeAudio = document.getElementById('home-audio-element');
-    if (homeAudio) {
-      homeAudio.addEventListener('timeupdate', () => {
-        if (!homeAudio.duration) return;
-        const pct = (homeAudio.currentTime / homeAudio.duration) * 100;
-        document.getElementById('home-audio-progress').style.width = `${pct}%`;
-      });
-    }
-
-    function toggleHomeAudio() {
-      const btn = document.getElementById('home-play-btn');
-      if (homeAudio.paused) {
-        homeAudio.play();
-        btn.innerText = '⏸';
-      } else {
-        homeAudio.pause();
-        btn.innerText = '▶';
-      }
-    }
-
-    function seekHomeAudio(e) {
-      if (!homeAudio.duration) return;
-      const rect = e.currentTarget.getBoundingClientRect();
-      const pos = (e.clientX - rect.left) / rect.width;
-      homeAudio.currentTime = pos * homeAudio.duration;
-    }
-
     let strobeActive = false;
     function toggleStrobe() {
       strobeActive = !strobeActive;
@@ -336,7 +305,6 @@
       alert('Evento añadido a la agenda.');
     }
 
-    // CUENTA REGRESIVA CON OBJETIVO LUNES 10 DE AGOSTO DE 2026, 23:59:59
     function startCountdown() {
       const targetDate = new Date('2026-08-10T23:59:59').getTime();
 
@@ -355,7 +323,6 @@
           document.getElementById('cd-minutes').innerText = '00';
           document.getElementById('cd-seconds').innerText = '00';
 
-          // REVELACIÓN DE MAPA Y DIRECCIÓN AL FINALIZAR EL TIEMPO
           const locBox = document.getElementById('location-box-container');
           locBox.innerHTML = `
             <p id="location-title" style="color:#00ff66;">📍 UBICACIÓN REVELADA</p>
