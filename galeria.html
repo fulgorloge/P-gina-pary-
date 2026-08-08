@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Sinister Forest // SPOTIFY MEDIA VAULT</title>
+  <title>The Sinister Forest // Spotify Vault</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,11 +13,11 @@
 </head>
 <body class="spotify-theme">
 
-  <!-- Overlay de Ruido -->
+  <!-- Grain Overlay & Toast -->
   <div class="grain"></div>
-  <div id="toast" class="toast">¡Archivo subido a la playlist!</div>
+  <div id="toast" class="toast">¡Media añadido a la playlist!</div>
 
-  <!-- Modal / Player Overlay de Vista Previa -->
+  <!-- Modal Ampliado de Reproducción -->
   <div id="media-modal" class="media-modal" onclick="closeMediaModal(event)">
     <span class="lightbox-close" onclick="closeMediaModal(event)">&times;</span>
     <div class="media-modal-container" onclick="event.stopPropagation()">
@@ -31,97 +31,181 @@
     </div>
   </div>
 
-  <main class="spotify-app">
-    <!-- Header tipo Spotify -->
-    <header class="spotify-header">
-      <a href="index.html" class="spotify-back-btn">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
-        <span>Volver al Evento</span>
-      </a>
-      <div class="spotify-profile-badge">
-        <span class="user-avatar">🟢</span>
-        <span id="header-user-name">GUEST_RAVER</span>
-      </div>
-    </header>
+  <!-- Layout Principal de Spotify App -->
+  <div class="spotify-app-layout">
 
-    <!-- Banner Playlist estilo Spotify -->
-    <section class="playlist-banner">
-      <div class="playlist-cover">
-        <div class="cover-glitch-icon">🔥</div>
+    <!-- Sidebar Izquierda -->
+    <aside class="spotify-sidebar">
+      <div class="sidebar-logo">
+        <span class="brand-icon">⚡</span>
+        <span class="brand-name">SINISTER VAULT</span>
       </div>
-      <div class="playlist-details">
-        <span class="playlist-type">PLAYLIST PÚBLICA DE LA NOCHE</span>
-        <h1 class="playlist-title">THE SINISTER VAULT</h1>
-        <p class="playlist-desc">Fotos y clips de video grabados en vivo por la comunidad technófila.</p>
-        <div class="playlist-meta">
-          <span class="spotify-accent-text">TUCNAK & Crowd</span> • <span id="item-count-badge">3 archivos</span>
+
+      <nav class="sidebar-nav">
+        <a href="index.html" class="nav-item">
+          <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+          <span>Inicio Evento</span>
+        </a>
+        <a href="#" class="nav-item active">
+          <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+          <span>Galería & Clips</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-divider"></div>
+
+      <div class="sidebar-library">
+        <p class="library-title">TU BIBLIOTECA</p>
+        <div class="playlist-item active-playlist">
+          <div class="playlist-thumb">🔥</div>
+          <div class="playlist-info">
+            <p class="p-name">Main Stage Memories</p>
+            <p class="p-sub">Playlist Clandestina</p>
+          </div>
         </div>
       </div>
-    </section>
+    </aside>
 
-    <!-- Zona de Carga estilo Spotify Drag & Drop -->
-    <section class="spotify-upload-bar" onclick="document.getElementById('file-input').click()">
-      <div class="upload-flex-content">
-        <div class="upload-plus-btn">+</div>
-        <div>
-          <p class="upload-title">AGREGAR FOTOS O VIDEOS A LA PLAYLIST</p>
-          <p class="upload-subtitle">Arrastra tus fotos (.png, .jpg) o clips de video (.mp4, .webm) aquí</p>
+    <!-- Área Principal de Contenido -->
+    <main class="spotify-main-content">
+      
+      <!-- Top Header -->
+      <header class="spotify-topbar">
+        <a href="index.html" class="spotify-back-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+          <span>Volver al Evento</span>
+        </a>
+        <div class="spotify-user-pill">
+          <span class="user-badge-dot"></span>
+          <span id="header-user-name">GUEST_RAVER</span>
         </div>
-      </div>
-      <input type="file" id="file-input" accept="image/*,video/*" multiple onchange="handleFiles(this.files)">
-    </section>
+      </header>
 
-    <!-- Barra de Filtros -->
-    <div class="filter-pills">
-      <button class="pill active" onclick="filterMedia('all')">Todos</button>
-      <button class="pill" onclick="filterMedia('image')">Fotos</button>
-      <button class="pill" onclick="filterMedia('video')">Videos 🎬</button>
+      <!-- Banner Hero Playlist -->
+      <section class="playlist-hero">
+        <div class="hero-cover">
+          <span class="hero-icon">🎬</span>
+        </div>
+        <div class="hero-details">
+          <span class="badge-public">PLAYLIST PÚBLICA DE LA NOCHE</span>
+          <h1 class="hero-title">THE SINISTER VAULT</h1>
+          <p class="hero-description">Archivo fotográfico y videoclips compartidos por la comunidad en vivo durante la noche de techno.</p>
+          <div class="hero-meta">
+            <span class="author-bold">DJ TUCNAK</span> • <span id="item-count-badge">3 archivos cargados</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Action Bar (Play + Add Media) -->
+      <section class="playlist-actions">
+        <button class="big-play-btn" onclick="playAllMedia()" title="Reproducir todo">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="black"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+
+        <div class="upload-trigger-btn" onclick="document.getElementById('file-input').click()">
+          <span class="plus-icon">+</span>
+          <span>SUBIR FOTOS O VIDEOS</span>
+          <input type="file" id="file-input" accept="image/*,video/*" multiple onchange="handleFiles(this.files)">
+        </div>
+      </section>
+
+      <!-- Filtros -->
+      <div class="filter-pills">
+        <button class="pill active" onclick="filterMedia('all')">Todos los archivos</button>
+        <button class="pill" onclick="filterMedia('image')">📸 Fotos</button>
+        <button class="pill" onclick="filterMedia('video')">🎬 Videos Clips</button>
+      </div>
+
+      <!-- Grid Multimedia estilo Tarjetas Spotify -->
+      <section class="spotify-cards-grid" id="media-grid">
+
+        <!-- Muestra 1: Video -->
+        <div class="spotify-card media-element" data-type="video" data-src="https://www.w3schools.com/html/mov_bbb.mp4" data-title="Drop Principal Opening" data-uploader="@TUCNAK_RAW">
+          <div class="card-cover">
+            <video src="https://www.w3schools.com/html/mov_bbb.mp4" muted loop preload="metadata"></video>
+            <span class="media-type-badge">VIDEO</span>
+            <button class="card-play-button" onclick="playMedia(event, this)">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="black"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </div>
+          <div class="card-body">
+            <p class="card-title">Drop Principal Opening</p>
+            <p class="card-sub">@TUCNAK_RAW • 1.2k reproducciones</p>
+          </div>
+        </div>
+
+        <!-- Muestra 2: Imagen -->
+        <div class="spotify-card media-element" data-type="image" data-src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=800" data-title="Luces & Estrobos Main Room" data-uploader="@TECHNO_GUEST">
+          <div class="card-cover">
+            <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=400" alt="Luces Room" />
+            <span class="media-type-badge">FOTO</span>
+            <button class="card-play-button" onclick="playMedia(event, this)">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="black"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </div>
+          <div class="card-body">
+            <p class="card-title">Luces & Estrobos Main Room</p>
+            <p class="card-sub">@TECHNO_GUEST • 01:12 H</p>
+          </div>
+        </div>
+
+        <!-- Muestra 3: Video -->
+        <div class="spotify-card media-element" data-type="video" data-src="https://www.w3schools.com/html/movie.mp4" data-title="Visuales Láser Forest" data-uploader="@CLANDESTINO_01">
+          <div class="card-cover">
+            <video src="https://www.w3schools.com/html/movie.mp4" muted loop preload="metadata"></video>
+            <span class="media-type-badge">VIDEO</span>
+            <button class="card-play-button" onclick="playMedia(event, this)">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="black"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </div>
+          <div class="card-body">
+            <p class="card-title">Visuales Láser Forest</p>
+            <p class="card-sub">@CLANDESTINO_01 • 890 reproducciones</p>
+          </div>
+        </div>
+
+      </section>
+    </main>
+  </div>
+
+  <!-- Reproductor Inferior Fijo de Spotify -->
+  <footer class="spotify-bottom-player">
+    <div class="player-left">
+      <div class="player-thumb" id="player-thumb-bg">🎵</div>
+      <div class="player-track-details">
+        <p class="player-track-title" id="player-title">Selecciona un archivo</p>
+        <p class="player-track-artist" id="player-artist">The Sinister Vault</p>
+      </div>
     </div>
 
-    <!-- Grid de Archivos tipo Tarjetas de Spotify -->
-    <section class="spotify-grid" id="media-grid">
-      
-      <!-- Video de Muestra -->
-      <div class="spotify-card media-element" data-type="video" onclick="openVideoModal('https://www.w3schools.com/html/mov_bbb.mp4', '@TUCNAK_RAW', 'Clip de apertura')">
-        <div class="card-cover-wrapper">
-          <video src="https://www.w3schools.com/html/mov_bbb.mp4" muted loop preload="metadata"></video>
-          <div class="type-tag">VIDEO</div>
-          <button class="spotify-play-btn">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="black"><path d="M8 5v14l11-7z"/></svg>
-          </button>
-        </div>
-        <div class="card-info">
-          <p class="card-title">Apertura de Set</p>
-          <p class="card-sub">@TUCNAK_RAW • 23:45 H</p>
-        </div>
+    <div class="player-center">
+      <div class="player-controls">
+        <button class="ctrl-btn" onclick="prevMedia()">⏮</button>
+        <button class="ctrl-btn main-play" id="main-play-toggle" onclick="togglePlayerPlay()">▶</button>
+        <button class="ctrl-btn" onclick="nextMedia()">⏭</button>
       </div>
-
-      <!-- Imagen de Muestra -->
-      <div class="spotify-card media-element" data-type="image" onclick="openImageModal('https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=800', '@TECHNO_GUEST', 'Visuales del Main Room')">
-        <div class="card-cover-wrapper">
-          <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=400" alt="Visuales" />
-          <div class="type-tag">FOTO</div>
-          <button class="spotify-play-btn">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="black"><path d="M8 5v14l11-7z"/></svg>
-          </button>
-        </div>
-        <div class="card-info">
-          <p class="card-title">Main Stage Lights</p>
-          <p class="card-sub">@TECHNO_GUEST • 01:12 H</p>
-        </div>
+      <div class="progress-bar-wrapper">
+        <span class="time-text" id="curr-time">0:00</span>
+        <div class="progress-bar"><div class="progress-fill" id="player-progress"></div></div>
+        <span class="time-text" id="total-time">0:30</span>
       </div>
+    </div>
 
-    </section>
-
-  </main>
+    <div class="player-right">
+      <span class="volume-icon">🔊</span>
+      <div class="volume-bar"><div class="volume-fill"></div></div>
+    </div>
+  </footer>
 
   <script src="script.js"></script>
   <script>
     const mediaGrid = document.getElementById('media-grid');
     const userAlias = localStorage.getItem('userName') || 'GUEST_RAVER';
+    let currentActiveCard = null;
 
     document.getElementById('header-user-name').innerText = userAlias.toUpperCase();
 
+    // Gestión de Archivos (Fotos y Videos)
     function handleFiles(files) {
       Array.from(files).forEach(file => {
         const isVideo = file.type.startsWith('video/');
@@ -138,33 +222,34 @@
           const card = document.createElement('div');
           card.className = 'spotify-card media-element';
           card.setAttribute('data-type', isVideo ? 'video' : 'image');
+          card.setAttribute('data-src', fileDataUrl);
+          card.setAttribute('data-title', file.name.substring(0, 20));
+          card.setAttribute('data-uploader', `@${userAlias.toUpperCase()}`);
 
           if (isVideo) {
-            card.onclick = () => openVideoModal(fileDataUrl, `@${userAlias.toUpperCase()}`, file.name);
             card.innerHTML = `
-              <div class="card-cover-wrapper">
+              <div class="card-cover">
                 <video src="${fileDataUrl}" muted loop preload="metadata"></video>
-                <div class="type-tag">VIDEO</div>
-                <button class="spotify-play-btn">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="black"><path d="M8 5v14l11-7z"/></svg>
+                <span class="media-type-badge">VIDEO</span>
+                <button class="card-play-button" onclick="playMedia(event, this)">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="black"><path d="M8 5v14l11-7z"/></svg>
                 </button>
               </div>
-              <div class="card-info">
+              <div class="card-body">
                 <p class="card-title">${file.name.substring(0, 18)}...</p>
                 <p class="card-sub">@${userAlias.toUpperCase()} • ${timeStr}</p>
               </div>
             `;
           } else {
-            card.onclick = () => openImageModal(fileDataUrl, `@${userAlias.toUpperCase()}`, file.name);
             card.innerHTML = `
-              <div class="card-cover-wrapper">
+              <div class="card-cover">
                 <img src="${fileDataUrl}" alt="Media" />
-                <div class="type-tag">FOTO</div>
-                <button class="spotify-play-btn">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="black"><path d="M8 5v14l11-7z"/></svg>
+                <span class="media-type-badge">FOTO</span>
+                <button class="card-play-button" onclick="playMedia(event, this)">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="black"><path d="M8 5v14l11-7z"/></svg>
                 </button>
               </div>
-              <div class="card-info">
+              <div class="card-body">
                 <p class="card-title">${file.name.substring(0, 18)}...</p>
                 <p class="card-sub">@${userAlias.toUpperCase()} • ${timeStr}</p>
               </div>
@@ -173,10 +258,34 @@
 
           mediaGrid.prepend(card);
           updateCount();
-          showToast('¡Archivo agregado a la playlist!');
+          showToast('¡Archivo subido a la biblioteca!');
         };
         reader.readAsDataURL(file);
       });
+    }
+
+    // Reproducción en Bottom Player y Modal
+    function playMedia(e, btn) {
+      e.stopPropagation();
+      const card = btn.closest('.spotify-card');
+      const src = card.getAttribute('data-src');
+      const title = card.getAttribute('data-title');
+      const uploader = card.getAttribute('data-uploader');
+      const type = card.getAttribute('data-type');
+
+      currentActiveCard = card;
+
+      // Actualizar Bottom Player
+      document.getElementById('player-title').innerText = title;
+      document.getElementById('player-artist').innerText = uploader;
+      document.getElementById('main-play-toggle').innerText = '⏸';
+      document.getElementById('player-progress').style.width = '45%';
+
+      if (type === 'video') {
+        openVideoModal(src, uploader, title);
+      } else {
+        openImageModal(src, uploader, title);
+      }
     }
 
     function openImageModal(url, user, title) {
@@ -200,6 +309,17 @@
       const wrapper = document.getElementById('modal-media-wrapper');
       wrapper.innerHTML = '';
       modal.style.display = 'none';
+      document.getElementById('main-play-toggle').innerText = '▶';
+    }
+
+    function togglePlayerPlay() {
+      const btn = document.getElementById('main-play-toggle');
+      if (btn.innerText === '▶') {
+        btn.innerText = '⏸';
+        showToast('Reproduciendo...');
+      } else {
+        btn.innerText = '▶';
+      }
     }
 
     function filterMedia(type) {
@@ -218,7 +338,15 @@
 
     function updateCount() {
       const count = document.querySelectorAll('.media-element').length;
-      document.getElementById('item-count-badge').innerText = `${count} archivos`;
+      document.getElementById('item-count-badge').innerText = `${count} archivos cargados`;
+    }
+
+    function playAllMedia() {
+      const firstCard = document.querySelector('.spotify-card');
+      if (firstCard) {
+        const playBtn = firstCard.querySelector('.card-play-button');
+        playBtn.click();
+      }
     }
   </script>
 </body>
