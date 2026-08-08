@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Sinister Forest // ARCHIVE & GALLERY</title>
+  <title>The Sinister Forest // SPOTIFY MEDIA VAULT</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,125 +11,214 @@
   
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
-
-  <!-- Canvas de Esporas Rojas (Fondo) -->
-  <canvas id="particle-canvas"></canvas>
+<body class="spotify-theme">
 
   <!-- Overlay de Ruido -->
   <div class="grain"></div>
+  <div id="toast" class="toast">¡Archivo subido a la playlist!</div>
 
-  <!-- Toast Notification -->
-  <div id="toast" class="toast">¡Foto subida a las sombras!</div>
-
-  <!-- Lightbox de Vista Previa -->
-  <div id="lightbox" class="lightbox" onclick="closeLightbox()">
-    <span class="lightbox-close">&times;</span>
-    <img id="lightbox-img" class="lightbox-content" src="" alt="Ampliada" />
+  <!-- Modal / Player Overlay de Vista Previa -->
+  <div id="media-modal" class="media-modal" onclick="closeMediaModal(event)">
+    <span class="lightbox-close" onclick="closeMediaModal(event)">&times;</span>
+    <div class="media-modal-container" onclick="event.stopPropagation()">
+      <div id="modal-media-wrapper"></div>
+      <div class="modal-info-bar">
+        <div class="media-track-info">
+          <p id="modal-title" class="track-name">SINISTER_TRACK.mp4</p>
+          <p id="modal-uploader" class="track-artist">@USER</p>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <main class="container gallery-container">
-    <header class="gallery-header">
-      <a href="index.html" class="back-btn">← VOLVER AL EVENTO</a>
-      <div class="status-tag"><span class="blink-dot"></span> ARCHIVO VIVO</div>
+  <main class="spotify-app">
+    <!-- Header tipo Spotify -->
+    <header class="spotify-header">
+      <a href="index.html" class="spotify-back-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+        <span>Volver al Evento</span>
+      </a>
+      <div class="spotify-profile-badge">
+        <span class="user-avatar">🟢</span>
+        <span id="header-user-name">GUEST_RAVER</span>
+      </div>
     </header>
 
-    <h1 class="glitch" data-text="THE SHADOW ARCHIVE">THE SHADOW ARCHIVE</h1>
-    <p class="subtitle" style="margin-bottom: 20px;">CAPTURAS Y MEMORIAS DEL RAVE</p>
-
-    <!-- Dropzone para subir fotos -->
-    <div class="upload-dropzone" id="dropzone" onclick="document.getElementById('file-input').click()">
-      <span class="upload-icon">📷</span>
-      <div class="upload-text">SUBIR TUS FOTOS DE LA NOCHE</div>
-      <div class="upload-subtext">Haz clic o arrastra tus imágenes aquí (PNG, JPG, WEBP)</div>
-      <input type="file" id="file-input" accept="image/*" multiple onchange="handleFiles(this.files)">
-    </div>
-
-    <!-- Grid de Fotografías -->
-    <section class="gallery-grid" id="gallery-grid">
-      <div class="gallery-item" onclick="openLightbox('https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=800')">
-        <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=400" alt="Rave Photo 1" />
-        <div class="gallery-overlay">
-          <span class="uploader-tag">@TUCNAK_RAW</span>
-          <span class="upload-time">23:45 H</span>
-        </div>
+    <!-- Banner Playlist estilo Spotify -->
+    <section class="playlist-banner">
+      <div class="playlist-cover">
+        <div class="cover-glitch-icon">🔥</div>
       </div>
-
-      <div class="gallery-item" onclick="openLightbox('https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?q=80&w=800')">
-        <img src="https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?q=80&w=400" alt="Rave Photo 2" />
-        <div class="gallery-overlay">
-          <span class="uploader-tag">@TECHNO_GUEST</span>
-          <span class="upload-time">01:12 H</span>
-        </div>
-      </div>
-
-      <div class="gallery-item" onclick="openLightbox('https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=800')">
-        <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=400" alt="Rave Photo 3" />
-        <div class="gallery-overlay">
-          <span class="uploader-tag">@CLANDESTINO_01</span>
-          <span class="upload-time">02:30 H</span>
+      <div class="playlist-details">
+        <span class="playlist-type">PLAYLIST PÚBLICA DE LA NOCHE</span>
+        <h1 class="playlist-title">THE SINISTER VAULT</h1>
+        <p class="playlist-desc">Fotos y clips de video grabados en vivo por la comunidad technófila.</p>
+        <div class="playlist-meta">
+          <span class="spotify-accent-text">TUCNAK & Crowd</span> • <span id="item-count-badge">3 archivos</span>
         </div>
       </div>
     </section>
+
+    <!-- Zona de Carga estilo Spotify Drag & Drop -->
+    <section class="spotify-upload-bar" onclick="document.getElementById('file-input').click()">
+      <div class="upload-flex-content">
+        <div class="upload-plus-btn">+</div>
+        <div>
+          <p class="upload-title">AGREGAR FOTOS O VIDEOS A LA PLAYLIST</p>
+          <p class="upload-subtitle">Arrastra tus fotos (.png, .jpg) o clips de video (.mp4, .webm) aquí</p>
+        </div>
+      </div>
+      <input type="file" id="file-input" accept="image/*,video/*" multiple onchange="handleFiles(this.files)">
+    </section>
+
+    <!-- Barra de Filtros -->
+    <div class="filter-pills">
+      <button class="pill active" onclick="filterMedia('all')">Todos</button>
+      <button class="pill" onclick="filterMedia('image')">Fotos</button>
+      <button class="pill" onclick="filterMedia('video')">Videos 🎬</button>
+    </div>
+
+    <!-- Grid de Archivos tipo Tarjetas de Spotify -->
+    <section class="spotify-grid" id="media-grid">
+      
+      <!-- Video de Muestra -->
+      <div class="spotify-card media-element" data-type="video" onclick="openVideoModal('https://www.w3schools.com/html/mov_bbb.mp4', '@TUCNAK_RAW', 'Clip de apertura')">
+        <div class="card-cover-wrapper">
+          <video src="https://www.w3schools.com/html/mov_bbb.mp4" muted loop preload="metadata"></video>
+          <div class="type-tag">VIDEO</div>
+          <button class="spotify-play-btn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="black"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+        </div>
+        <div class="card-info">
+          <p class="card-title">Apertura de Set</p>
+          <p class="card-sub">@TUCNAK_RAW • 23:45 H</p>
+        </div>
+      </div>
+
+      <!-- Imagen de Muestra -->
+      <div class="spotify-card media-element" data-type="image" onclick="openImageModal('https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=800', '@TECHNO_GUEST', 'Visuales del Main Room')">
+        <div class="card-cover-wrapper">
+          <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=400" alt="Visuales" />
+          <div class="type-tag">FOTO</div>
+          <button class="spotify-play-btn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="black"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+        </div>
+        <div class="card-info">
+          <p class="card-title">Main Stage Lights</p>
+          <p class="card-sub">@TECHNO_GUEST • 01:12 H</p>
+        </div>
+      </div>
+
+    </section>
+
   </main>
 
   <script src="script.js"></script>
   <script>
-    // Gestión de Subida de Fotos
-    const galleryGrid = document.getElementById('gallery-grid');
-    const dropzone = document.getElementById('dropzone');
+    const mediaGrid = document.getElementById('media-grid');
+    const userAlias = localStorage.getItem('userName') || 'GUEST_RAVER';
 
-    ['dragenter', 'dragover'].forEach(eventName => {
-      dropzone.addEventListener(eventName, (e) => { e.preventDefault(); dropzone.classList.add('dragover'); });
-    });
-    ['dragleave', 'drop'].forEach(eventName => {
-      dropzone.addEventListener(eventName, (e) => { e.preventDefault(); dropzone.classList.remove('dragover'); });
-    });
-
-    dropzone.addEventListener('drop', (e) => {
-      const dt = e.dataTransfer;
-      handleFiles(dt.files);
-    });
+    document.getElementById('header-user-name').innerText = userAlias.toUpperCase();
 
     function handleFiles(files) {
-      const userAlias = localStorage.getItem('userName') || 'ANÓNIMO';
-
       Array.from(files).forEach(file => {
-        if (!file.type.startsWith('image/')) return;
+        const isVideo = file.type.startsWith('video/');
+        const isImage = file.type.startsWith('image/');
+
+        if (!isVideo && !isImage) return;
 
         const reader = new FileReader();
         reader.onload = function(e) {
-          const imgUrl = e.target.result;
-          
-          const item = document.createElement('div');
-          item.className = 'gallery-item';
-          item.onclick = () => openLightbox(imgUrl);
-
+          const fileDataUrl = e.target.result;
           const now = new Date();
           const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')} H`;
 
-          item.innerHTML = `
-            <img src="${imgUrl}" alt="Foto subida" />
-            <div class="gallery-overlay">
-              <span class="uploader-tag">@${userAlias.toUpperCase()}</span>
-              <span class="upload-time">${timeStr}</span>
-            </div>
-          `;
+          const card = document.createElement('div');
+          card.className = 'spotify-card media-element';
+          card.setAttribute('data-type', isVideo ? 'video' : 'image');
 
-          galleryGrid.prepend(item);
-          showToast('¡Foto añadida al archivo!');
+          if (isVideo) {
+            card.onclick = () => openVideoModal(fileDataUrl, `@${userAlias.toUpperCase()}`, file.name);
+            card.innerHTML = `
+              <div class="card-cover-wrapper">
+                <video src="${fileDataUrl}" muted loop preload="metadata"></video>
+                <div class="type-tag">VIDEO</div>
+                <button class="spotify-play-btn">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="black"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+              </div>
+              <div class="card-info">
+                <p class="card-title">${file.name.substring(0, 18)}...</p>
+                <p class="card-sub">@${userAlias.toUpperCase()} • ${timeStr}</p>
+              </div>
+            `;
+          } else {
+            card.onclick = () => openImageModal(fileDataUrl, `@${userAlias.toUpperCase()}`, file.name);
+            card.innerHTML = `
+              <div class="card-cover-wrapper">
+                <img src="${fileDataUrl}" alt="Media" />
+                <div class="type-tag">FOTO</div>
+                <button class="spotify-play-btn">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="black"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+              </div>
+              <div class="card-info">
+                <p class="card-title">${file.name.substring(0, 18)}...</p>
+                <p class="card-sub">@${userAlias.toUpperCase()} • ${timeStr}</p>
+              </div>
+            `;
+          }
+
+          mediaGrid.prepend(card);
+          updateCount();
+          showToast('¡Archivo agregado a la playlist!');
         };
         reader.readAsDataURL(file);
       });
     }
 
-    function openLightbox(url) {
-      document.getElementById('lightbox-img').src = url;
-      document.getElementById('lightbox').style.display = 'flex';
+    function openImageModal(url, user, title) {
+      const wrapper = document.getElementById('modal-media-wrapper');
+      wrapper.innerHTML = `<img src="${url}" class="modal-media-content" />`;
+      document.getElementById('modal-title').innerText = title;
+      document.getElementById('modal-uploader').innerText = user;
+      document.getElementById('media-modal').style.display = 'flex';
     }
 
-    function closeLightbox() {
-      document.getElementById('lightbox').style.display = 'none';
+    function openVideoModal(url, user, title) {
+      const wrapper = document.getElementById('modal-media-wrapper');
+      wrapper.innerHTML = `<video src="${url}" class="modal-media-content" controls autoplay></video>`;
+      document.getElementById('modal-title').innerText = title;
+      document.getElementById('modal-uploader').innerText = user;
+      document.getElementById('media-modal').style.display = 'flex';
+    }
+
+    function closeMediaModal(e) {
+      const modal = document.getElementById('media-modal');
+      const wrapper = document.getElementById('modal-media-wrapper');
+      wrapper.innerHTML = '';
+      modal.style.display = 'none';
+    }
+
+    function filterMedia(type) {
+      document.querySelectorAll('.filter-pills .pill').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+
+      const items = document.querySelectorAll('.media-element');
+      items.forEach(item => {
+        if (type === 'all' || item.getAttribute('data-type') === type) {
+          item.style.display = 'flex';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+
+    function updateCount() {
+      const count = document.querySelectorAll('.media-element').length;
+      document.getElementById('item-count-badge').innerText = `${count} archivos`;
     }
   </script>
 </body>
