@@ -6,318 +6,356 @@
   <title>VIP Pass // The Sinister Forest</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700;900&family=UnifrakturMaguntina&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=UnifrakturMaguntina&family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <style>
     :root {
-      --bg-dark: #050307;
-      --red-primary: #ff003c;
-      --red-dark: #4a000e;
-      --red-glow: rgba(255, 0, 60, 0.4);
-      --gold-accent: #ffb703;
+      --bg-dark: #050203;
+      --gold-light: #ffe596;
+      --gold-mid: #d4af37;
+      --gold-dark: #8a6d1c;
+      --gold-gradient: linear-gradient(135deg, #bf953f 0%, #fcf6ba 25%, #b38728 50%, #fbf5b7 75%, #aa771c 100%);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    
+
     body {
       background-color: var(--bg-dark);
       background-image: 
-        radial-gradient(circle at 50% 30%, rgba(128, 0, 26, 0.35) 0%, transparent 70%),
-        radial-gradient(circle at 10% 90%, rgba(255, 0, 60, 0.15) 0%, transparent 50%);
-      font-family: 'Space Grotesk', sans-serif;
+        radial-gradient(circle at 50% 50%, #4a000e 0%, #0a0305 70%),
+        radial-gradient(circle at 20% 20%, rgba(255, 215, 0, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(255, 0, 60, 0.15) 0%, transparent 40%);
+      font-family: 'Montserrat', sans-serif;
       color: #fff;
       min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 24px 12px;
-    }
-
-    /* Contenedor principal estilo ticket físico */
-    .ticket-container {
-      position: relative;
-      width: 100%;
-      max-width: 380px;
-      filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 25px rgba(255, 0, 60, 0.25));
-    }
-
-    .metallic-ticket {
-      position: relative;
-      background: linear-gradient(145deg, #120004 0%, #3a000a 20%, #80001a 45%, #ff1e4b 55%, #4a000e 80%, #0a0002 100%);
-      background-size: 250% 250%;
-      animation: metallicShift 8s ease infinite;
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      border-radius: 24px;
-      padding: 32px 24px 24px;
-      text-align: center;
+      padding: 20px;
       overflow: hidden;
     }
 
-    /* Brillo diagonal estilo tarjeta VIP */
-    .metallic-ticket::before {
+    /* Contenedor principal */
+    .ticket-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 850px;
+      filter: drop-shadow(0 0 35px rgba(212, 175, 55, 0.3)) drop-shadow(0 20px 40px rgba(0, 0, 0, 0.9));
+    }
+
+    /* Ticket con borde dorado resplandeciente */
+    .ticket {
+      position: relative;
+      display: flex;
+      background: linear-gradient(145deg, #120004 0%, #2a000a 50%, #0d0003 100%);
+      border: 3px solid #d4af37;
+      border-image: var(--gold-gradient) 1;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.9), 0 0 20px rgba(212, 175, 55, 0.4);
+    }
+
+    /* Textura de fondo con grietas */
+    .ticket::before {
       content: '';
       position: absolute;
-      top: -100%;
-      left: -100%;
-      width: 300%;
-      height: 300%;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: radial-gradient(rgba(255, 0, 60, 0.2) 1px, transparent 0);
+      background-size: 16px 16px;
+      opacity: 0.35;
+      pointer-events: none;
+    }
+
+    /* EFECTO: Barrido Holográfico / Destello Diagonal */
+    .ticket::after {
+      content: '';
+      position: absolute;
+      top: -150%;
+      left: -150%;
+      width: 400%;
+      height: 400%;
       background: linear-gradient(
         45deg,
         transparent 45%,
-        rgba(255, 255, 255, 0.18) 48%,
-        rgba(255, 255, 255, 0.35) 50%,
-        rgba(255, 255, 255, 0.18) 52%,
+        rgba(255, 229, 150, 0.1) 48%,
+        rgba(255, 255, 255, 0.4) 50%,
+        rgba(255, 229, 150, 0.1) 52%,
         transparent 55%
       );
       transform: rotate(25deg);
       pointer-events: none;
-      animation: metallicShine 6s infinite ease-in-out;
+      animation: shineSweep 5s infinite ease-in-out;
     }
 
-    /* Muescas laterales estilo ticket */
+    @keyframes shineSweep {
+      0% { transform: translateY(-100%) rotate(25deg); }
+      30%, 100% { transform: translateY(100%) rotate(25deg); }
+    }
+
+    /* EFECTO: Destellos estelares (Glints/Flares) en esquinas */
+    .star-flare {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background: radial-gradient(circle, #ffffff 10%, rgba(255,229,150,0.8) 30%, transparent 70%);
+      clip-path: polygon(50% 0%, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0% 50%, 40% 40%);
+      z-index: 20;
+      pointer-events: none;
+      animation: flarePulse 2.5s infinite alternate ease-in-out;
+    }
+    .flare-1 { top: -10px; left: -10px; animation-delay: 0s; }
+    .flare-2 { top: -10px; right: -10px; animation-delay: 0.8s; }
+    .flare-3 { bottom: -10px; left: -10px; animation-delay: 1.2s; }
+    .flare-4 { bottom: -10px; right: -10px; animation-delay: 0.4s; }
+    .flare-notch { top: -10px; right: 218px; animation-delay: 1.6s; }
+
+    @keyframes flarePulse {
+      0% { transform: scale(0.6) rotate(0deg); opacity: 0.4; filter: drop-shadow(0 0 2px #fff); }
+      100% { transform: scale(1.3) rotate(90deg); opacity: 1; filter: drop-shadow(0 0 10px #ffe596); }
+    }
+
+    /* Muescas laterales */
     .notch {
       position: absolute;
-      top: 68%;
-      width: 24px;
-      height: 24px;
+      right: 220px;
+      width: 30px;
+      height: 30px;
       background-color: var(--bg-dark);
       border-radius: 50%;
       z-index: 10;
-      box-shadow: inset 0 0 8px rgba(0,0,0,0.8);
+      border: 2px solid #d4af37;
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.9);
     }
-    .notch-left { left: -12px; border-right: 1px solid rgba(255,255,255,0.2); }
-    .notch-right { right: -12px; border-left: 1px solid rgba(255,255,255,0.2); }
+    .notch-top { top: -17px; }
+    .notch-bottom { bottom: -17px; }
 
-    /* Línea de corte / separación */
-    .stub-divider {
+    .stub-border {
       position: absolute;
-      top: 68%;
-      left: 20px;
-      right: 20px;
-      border-top: 2px dashed rgba(255, 255, 255, 0.25);
-      transform: translateY(11px);
+      right: 234px;
+      top: 15px;
+      bottom: 15px;
+      border-left: 2px dashed rgba(212, 175, 55, 0.6);
       z-index: 5;
     }
 
-    @keyframes metallicShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    @keyframes metallicShine {
-      0% { transform: translateY(-100%) rotate(25deg); }
-      20% { transform: translateY(100%) rotate(25deg); }
-      100% { transform: translateY(100%) rotate(25deg); }
-    }
-
-    /* Badge superior */
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(0, 0, 0, 0.65);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      padding: 6px 14px;
-      border-radius: 50px;
-      font-size: 0.65rem;
-      letter-spacing: 2px;
-      font-weight: 700;
-      color: #fff;
-      text-transform: uppercase;
-      backdrop-filter: blur(8px);
-      margin-bottom: 16px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-    }
-    .badge-icon {
-      width: 6px;
-      height: 6px;
-      background: #ff003c;
-      border-radius: 50%;
-      box-shadow: 0 0 6px #ff003c;
-    }
-
-    /* Título con estilo gótico/industrial */
-    .event-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 900;
-      font-size: 1.6rem;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      line-height: 1.1;
-      background: linear-gradient(180deg, #ffffff 30%, #ffb3c1 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 4px 12px rgba(0,0,0,0.8);
-      margin-bottom: 4px;
-    }
-
-    .event-subtitle {
-      font-family: 'UnifrakturMaguntina', cursive;
-      font-size: 1.4rem;
-      color: rgba(255, 255, 255, 0.85);
-      margin-bottom: 20px;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.9);
-    }
-
-    /* Caja de información con Glassmorphism */
-    .ticket-info-box {
-      background: rgba(10, 5, 8, 0.65);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 16px;
-      padding: 18px 16px;
-      backdrop-filter: blur(12px);
-      margin-bottom: 35px; /* Espacio para no chocar con las muescas */
-      box-shadow: inset 0 1px 1px rgba(255,255,255,0.2), 0 8px 20px rgba(0,0,0,0.4);
-    }
-
-    .label {
-      font-size: 0.58rem;
-      color: rgba(255, 255, 255, 0.5);
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      font-weight: 700;
-      margin-bottom: 4px;
-    }
-
-    .user-name {
-      font-size: 1.4rem;
-      font-weight: 900;
-      color: #fff;
-      letter-spacing: 1px;
-      margin-bottom: 14px;
-      word-break: break-word;
-      text-transform: uppercase;
-    }
-
-    .ticket-code-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 8px;
-      background: rgba(255, 255, 255, 0.05);
-      padding: 6px 12px;
-      border-radius: 8px;
-      border: 1px stroke rgba(255, 255, 255, 0.1);
-    }
-
-    .ticket-code {
-      font-family: monospace;
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: #ff8095;
-      letter-spacing: 2px;
-    }
-
-    /* Sección inferior (Stub) */
-    .ticket-footer {
-      padding-top: 10px;
+    /* Sección Principal */
+    .main-section {
+      flex: 1;
+      padding: 30px 40px;
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      border-right: 1px solid rgba(212, 175, 55, 0.2);
     }
 
-    .status-valid {
-      display: inline-flex;
+    .badge {
+      position: absolute;
+      top: 20px;
+      left: 25px;
+      display: flex;
       align-items: center;
       gap: 6px;
-      color: #00ffaa;
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 1px;
-      background: rgba(0, 255, 170, 0.08);
-      border: 1px solid rgba(0, 255, 170, 0.25);
-      padding: 4px 12px;
+      border: 1px solid #d4af37;
+      padding: 4px 10px;
       border-radius: 20px;
-      margin-bottom: 14px;
+      font-size: 0.6rem;
+      letter-spacing: 2px;
+      color: var(--gold-light);
+      text-transform: uppercase;
+      background: rgba(0,0,0,0.6);
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
     }
-
-    .dot {
+    .badge-icon {
       width: 6px; height: 6px;
-      background: #00ffaa;
+      background: #ff003c;
       border-radius: 50%;
-      box-shadow: 0 0 8px #00ffaa;
-      animation: pulse 2s infinite;
+      box-shadow: 0 0 8px #ff003c;
     }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(0.8); }
+    .main-header {
+      font-family: 'Cinzel', serif;
+      font-size: 2.3rem;
+      font-weight: 900;
+      letter-spacing: 5px;
+      background: var(--gold-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-transform: uppercase;
+      text-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+      margin-top: 10px;
     }
 
-    /* Contenedor Código QR */
+    .event-title {
+      font-family: 'UnifrakturMaguntina', cursive;
+      font-size: 3rem;
+      color: #fff;
+      text-shadow: 0 0 15px rgba(255, 0, 60, 0.8), 0 0 30px rgba(255, 0, 60, 0.4);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .sub-header {
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      letter-spacing: 3px;
+      color: var(--gold-light);
+      text-transform: uppercase;
+      margin-bottom: 15px;
+    }
+
+    .date-info {
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: #fff;
+      margin-bottom: 20px;
+      border-top: 1px solid rgba(212, 175, 55, 0.4);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.4);
+      padding: 6px 20px;
+      background: rgba(212, 175, 55, 0.05);
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.1);
+    }
+
+    .meta-grid {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .meta-box {
+      border: 1px solid rgba(212, 175, 55, 0.5);
+      padding: 6px 16px;
+      border-radius: 4px;
+      background: rgba(0, 0, 0, 0.5);
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+    }
+
+    .meta-label {
+      font-size: 0.55rem;
+      color: var(--gold-light);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .meta-value {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 1px;
+    }
+
+    /* Talón Derecho */
+    .stub-section {
+      width: 230px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    .stub-vertical-text {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      font-family: 'Cinzel', serif;
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      color: var(--gold-light);
+      text-transform: uppercase;
+    }
+
+    .barcode-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
     .qr-wrapper {
       background: #fff;
-      padding: 8px;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-      margin-bottom: 12px;
-      display: inline-block;
+      padding: 6px;
+      border-radius: 6px;
+      border: 2px solid #d4af37;
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
     }
 
-    .qr-wrapper canvas, .qr-wrapper img {
-      display: block;
+    .qr-wrapper canvas, .qr-wrapper img { display: block; }
+
+    .stub-footer {
+      font-size: 0.6rem;
+      color: rgba(255, 255, 255, 0.6);
+      letter-spacing: 1px;
     }
 
-    .event-meta {
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      color: rgba(255, 255, 255, 0.9);
-      margin-bottom: 4px;
-    }
-
-    .event-notice {
-      font-size: 0.58rem;
-      color: rgba(255, 255, 255, 0.45);
-      letter-spacing: 0.5px;
+    @media (max-width: 768px) {
+      .ticket { flex-direction: column; }
+      .stub-section { width: 100%; border-top: 2px dashed #d4af37; }
+      .notch, .stub-border, .star-flare { display: none; }
     }
   </style>
 </head>
 <body>
 
-  <div class="ticket-container">
-    <div class="notch notch-left"></div>
-    <div class="notch notch-right"></div>
-    <div class="stub-divider"></div>
+  <div class="ticket-wrapper">
+    <!-- Destellos luminosos -->
+    <div class="star-flare flare-1"></div>
+    <div class="star-flare flare-2"></div>
+    <div class="star-flare flare-3"></div>
+    <div class="star-flare flare-4"></div>
+    <div class="star-flare flare-notch"></div>
 
-    <div class="metallic-ticket">
-      <!-- Encabezado -->
-      <div class="badge">
-        <span class="badge-icon"></span> Official Pass
-      </div>
-      
-      <h1 class="event-title">The Sinister</h1>
-      <div class="event-subtitle">Forest</div>
+    <div class="notch notch-top"></div>
+    <div class="notch notch-bottom"></div>
+    <div class="stub-border"></div>
 
-      <!-- Datos del Usuario -->
-      <div class="ticket-info-box">
-        <div class="label">Pass Holder</div>
-        <div class="user-name" id="display-name">GUEST</div>
+    <div class="ticket">
+      <!-- Sección Principal -->
+      <div class="main-section">
+        <div class="badge">
+          <span class="badge-icon"></span> Official Pass
+        </div>
 
-        <div class="label">Ticket Code</div>
-        <div class="ticket-code-container">
-          <span class="ticket-code" id="display-code">TSF-000000</span>
+        <div class="main-header">VIP Pass</div>
+        <div class="event-title">The Sinister Forest</div>
+        <div class="sub-header">Event Of The Year</div>
+
+        <div class="date-info">
+          11 AGO // 23:00H | RAW TECHNO
+        </div>
+
+        <div class="meta-grid">
+          <div class="meta-box">
+            <div class="meta-label">Pass Holder</div>
+            <div class="meta-value" id="display-name">GUEST</div>
+          </div>
+          <div class="meta-box">
+            <div class="meta-label">Ticket Code</div>
+            <div class="meta-value" id="display-code">TSF-000000</div>
+          </div>
         </div>
       </div>
 
-      <!-- Talón inferior (Stub) -->
-      <div class="ticket-footer">
-        <div class="status-valid">
-          <span class="dot"></span> VERIFIED ACCESS
+      <!-- Talón Lateral -->
+      <div class="stub-section">
+        <div class="stub-vertical-text">EVENT OF THE YEAR — 11 AGO</div>
+
+        <div class="barcode-container">
+          <div class="qr-wrapper" id="qrcode"></div>
         </div>
 
-        <!-- Generación de QR -->
-        <div class="qr-wrapper" id="qrcode"></div>
-
-        <div class="event-meta">11 AGO // 23:00H | RAW TECHNO</div>
-        <div class="event-notice">PRESENTAR DNI / CÉDULA OBLIGATORIO EN PUERTA</div>
+        <div class="stub-footer">ADMIT ONE // DNI REQUIRED</div>
       </div>
     </div>
   </div>
 
   <script>
-    // Obtener parámetros de la URL
     const urlParams = new URLSearchParams(window.location.search);
     const rawName = urlParams.get('name') || "GUEST";
     const rawCode = urlParams.get('code') || "TSF-000000";
@@ -325,16 +363,14 @@
     const cleanName = decodeURIComponent(rawName).toUpperCase();
     const cleanCode = decodeURIComponent(rawCode).toUpperCase();
 
-    // Insertar en HTML
     document.getElementById("display-name").innerText = cleanName;
     document.getElementById("display-code").innerText = cleanCode;
 
-    // Generar Código QR Dinámico
     const qrData = `EVENT:TheSinisterForest|PASS:${cleanCode}|HOLDER:${cleanName}`;
     new QRCode(document.getElementById("qrcode"), {
       text: qrData,
-      width: 80,
-      height: 80,
+      width: 75,
+      height: 75,
       colorDark : "#0a0002",
       colorLight : "#ffffff",
       correctLevel : QRCode.CorrectLevel.H
