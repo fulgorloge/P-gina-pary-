@@ -6,53 +6,97 @@
   <title>VIP Pass // The Sinister Forest</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700;900&family=UnifrakturMaguntina&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <style>
+    :root {
+      --bg-dark: #050307;
+      --red-primary: #ff003c;
+      --red-dark: #4a000e;
+      --red-glow: rgba(255, 0, 60, 0.4);
+      --gold-accent: #ffb703;
+    }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    
     body {
-      background-color: #020203;
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 50% 30%, rgba(128, 0, 26, 0.35) 0%, transparent 70%),
+        radial-gradient(circle at 10% 90%, rgba(255, 0, 60, 0.15) 0%, transparent 50%);
       font-family: 'Space Grotesk', sans-serif;
       color: #fff;
       min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 20px;
+      padding: 24px 12px;
     }
 
-    /* Tarjeta Rojo Metalizado */
-    .metallic-ticket {
-      width: 100%;
-      max-width: 360px;
-      background: linear-gradient(135deg, #4a000e 0%, #80001a 25%, #ff1e4b 50%, #80001a 75%, #330009 100%);
-      background-size: 200% 200%;
-      animation: metallicShift 6s ease infinite;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      border-radius: 20px;
-      padding: 28px 20px;
-      text-align: center;
+    /* Contenedor principal estilo ticket físico */
+    .ticket-container {
       position: relative;
-      box-shadow: 0 15px 35px rgba(255, 0, 60, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.3);
+      width: 100%;
+      max-width: 380px;
+      filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 25px rgba(255, 0, 60, 0.25));
+    }
+
+    .metallic-ticket {
+      position: relative;
+      background: linear-gradient(145deg, #120004 0%, #3a000a 20%, #80001a 45%, #ff1e4b 55%, #4a000e 80%, #0a0002 100%);
+      background-size: 250% 250%;
+      animation: metallicShift 8s ease infinite;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 24px;
+      padding: 32px 24px 24px;
+      text-align: center;
       overflow: hidden;
     }
 
-    /* Brillo de reflejo metálico */
+    /* Brillo diagonal estilo tarjeta VIP */
     .metallic-ticket::before {
       content: '';
       position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
+      top: -100%;
+      left: -100%;
+      width: 300%;
+      height: 300%;
       background: linear-gradient(
         45deg,
         transparent 45%,
-        rgba(255, 255, 255, 0.25) 50%,
+        rgba(255, 255, 255, 0.18) 48%,
+        rgba(255, 255, 255, 0.35) 50%,
+        rgba(255, 255, 255, 0.18) 52%,
         transparent 55%
       );
-      transform: rotate(30deg);
+      transform: rotate(25deg);
       pointer-events: none;
-      animation: metallicShine 4s infinite;
+      animation: metallicShine 6s infinite ease-in-out;
+    }
+
+    /* Muescas laterales estilo ticket */
+    .notch {
+      position: absolute;
+      top: 68%;
+      width: 24px;
+      height: 24px;
+      background-color: var(--bg-dark);
+      border-radius: 50%;
+      z-index: 10;
+      box-shadow: inset 0 0 8px rgba(0,0,0,0.8);
+    }
+    .notch-left { left: -12px; border-right: 1px solid rgba(255,255,255,0.2); }
+    .notch-right { right: -12px; border-left: 1px solid rgba(255,255,255,0.2); }
+
+    /* Línea de corte / separación */
+    .stub-divider {
+      position: absolute;
+      top: 68%;
+      left: 20px;
+      right: 20px;
+      border-top: 2px dashed rgba(255, 255, 255, 0.25);
+      transform: translateY(11px);
+      z-index: 5;
     }
 
     @keyframes metallicShift {
@@ -62,46 +106,78 @@
     }
 
     @keyframes metallicShine {
-      0% { transform: translateY(-100%) rotate(30deg); }
-      100% { transform: translateY(100%) rotate(30deg); }
+      0% { transform: translateY(-100%) rotate(25deg); }
+      20% { transform: translateY(100%) rotate(25deg); }
+      100% { transform: translateY(100%) rotate(25deg); }
     }
 
+    /* Badge superior */
     .badge {
-      display: inline-block;
-      background: rgba(0, 0, 0, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 0.6rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0, 0, 0, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 6px 14px;
+      border-radius: 50px;
+      font-size: 0.65rem;
       letter-spacing: 2px;
       font-weight: 700;
       color: #fff;
-      margin-bottom: 12px;
-    }
-
-    .event-title {
-      font-size: 1.4rem;
-      font-weight: 900;
-      letter-spacing: 2px;
       text-transform: uppercase;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-      margin-bottom: 20px;
+      backdrop-filter: blur(8px);
+      margin-bottom: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+    .badge-icon {
+      width: 6px;
+      height: 6px;
+      background: #ff003c;
+      border-radius: 50%;
+      box-shadow: 0 0 6px #ff003c;
     }
 
+    /* Título con estilo gótico/industrial */
+    .event-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 900;
+      font-size: 1.6rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      line-height: 1.1;
+      background: linear-gradient(180deg, #ffffff 30%, #ffb3c1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 4px 12px rgba(0,0,0,0.8);
+      margin-bottom: 4px;
+    }
+
+    .event-subtitle {
+      font-family: 'UnifrakturMaguntina', cursive;
+      font-size: 1.4rem;
+      color: rgba(255, 255, 255, 0.85);
+      margin-bottom: 20px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.9);
+    }
+
+    /* Caja de información con Glassmorphism */
     .ticket-info-box {
-      background: rgba(0, 0, 0, 0.55);
+      background: rgba(10, 5, 8, 0.65);
       border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 12px;
-      padding: 16px;
-      backdrop-filter: blur(5px);
-      margin-bottom: 15px;
+      border-radius: 16px;
+      padding: 18px 16px;
+      backdrop-filter: blur(12px);
+      margin-bottom: 35px; /* Espacio para no chocar con las muescas */
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.2), 0 8px 20px rgba(0,0,0,0.4);
     }
 
     .label {
-      font-size: 0.6rem;
-      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.58rem;
+      color: rgba(255, 255, 255, 0.5);
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 1.5px;
+      font-weight: 700;
+      margin-bottom: 4px;
     }
 
     .user-name {
@@ -109,73 +185,160 @@
       font-weight: 900;
       color: #fff;
       letter-spacing: 1px;
-      margin-bottom: 10px;
+      margin-bottom: 14px;
       word-break: break-word;
+      text-transform: uppercase;
+    }
+
+    .ticket-code-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 1px stroke rgba(255, 255, 255, 0.1);
     }
 
     .ticket-code {
-      font-size: 0.85rem;
+      font-family: monospace;
+      font-size: 0.95rem;
       font-weight: 700;
-      color: #ffb3c1;
+      color: #ff8095;
       letter-spacing: 2px;
+    }
+
+    /* Sección inferior (Stub) */
+    .ticket-footer {
+      padding-top: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     .status-valid {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      color: #00ff88;
-      font-size: 0.75rem;
+      color: #00ffaa;
+      font-size: 0.7rem;
       font-weight: 700;
-      margin-top: 10px;
+      letter-spacing: 1px;
+      background: rgba(0, 255, 170, 0.08);
+      border: 1px solid rgba(0, 255, 170, 0.25);
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 14px;
     }
 
     .dot {
-      width: 8px; height: 8px;
-      background: #00ff88;
+      width: 6px; height: 6px;
+      background: #00ffaa;
       border-radius: 50%;
-      box-shadow: 0 0 8px #00ff88;
+      box-shadow: 0 0 8px #00ffaa;
+      animation: pulse 2s infinite;
     }
 
-    footer {
-      font-size: 0.6rem;
-      color: rgba(255, 255, 255, 0.7);
-      margin-top: 10px;
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    /* Contenedor Código QR */
+    .qr-wrapper {
+      background: #fff;
+      padding: 8px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      margin-bottom: 12px;
+      display: inline-block;
+    }
+
+    .qr-wrapper canvas, .qr-wrapper img {
+      display: block;
+    }
+
+    .event-meta {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 4px;
+    }
+
+    .event-notice {
+      font-size: 0.58rem;
+      color: rgba(255, 255, 255, 0.45);
+      letter-spacing: 0.5px;
     }
   </style>
 </head>
 <body>
 
-  <div class="metallic-ticket">
-    <div class="badge">OFFICIAL VERIFIED PASS</div>
-    <h1 class="event-title">THE SINISTER FOREST</h1>
+  <div class="ticket-container">
+    <div class="notch notch-left"></div>
+    <div class="notch notch-right"></div>
+    <div class="stub-divider"></div>
 
-    <div class="ticket-info-box">
-      <div class="label">TITULAR DEL PASE</div>
-      <div class="user-name" id="display-name">GUEST</div>
+    <div class="metallic-ticket">
+      <!-- Encabezado -->
+      <div class="badge">
+        <span class="badge-icon"></span> Official Pass
+      </div>
+      
+      <h1 class="event-title">The Sinister</h1>
+      <div class="event-subtitle">Forest</div>
 
-      <div class="label">CÓDIGO ÚNICO</div>
-      <div class="ticket-code" id="display-code">TSF-000000</div>
+      <!-- Datos del Usuario -->
+      <div class="ticket-info-box">
+        <div class="label">Pass Holder</div>
+        <div class="user-name" id="display-name">GUEST</div>
+
+        <div class="label">Ticket Code</div>
+        <div class="ticket-code-container">
+          <span class="ticket-code" id="display-code">TSF-000000</span>
+        </div>
+      </div>
+
+      <!-- Talón inferior (Stub) -->
+      <div class="ticket-footer">
+        <div class="status-valid">
+          <span class="dot"></span> VERIFIED ACCESS
+        </div>
+
+        <!-- Generación de QR -->
+        <div class="qr-wrapper" id="qrcode"></div>
+
+        <div class="event-meta">11 AGO // 23:00H | RAW TECHNO</div>
+        <div class="event-notice">PRESENTAR DNI / CÉDULA OBLIGATORIO EN PUERTA</div>
+      </div>
     </div>
-
-    <div class="status-valid">
-      <span class="dot"></span> TICKET AUTÉNTICO & ACTIVO
-    </div>
-
-    <footer>
-      <p style="margin-top: 12px;">11 AGO // 23:00H | RAW TECHNO</p>
-      <small style="opacity: 0.5;">Presentar DNI / Cédula en puerta</small>
-    </footer>
   </div>
 
   <script>
-    // Parámetros dinámicos desde la URL
+    // Obtener parámetros de la URL
     const urlParams = new URLSearchParams(window.location.search);
-    const nameParam = urlParams.get('name') || "GUEST";
-    const codeParam = urlParams.get('code') || "TSF-000000";
+    const rawName = urlParams.get('name') || "GUEST";
+    const rawCode = urlParams.get('code') || "TSF-000000";
 
-    document.getElementById("display-name").innerText = decodeURIComponent(nameParam).toUpperCase();
-    document.getElementById("display-code").innerText = decodeURIComponent(codeParam).toUpperCase();
+    const cleanName = decodeURIComponent(rawName).toUpperCase();
+    const cleanCode = decodeURIComponent(rawCode).toUpperCase();
+
+    // Insertar en HTML
+    document.getElementById("display-name").innerText = cleanName;
+    document.getElementById("display-code").innerText = cleanCode;
+
+    // Generar Código QR Dinámico
+    const qrData = `EVENT:TheSinisterForest|PASS:${cleanCode}|HOLDER:${cleanName}`;
+    new QRCode(document.getElementById("qrcode"), {
+      text: qrData,
+      width: 80,
+      height: 80,
+      colorDark : "#0a0002",
+      colorLight : "#ffffff",
+      correctLevel : QRCode.CorrectLevel.H
+    });
   </script>
 </body>
 </html>
