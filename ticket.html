@@ -6,15 +6,13 @@
   <title>VIP Pass // The Sinister Forest</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <!-- Tipografías Techno/Industrial: Orbitron, Rajdhani y UnifrakturMaguntina -->
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@600;700&family=UnifrakturMaguntina&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@600;700&family=Cinzel:wght@700;900&family=UnifrakturMaguntina&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <style>
     :root {
       --bg-dark: #050203;
       --gold-light: #fff3a8;
       --gold-mid: #d4af37;
-      --gold-dark: #8a6d1c;
       --gold-gradient: linear-gradient(135deg, #bf953f 0%, #fcf6ba 25%, #b38728 50%, #fbf5b7 75%, #aa771c 100%);
       --font-techno: 'Orbitron', sans-serif;
       --font-ui: 'Rajdhani', sans-serif;
@@ -26,61 +24,59 @@
       background-color: var(--bg-dark);
       background-image: 
         radial-gradient(circle at 50% 50%, #4a000e 0%, #0a0305 70%),
-        radial-gradient(circle at 20% 20%, rgba(255, 215, 0, 0.1) 0%, transparent 40%),
-        radial-gradient(circle at 80% 80%, rgba(255, 0, 60, 0.18) 0%, transparent 40%);
+        radial-gradient(circle at 20% 20%, rgba(255, 215, 0, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(255, 0, 60, 0.15) 0%, transparent 40%);
       font-family: var(--font-ui);
       color: #fff;
       min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 15px;
-      overflow: hidden;
+      padding: 16px;
+      overflow-x: hidden;
     }
 
-    /* Canvas para partículas flotantes */
     #particles-canvas {
-      position: absolute;
+      position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
       pointer-events: none;
       z-index: 1;
     }
 
-    /* Contenedor Compacto */
+    /* Contenedor Adaptable */
     .ticket-wrapper {
       position: relative;
       z-index: 2;
       width: 100%;
-      max-width: 580px;
-      filter: drop-shadow(0 0 25px rgba(212, 175, 55, 0.35)) drop-shadow(0 15px 30px rgba(0, 0, 0, 0.95));
-      transition: transform 0.3s ease;
+      max-width: 620px;
+      filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.25)) drop-shadow(0 15px 35px rgba(0, 0, 0, 0.9));
     }
 
-    .ticket-wrapper:hover {
-      transform: scale(1.01);
-    }
-
+    /* Estructura Base del Ticket */
     .ticket {
       position: relative;
       display: flex;
+      flex-direction: column;
       background: linear-gradient(145deg, #120004 0%, #2a000a 50%, #0d0003 100%);
       border: 2px solid #d4af37;
       border-image: var(--gold-gradient) 1;
-      border-radius: 8px;
+      border-radius: 12px;
       overflow: hidden;
-      box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.95), 0 0 15px rgba(212, 175, 55, 0.3);
+      box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.95), 0 0 15px rgba(212, 175, 55, 0.2);
     }
 
+    /* Textura de Fondo */
     .ticket::before {
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
-      background-image: radial-gradient(rgba(255, 0, 60, 0.25) 1px, transparent 0);
-      background-size: 12px 12px;
-      opacity: 0.35;
+      background-image: radial-gradient(rgba(255, 0, 60, 0.2) 1px, transparent 0);
+      background-size: 10px 10px;
+      opacity: 0.3;
       pointer-events: none;
     }
 
+    /* Destello Diagonal Holográfico */
     .ticket::after {
       content: '';
       position: absolute;
@@ -89,9 +85,9 @@
       background: linear-gradient(
         45deg,
         transparent 43%,
-        rgba(255, 243, 168, 0.05) 47%,
-        rgba(255, 255, 255, 0.45) 50%,
-        rgba(255, 243, 168, 0.05) 53%,
+        rgba(255, 243, 168, 0.03) 47%,
+        rgba(255, 255, 255, 0.35) 50%,
+        rgba(255, 243, 168, 0.03) 53%,
         transparent 57%
       );
       transform: rotate(25deg);
@@ -104,11 +100,11 @@
       35%, 100% { transform: translateY(100%) rotate(25deg); }
     }
 
-    /* Destellos */
+    /* Destellos de Luz */
     .star-flare {
       position: absolute;
-      width: 24px;
-      height: 24px;
+      width: 20px;
+      height: 20px;
       background: radial-gradient(circle, #ffffff 15%, rgba(255, 243, 168, 0.9) 35%, transparent 70%);
       clip-path: polygon(50% 0%, 58% 42%, 100% 50%, 58% 58%, 50% 100%, 42% 58%, 0% 50%, 42% 42%);
       z-index: 20;
@@ -116,22 +112,19 @@
       animation: flarePulse 2s infinite alternate ease-in-out;
     }
 
-    .flare-1 { top: -9px; left: -9px; animation-delay: 0s; }
-    .flare-2 { top: -9px; right: -9px; animation-delay: 0.6s; }
-    .flare-3 { bottom: -9px; left: -9px; animation-delay: 1.2s; }
-    .flare-4 { bottom: -9px; right: -9px; animation-delay: 0.3s; }
-    .flare-notch-top { top: -9px; right: 142px; animation-delay: 0.9s; }
-    .flare-notch-bottom { bottom: -9px; right: 142px; animation-delay: 1.5s; }
+    .flare-1 { top: -8px; left: -8px; animation-delay: 0s; }
+    .flare-2 { top: -8px; right: -8px; animation-delay: 0.6s; }
+    .flare-3 { bottom: -8px; left: -8px; animation-delay: 1.2s; }
+    .flare-4 { bottom: -8px; right: -8px; animation-delay: 0.3s; }
 
     @keyframes flarePulse {
       0% { transform: scale(0.5) rotate(0deg); opacity: 0.3; }
-      100% { transform: scale(1.3) rotate(90deg); opacity: 1; filter: drop-shadow(0 0 8px #fff3a8); }
+      100% { transform: scale(1.2) rotate(90deg); opacity: 1; filter: drop-shadow(0 0 6px #fff3a8); }
     }
 
-    /* Muescas */
+    /* Muescas y Divisores por Defecto (Móvil) */
     .notch {
       position: absolute;
-      right: 145px;
       width: 20px;
       height: 20px;
       background-color: var(--bg-dark);
@@ -140,49 +133,47 @@
       border: 2px solid #d4af37;
       box-shadow: inset 0 0 6px rgba(0,0,0,0.9);
     }
-    .notch-top { top: -11px; }
-    .notch-bottom { bottom: -11px; }
+
+    .notch-left { left: -11px; bottom: 120px; }
+    .notch-right { right: -11px; bottom: 120px; }
 
     .stub-border {
       position: absolute;
-      right: 154px;
-      top: 10px;
-      bottom: 10px;
-      border-left: 1.5px dashed rgba(212, 175, 55, 0.7);
+      left: 12px;
+      right: 12px;
+      bottom: 130px;
+      border-top: 1.5px dashed rgba(212, 175, 55, 0.6);
       z-index: 5;
     }
 
     /* Sección Principal */
     .main-section {
-      flex: 1;
-      padding: 18px 20px;
+      padding: 24px 18px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
       text-align: center;
       position: relative;
     }
 
     .badge {
-      position: absolute;
-      top: 12px;
-      left: 15px;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 5px;
       border: 1px solid #d4af37;
-      padding: 2px 8px;
+      padding: 3px 10px;
       border-radius: 4px;
       font-family: var(--font-techno);
-      font-size: 0.45rem;
+      font-size: 0.5rem;
       letter-spacing: 1.5px;
       color: var(--gold-light);
       text-transform: uppercase;
       background: rgba(0, 0, 0, 0.75);
+      margin-bottom: 12px;
     }
+
     .badge-icon {
-      width: 5px; height: 5px;
+      width: 6px; height: 6px;
       background: #ff003c;
       border-radius: 50%;
       box-shadow: 0 0 6px #ff003c;
@@ -190,45 +181,45 @@
 
     .main-header {
       font-family: var(--font-techno);
-      font-size: 1.25rem;
+      font-size: 1.35rem;
       font-weight: 900;
-      letter-spacing: 5px;
+      letter-spacing: 4px;
       background: var(--gold-gradient);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       text-transform: uppercase;
-      margin-top: 12px;
     }
 
     .event-title {
       font-family: 'UnifrakturMaguntina', cursive;
-      font-size: 2.1rem;
+      font-size: 2.3rem;
       color: #fff;
       text-shadow: 0 0 10px rgba(255, 0, 60, 0.9), 0 0 20px rgba(255, 0, 60, 0.5);
       line-height: 1;
-      margin-bottom: 2px;
+      margin: 4px 0;
     }
 
     .sub-header {
       font-family: var(--font-techno);
-      font-size: 0.58rem;
+      font-size: 0.62rem;
       letter-spacing: 3px;
       color: var(--gold-light);
       text-transform: uppercase;
-      margin-bottom: 10px;
+      margin-bottom: 14px;
     }
 
     .date-info {
       font-family: var(--font-techno);
-      font-size: 0.68rem;
+      font-size: 0.72rem;
       font-weight: 700;
-      letter-spacing: 2px;
+      letter-spacing: 1.5px;
       color: #fff;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
       border-top: 1px solid rgba(212, 175, 55, 0.5);
       border-bottom: 1px solid rgba(212, 175, 55, 0.5);
-      padding: 4px 14px;
+      padding: 5px 14px;
       background: rgba(212, 175, 55, 0.08);
+      width: 100%;
     }
 
     .meta-grid {
@@ -240,15 +231,17 @@
     }
 
     .meta-box {
+      flex: 1;
+      max-width: 160px;
       border: 1px solid rgba(212, 175, 55, 0.6);
-      padding: 4px 10px;
+      padding: 6px 8px;
       border-radius: 4px;
       background: rgba(0, 0, 0, 0.6);
     }
 
     .meta-label {
       font-family: var(--font-techno);
-      font-size: 0.42rem;
+      font-size: 0.45rem;
       color: var(--gold-light);
       text-transform: uppercase;
       letter-spacing: 1px;
@@ -256,61 +249,130 @@
 
     .meta-value {
       font-family: var(--font-techno);
-      font-size: 0.7rem;
+      font-size: 0.75rem;
       font-weight: 700;
       color: #fff;
       letter-spacing: 1px;
+      word-break: break-all;
     }
 
-    /* Talón Lateral */
+    /* Talón (Stub Section) en Móvil */
     .stub-section {
-      width: 155px;
-      padding: 12px 10px;
+      height: 130px;
+      padding: 12px 16px;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      text-align: center;
-      background: rgba(0, 0, 0, 0.35);
+      background: rgba(0, 0, 0, 0.4);
+    }
+
+    .stub-text-box {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
     }
 
     .stub-vertical-text {
-      writing-mode: vertical-rl;
-      transform: rotate(180deg);
       font-family: var(--font-techno);
-      font-size: 0.5rem;
-      letter-spacing: 2px;
+      font-size: 0.58rem;
+      letter-spacing: 1.5px;
       color: var(--gold-light);
       text-transform: uppercase;
+      margin-bottom: 6px;
     }
 
-    .barcode-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    .stub-footer {
+      font-family: var(--font-techno);
+      font-size: 0.48rem;
+      color: rgba(255, 255, 255, 0.7);
+      letter-spacing: 1px;
     }
 
     .qr-wrapper {
       background: #fff;
-      padding: 4px;
-      border-radius: 4px;
+      padding: 5px;
+      border-radius: 5px;
       border: 1.5px solid #d4af37;
       box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
     }
 
     .qr-wrapper canvas, .qr-wrapper img { display: block; }
 
-    .stub-footer {
-      font-family: var(--font-techno);
-      font-size: 0.45rem;
-      color: rgba(255, 255, 255, 0.7);
-      letter-spacing: 1px;
-    }
+    /* MEDIA QUERY: Escritorio y Pantallas Medianas (Layout Horizontal) */
+    @media (min-width: 580px) {
+      .ticket {
+        flex-direction: row;
+      }
 
-    @media (max-width: 580px) {
-      .ticket { flex-direction: column; }
-      .stub-section { width: 100%; border-top: 2px dashed #d4af37; }
-      .notch, .stub-border, .star-flare { display: none; }
+      .main-section {
+        flex: 1;
+        padding: 20px;
+        align-items: center;
+      }
+
+      .badge {
+        position: absolute;
+        top: 12px;
+        left: 15px;
+        margin-bottom: 0;
+      }
+
+      .main-header {
+        margin-top: 10px;
+      }
+
+      .date-info {
+        width: auto;
+      }
+
+      .stub-section {
+        width: 155px;
+        height: auto;
+        padding: 14px 10px;
+        flex-direction: column;
+        justify-content: space-between;
+        text-align: center;
+        border-left: 1px solid rgba(212, 175, 55, 0.2);
+      }
+
+      .stub-text-box {
+        align-items: center;
+        text-align: center;
+      }
+
+      .stub-vertical-text {
+        writing-mode: vertical-rl;
+        transform: rotate(180deg);
+        font-size: 0.52rem;
+        margin-bottom: 0;
+      }
+
+      .notch-left { display: none; }
+      .notch-right { display: none; }
+
+      .notch-top {
+        display: block;
+        right: 145px;
+        top: -11px;
+        bottom: auto;
+      }
+
+      .notch-bottom {
+        display: block;
+        right: 145px;
+        bottom: -11px;
+        top: auto;
+      }
+
+      .stub-border {
+        left: auto;
+        right: 154px;
+        top: 10px;
+        bottom: 10px;
+        border-top: none;
+        border-left: 1.5px dashed rgba(212, 175, 55, 0.6);
+      }
     }
   </style>
 </head>
@@ -323,14 +385,13 @@
     <div class="star-flare flare-2"></div>
     <div class="star-flare flare-3"></div>
     <div class="star-flare flare-4"></div>
-    <div class="star-flare flare-notch-top"></div>
-    <div class="star-flare flare-notch-bottom"></div>
 
-    <div class="notch notch-top"></div>
-    <div class="notch notch-bottom"></div>
+    <div class="notch notch-left notch-top"></div>
+    <div class="notch notch-right notch-bottom"></div>
     <div class="stub-border"></div>
 
     <div class="ticket">
+      <!-- Sección Principal -->
       <div class="main-section">
         <div class="badge">
           <span class="badge-icon"></span> Official Pass
@@ -356,12 +417,13 @@
         </div>
       </div>
 
+      <!-- Talón (Stub) -->
       <div class="stub-section">
-        <div class="stub-vertical-text">EVENT OF THE YEAR — 11 AGO</div>
-
-        <div class="barcode-container">
-          <div class="qr-wrapper" id="qrcode"></div>
+        <div class="stub-text-box">
+          <div class="stub-vertical-text">EVENT OF THE YEAR — 11 AGO</div>
         </div>
+
+        <div class="qr-wrapper" id="qrcode"></div>
 
         <div class="stub-footer">ADMIT ONE // DNI REQUIRED</div>
       </div>
@@ -382,13 +444,14 @@
     const qrData = `EVENT:TheSinisterForest|PASS:${cleanCode}|HOLDER:${cleanName}`;
     new QRCode(document.getElementById("qrcode"), {
       text: qrData,
-      width: 55,
-      height: 55,
+      width: 60,
+      height: 60,
       colorDark : "#0a0002",
       colorLight : "#ffffff",
       correctLevel : QRCode.CorrectLevel.H
     });
 
+    // Partículas de fondo
     const canvas = document.getElementById('particles-canvas');
     const ctx = canvas.getContext('2d');
 
@@ -399,7 +462,7 @@
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    const particles = Array.from({ length: 30 }, () => ({
+    const particles = Array.from({ length: 25 }, () => ({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
       radius: Math.random() * 1.5 + 0.5,
