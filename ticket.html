@@ -6,7 +6,7 @@
   <title>VIP Pass // The Sinister Forest</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@600;700&family=Cinzel:wght@700;900&family=UnifrakturMaguntina&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@600;700&family=UnifrakturMaguntina&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <style>
     :root {
@@ -52,15 +52,21 @@
       filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.25)) drop-shadow(0 15px 35px rgba(0, 0, 0, 0.9));
     }
 
+    /* Marco dorado exterior para permitir border-radius real */
+    .ticket-frame {
+      padding: 2px;
+      background: var(--gold-gradient);
+      border-radius: 16px;
+      position: relative;
+    }
+
     /* Estructura Base del Ticket */
     .ticket {
       position: relative;
       display: flex;
       flex-direction: column;
       background: linear-gradient(145deg, #120004 0%, #2a000a 50%, #0d0003 100%);
-      border: 2px solid #d4af37;
-      border-image: var(--gold-gradient) 1;
-      border-radius: 12px;
+      border-radius: 14px;
       overflow: hidden;
       box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.95), 0 0 15px rgba(212, 175, 55, 0.2);
     }
@@ -100,11 +106,11 @@
       35%, 100% { transform: translateY(100%) rotate(25deg); }
     }
 
-    /* Destellos de Luz */
+    /* Destellos de Luz en Esquinas */
     .star-flare {
       position: absolute;
-      width: 20px;
-      height: 20px;
+      width: 22px;
+      height: 22px;
       background: radial-gradient(circle, #ffffff 15%, rgba(255, 243, 168, 0.9) 35%, transparent 70%);
       clip-path: polygon(50% 0%, 58% 42%, 100% 50%, 58% 58%, 50% 100%, 42% 58%, 0% 50%, 42% 42%);
       z-index: 20;
@@ -122,11 +128,11 @@
       100% { transform: scale(1.2) rotate(90deg); opacity: 1; filter: drop-shadow(0 0 6px #fff3a8); }
     }
 
-    /* Muescas y Divisores por Defecto (Móvil) */
+    /* Muescas y Divisores en Móvil */
     .notch {
       position: absolute;
-      width: 20px;
-      height: 20px;
+      width: 22px;
+      height: 22px;
       background-color: var(--bg-dark);
       border-radius: 50%;
       z-index: 10;
@@ -134,21 +140,21 @@
       box-shadow: inset 0 0 6px rgba(0,0,0,0.9);
     }
 
-    .notch-left { left: -11px; bottom: 120px; }
-    .notch-right { right: -11px; bottom: 120px; }
+    .notch-left { left: -11px; bottom: 165px; }
+    .notch-right { right: -11px; bottom: 165px; }
 
     .stub-border {
       position: absolute;
-      left: 12px;
-      right: 12px;
-      bottom: 130px;
+      left: 14px;
+      right: 14px;
+      bottom: 176px;
       border-top: 1.5px dashed rgba(212, 175, 55, 0.6);
       z-index: 5;
     }
 
     /* Sección Principal */
     .main-section {
-      padding: 24px 18px;
+      padding: 24px 18px 28px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -214,17 +220,17 @@
       font-weight: 700;
       letter-spacing: 1.5px;
       color: #fff;
-      margin-bottom: 14px;
+      margin-bottom: 16px;
       border-top: 1px solid rgba(212, 175, 55, 0.5);
       border-bottom: 1px solid rgba(212, 175, 55, 0.5);
-      padding: 5px 14px;
+      padding: 6px 14px;
       background: rgba(212, 175, 55, 0.08);
       width: 100%;
     }
 
     .meta-grid {
       display: flex;
-      gap: 10px;
+      gap: 12px;
       align-items: center;
       justify-content: center;
       width: 100%;
@@ -232,7 +238,7 @@
 
     .meta-box {
       flex: 1;
-      max-width: 160px;
+      max-width: 170px;
       border: 1px solid rgba(212, 175, 55, 0.6);
       padding: 6px 8px;
       border-radius: 4px;
@@ -256,21 +262,16 @@
       word-break: break-all;
     }
 
-    /* Talón (Stub Section) en Móvil */
+    /* Talón (Stub Section) Reorganizado en Móvil */
     .stub-section {
-      height: 130px;
-      padding: 12px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: rgba(0, 0, 0, 0.4);
-    }
-
-    .stub-text-box {
+      padding: 16px 16px 20px;
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
-      text-align: left;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: rgba(0, 0, 0, 0.4);
+      text-align: center;
     }
 
     .stub-vertical-text {
@@ -279,8 +280,17 @@
       letter-spacing: 1.5px;
       color: var(--gold-light);
       text-transform: uppercase;
-      margin-bottom: 6px;
     }
+
+    .qr-wrapper {
+      background: #fff;
+      padding: 6px;
+      border-radius: 6px;
+      border: 1.5px solid #d4af37;
+      box-shadow: 0 0 12px rgba(212, 175, 55, 0.4);
+    }
+
+    .qr-wrapper canvas, .qr-wrapper img { display: block; }
 
     .stub-footer {
       font-family: var(--font-techno);
@@ -289,17 +299,7 @@
       letter-spacing: 1px;
     }
 
-    .qr-wrapper {
-      background: #fff;
-      padding: 5px;
-      border-radius: 5px;
-      border: 1.5px solid #d4af37;
-      box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
-    }
-
-    .qr-wrapper canvas, .qr-wrapper img { display: block; }
-
-    /* MEDIA QUERY: Escritorio y Pantallas Medianas (Layout Horizontal) */
+    /* MEDIA QUERY: ESCRITORIO (Diseño Horizontal) */
     @media (min-width: 580px) {
       .ticket {
         flex-direction: row;
@@ -328,24 +328,15 @@
 
       .stub-section {
         width: 155px;
-        height: auto;
         padding: 14px 10px;
-        flex-direction: column;
         justify-content: space-between;
-        text-align: center;
         border-left: 1px solid rgba(212, 175, 55, 0.2);
-      }
-
-      .stub-text-box {
-        align-items: center;
-        text-align: center;
       }
 
       .stub-vertical-text {
         writing-mode: vertical-rl;
         transform: rotate(180deg);
         font-size: 0.52rem;
-        margin-bottom: 0;
       }
 
       .notch-left { display: none; }
@@ -386,54 +377,52 @@
     <div class="star-flare flare-3"></div>
     <div class="star-flare flare-4"></div>
 
-    <div class="notch notch-left notch-top"></div>
-    <div class="notch notch-right notch-bottom"></div>
-    <div class="stub-border"></div>
+    <div class="ticket-frame">
+      <div class="notch notch-left notch-top"></div>
+      <div class="notch notch-right notch-bottom"></div>
+      <div class="stub-border"></div>
 
-    <div class="ticket">
-      <!-- Sección Principal -->
-      <div class="main-section">
-        <div class="badge">
-          <span class="badge-icon"></span> Official Pass
-        </div>
-
-        <div class="main-header">VIP Pass</div>
-        <div class="event-title">The Sinister Forest</div>
-        <div class="sub-header">Event Of The Year</div>
-
-        <div class="date-info">
-          11 AGO // 23:00H | RAW TECHNO
-        </div>
-
-        <div class="meta-grid">
-          <div class="meta-box">
-            <div class="meta-label">Pass Holder</div>
-            <div class="meta-value" id="display-name">GUEST</div>
+      <div class="ticket">
+        <!-- Sección Principal -->
+        <div class="main-section">
+          <div class="badge">
+            <span class="badge-icon"></span> Official Pass
           </div>
-          <div class="meta-box">
-            <div class="meta-label">Ticket Code</div>
-            <div class="meta-value" id="display-code">TSF-000000</div>
+
+          <div class="main-header">VIP Pass</div>
+          <div class="event-title">The Sinister Forest</div>
+          <div class="sub-header">Event Of The Year</div>
+
+          <div class="date-info">
+            11 AGO // 23:00H | RAW TECHNO
+          </div>
+
+          <div class="meta-grid">
+            <div class="meta-box">
+              <div class="meta-label">Pass Holder</div>
+              <div class="meta-value" id="display-name">JP</div>
+            </div>
+            <div class="meta-box">
+              <div class="meta-label">Ticket Code</div>
+              <div class="meta-value" id="display-code">TSF-448791</div>
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- Talón (Stub) -->
-      <div class="stub-section">
-        <div class="stub-text-box">
+        <!-- Talón (Stub) -->
+        <div class="stub-section">
           <div class="stub-vertical-text">EVENT OF THE YEAR — 11 AGO</div>
+          <div class="qr-wrapper" id="qrcode"></div>
+          <div class="stub-footer">ADMIT ONE // DNI REQUIRED</div>
         </div>
-
-        <div class="qr-wrapper" id="qrcode"></div>
-
-        <div class="stub-footer">ADMIT ONE // DNI REQUIRED</div>
       </div>
     </div>
   </div>
 
   <script>
     const urlParams = new URLSearchParams(window.location.search);
-    const rawName = urlParams.get('name') || "GUEST";
-    const rawCode = urlParams.get('code') || "TSF-000000";
+    const rawName = urlParams.get('name') || "JP";
+    const rawCode = urlParams.get('code') || "TSF-448791";
 
     const cleanName = decodeURIComponent(rawName).toUpperCase();
     const cleanCode = decodeURIComponent(rawCode).toUpperCase();
@@ -444,8 +433,8 @@
     const qrData = `EVENT:TheSinisterForest|PASS:${cleanCode}|HOLDER:${cleanName}`;
     new QRCode(document.getElementById("qrcode"), {
       text: qrData,
-      width: 60,
-      height: 60,
+      width: 70,
+      height: 70,
       colorDark : "#0a0002",
       colorLight : "#ffffff",
       correctLevel : QRCode.CorrectLevel.H
