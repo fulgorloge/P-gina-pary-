@@ -6,7 +6,8 @@
   <title>VIP Pass // The Sinister Forest</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=UnifrakturMaguntina&family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <!-- Tipografías Techno/Industrial: Orbitron, Rajdhani y UnifrakturMaguntina -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@600;700&family=UnifrakturMaguntina&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <style>
     :root {
@@ -15,6 +16,8 @@
       --gold-mid: #d4af37;
       --gold-dark: #8a6d1c;
       --gold-gradient: linear-gradient(135deg, #bf953f 0%, #fcf6ba 25%, #b38728 50%, #fbf5b7 75%, #aa771c 100%);
+      --font-techno: 'Orbitron', sans-serif;
+      --font-ui: 'Rajdhani', sans-serif;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -25,34 +28,31 @@
         radial-gradient(circle at 50% 50%, #4a000e 0%, #0a0305 70%),
         radial-gradient(circle at 20% 20%, rgba(255, 215, 0, 0.1) 0%, transparent 40%),
         radial-gradient(circle at 80% 80%, rgba(255, 0, 60, 0.18) 0%, transparent 40%);
-      font-family: 'Montserrat', sans-serif;
+      font-family: var(--font-ui);
       color: #fff;
       min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 20px;
+      padding: 15px;
       overflow: hidden;
     }
 
-    /* Canvas para partículas doradas y destellos flotantes */
+    /* Canvas para partículas flotantes */
     #particles-canvas {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0; width: 100%; height: 100%;
       pointer-events: none;
       z-index: 1;
     }
 
-    /* Contenedor Principal */
+    /* Contenedor Compacto */
     .ticket-wrapper {
       position: relative;
       z-index: 2;
       width: 100%;
-      max-width: 860px;
-      filter: drop-shadow(0 0 35px rgba(212, 175, 55, 0.35)) drop-shadow(0 20px 40px rgba(0, 0, 0, 0.95));
+      max-width: 580px;
+      filter: drop-shadow(0 0 25px rgba(212, 175, 55, 0.35)) drop-shadow(0 15px 30px rgba(0, 0, 0, 0.95));
       transition: transform 0.3s ease;
     }
 
@@ -60,37 +60,32 @@
       transform: scale(1.01);
     }
 
-    /* Ticket con triple marco metálico dorado */
     .ticket {
       position: relative;
       display: flex;
       background: linear-gradient(145deg, #120004 0%, #2a000a 50%, #0d0003 100%);
-      border: 3px solid #d4af37;
+      border: 2px solid #d4af37;
       border-image: var(--gold-gradient) 1;
-      border-radius: 12px;
+      border-radius: 8px;
       overflow: hidden;
-      box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.95), 0 0 25px rgba(212, 175, 55, 0.4);
+      box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.95), 0 0 15px rgba(212, 175, 55, 0.3);
     }
 
-    /* Textura de grietas */
     .ticket::before {
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
       background-image: radial-gradient(rgba(255, 0, 60, 0.25) 1px, transparent 0);
-      background-size: 16px 16px;
+      background-size: 12px 12px;
       opacity: 0.35;
       pointer-events: none;
     }
 
-    /* Barrido holográfico constante */
     .ticket::after {
       content: '';
       position: absolute;
-      top: -150%;
-      left: -150%;
-      width: 400%;
-      height: 400%;
+      top: -150%; left: -150%;
+      width: 400%; height: 400%;
       background: linear-gradient(
         45deg,
         transparent 43%,
@@ -109,11 +104,11 @@
       35%, 100% { transform: translateY(100%) rotate(25deg); }
     }
 
-    /* Destellos estelares hiperrealistas */
+    /* Destellos */
     .star-flare {
       position: absolute;
-      width: 36px;
-      height: 36px;
+      width: 24px;
+      height: 24px;
       background: radial-gradient(circle, #ffffff 15%, rgba(255, 243, 168, 0.9) 35%, transparent 70%);
       clip-path: polygon(50% 0%, 58% 42%, 100% 50%, 58% 58%, 50% 100%, 42% 58%, 0% 50%, 42% 42%);
       z-index: 20;
@@ -121,127 +116,124 @@
       animation: flarePulse 2s infinite alternate ease-in-out;
     }
 
-    .flare-1 { top: -14px; left: -14px; animation-delay: 0s; }
-    .flare-2 { top: -14px; right: -14px; animation-delay: 0.6s; }
-    .flare-3 { bottom: -14px; left: -14px; animation-delay: 1.2s; }
-    .flare-4 { bottom: -14px; right: -14px; animation-delay: 0.3s; }
-    .flare-notch-top { top: -14px; right: 217px; animation-delay: 0.9s; }
-    .flare-notch-bottom { bottom: -14px; right: 217px; animation-delay: 1.5s; }
+    .flare-1 { top: -9px; left: -9px; animation-delay: 0s; }
+    .flare-2 { top: -9px; right: -9px; animation-delay: 0.6s; }
+    .flare-3 { bottom: -9px; left: -9px; animation-delay: 1.2s; }
+    .flare-4 { bottom: -9px; right: -9px; animation-delay: 0.3s; }
+    .flare-notch-top { top: -9px; right: 142px; animation-delay: 0.9s; }
+    .flare-notch-bottom { bottom: -9px; right: 142px; animation-delay: 1.5s; }
 
     @keyframes flarePulse {
-      0% { transform: scale(0.5) rotate(0deg); opacity: 0.3; filter: drop-shadow(0 0 2px #fff); }
-      100% { transform: scale(1.4) rotate(90deg); opacity: 1; filter: drop-shadow(0 0 12px #fff3a8); }
+      0% { transform: scale(0.5) rotate(0deg); opacity: 0.3; }
+      100% { transform: scale(1.3) rotate(90deg); opacity: 1; filter: drop-shadow(0 0 8px #fff3a8); }
     }
 
-    /* Muescas laterales */
+    /* Muescas */
     .notch {
       position: absolute;
-      right: 220px;
-      width: 30px;
-      height: 30px;
+      right: 145px;
+      width: 20px;
+      height: 20px;
       background-color: var(--bg-dark);
       border-radius: 50%;
       z-index: 10;
       border: 2px solid #d4af37;
-      box-shadow: inset 0 0 10px rgba(0,0,0,0.9);
+      box-shadow: inset 0 0 6px rgba(0,0,0,0.9);
     }
-    .notch-top { top: -17px; }
-    .notch-bottom { bottom: -17px; }
+    .notch-top { top: -11px; }
+    .notch-bottom { bottom: -11px; }
 
     .stub-border {
       position: absolute;
-      right: 234px;
-      top: 15px;
-      bottom: 15px;
-      border-left: 2px dashed rgba(212, 175, 55, 0.7);
+      right: 154px;
+      top: 10px;
+      bottom: 10px;
+      border-left: 1.5px dashed rgba(212, 175, 55, 0.7);
       z-index: 5;
     }
 
     /* Sección Principal */
     .main-section {
       flex: 1;
-      padding: 32px 40px;
+      padding: 18px 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
       position: relative;
-      border-right: 1px solid rgba(212, 175, 55, 0.2);
     }
 
-    /* Badge Superior */
     .badge {
       position: absolute;
-      top: 20px;
-      left: 25px;
+      top: 12px;
+      left: 15px;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       border: 1px solid #d4af37;
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 0.62rem;
-      letter-spacing: 2px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-family: var(--font-techno);
+      font-size: 0.45rem;
+      letter-spacing: 1.5px;
       color: var(--gold-light);
       text-transform: uppercase;
-      background: rgba(0, 0, 0, 0.65);
-      box-shadow: 0 0 12px rgba(212, 175, 55, 0.3);
+      background: rgba(0, 0, 0, 0.75);
     }
     .badge-icon {
-      width: 7px; height: 7px;
+      width: 5px; height: 5px;
       background: #ff003c;
       border-radius: 50%;
-      box-shadow: 0 0 8px #ff003c;
+      box-shadow: 0 0 6px #ff003c;
     }
 
     .main-header {
-      font-family: 'Cinzel', serif;
-      font-size: 2.4rem;
+      font-family: var(--font-techno);
+      font-size: 1.25rem;
       font-weight: 900;
-      letter-spacing: 6px;
+      letter-spacing: 5px;
       background: var(--gold-gradient);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       text-transform: uppercase;
-      filter: drop-shadow(0 2px 8px rgba(212, 175, 55, 0.4));
-      margin-top: 10px;
+      margin-top: 12px;
     }
 
     .event-title {
       font-family: 'UnifrakturMaguntina', cursive;
-      font-size: 3.2rem;
+      font-size: 2.1rem;
       color: #fff;
-      text-shadow: 0 0 15px rgba(255, 0, 60, 0.9), 0 0 35px rgba(255, 0, 60, 0.5);
+      text-shadow: 0 0 10px rgba(255, 0, 60, 0.9), 0 0 20px rgba(255, 0, 60, 0.5);
       line-height: 1;
-      margin-bottom: 6px;
+      margin-bottom: 2px;
     }
 
     .sub-header {
-      font-family: 'Cinzel', serif;
-      font-size: 1.05rem;
-      letter-spacing: 3.5px;
+      font-family: var(--font-techno);
+      font-size: 0.58rem;
+      letter-spacing: 3px;
       color: var(--gold-light);
       text-transform: uppercase;
-      margin-bottom: 15px;
+      margin-bottom: 10px;
     }
 
     .date-info {
-      font-size: 1.15rem;
+      font-family: var(--font-techno);
+      font-size: 0.68rem;
       font-weight: 700;
       letter-spacing: 2px;
       color: #fff;
-      margin-bottom: 22px;
+      margin-bottom: 12px;
       border-top: 1px solid rgba(212, 175, 55, 0.5);
       border-bottom: 1px solid rgba(212, 175, 55, 0.5);
-      padding: 6px 24px;
+      padding: 4px 14px;
       background: rgba(212, 175, 55, 0.08);
-      box-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
     }
 
     .meta-grid {
       display: flex;
-      gap: 20px;
+      gap: 10px;
       align-items: center;
       justify-content: center;
       width: 100%;
@@ -249,31 +241,31 @@
 
     .meta-box {
       border: 1px solid rgba(212, 175, 55, 0.6);
-      padding: 8px 18px;
-      border-radius: 6px;
-      background: rgba(0, 0, 0, 0.55);
-      box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.9), 0 0 10px rgba(212, 175, 55, 0.2);
+      padding: 4px 10px;
+      border-radius: 4px;
+      background: rgba(0, 0, 0, 0.6);
     }
 
     .meta-label {
-      font-size: 0.58rem;
+      font-family: var(--font-techno);
+      font-size: 0.42rem;
       color: var(--gold-light);
       text-transform: uppercase;
       letter-spacing: 1px;
-      margin-bottom: 2px;
     }
 
     .meta-value {
-      font-size: 1rem;
+      font-family: var(--font-techno);
+      font-size: 0.7rem;
       font-weight: 700;
       color: #fff;
       letter-spacing: 1px;
     }
 
-    /* Talón Derecho */
+    /* Talón Lateral */
     .stub-section {
-      width: 230px;
-      padding: 22px 18px;
+      width: 155px;
+      padding: 12px 10px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -285,9 +277,9 @@
     .stub-vertical-text {
       writing-mode: vertical-rl;
       transform: rotate(180deg);
-      font-family: 'Cinzel', serif;
-      font-size: 0.78rem;
-      letter-spacing: 2.5px;
+      font-family: var(--font-techno);
+      font-size: 0.5rem;
+      letter-spacing: 2px;
       color: var(--gold-light);
       text-transform: uppercase;
     }
@@ -296,27 +288,26 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 10px;
     }
 
     .qr-wrapper {
       background: #fff;
-      padding: 7px;
-      border-radius: 8px;
-      border: 2px solid #d4af37;
-      box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+      padding: 4px;
+      border-radius: 4px;
+      border: 1.5px solid #d4af37;
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
     }
 
     .qr-wrapper canvas, .qr-wrapper img { display: block; }
 
     .stub-footer {
-      font-size: 0.62rem;
+      font-family: var(--font-techno);
+      font-size: 0.45rem;
       color: rgba(255, 255, 255, 0.7);
       letter-spacing: 1px;
-      font-weight: 600;
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 580px) {
       .ticket { flex-direction: column; }
       .stub-section { width: 100%; border-top: 2px dashed #d4af37; }
       .notch, .stub-border, .star-flare { display: none; }
@@ -325,11 +316,9 @@
 </head>
 <body>
 
-  <!-- Canvas dinámico para destellos y partículas de fondo -->
   <canvas id="particles-canvas"></canvas>
 
   <div class="ticket-wrapper">
-    <!-- Destellos de luz en esquinas y uniones -->
     <div class="star-flare flare-1"></div>
     <div class="star-flare flare-2"></div>
     <div class="star-flare flare-3"></div>
@@ -342,7 +331,6 @@
     <div class="stub-border"></div>
 
     <div class="ticket">
-      <!-- Sección Principal -->
       <div class="main-section">
         <div class="badge">
           <span class="badge-icon"></span> Official Pass
@@ -368,7 +356,6 @@
         </div>
       </div>
 
-      <!-- Talón Lateral (Stub) -->
       <div class="stub-section">
         <div class="stub-vertical-text">EVENT OF THE YEAR — 11 AGO</div>
 
@@ -382,7 +369,6 @@
   </div>
 
   <script>
-    // Obtener datos dinámicos
     const urlParams = new URLSearchParams(window.location.search);
     const rawName = urlParams.get('name') || "GUEST";
     const rawCode = urlParams.get('code') || "TSF-000000";
@@ -393,18 +379,16 @@
     document.getElementById("display-name").innerText = cleanName;
     document.getElementById("display-code").innerText = cleanCode;
 
-    // Generar Código QR
     const qrData = `EVENT:TheSinisterForest|PASS:${cleanCode}|HOLDER:${cleanName}`;
     new QRCode(document.getElementById("qrcode"), {
       text: qrData,
-      width: 78,
-      height: 78,
+      width: 55,
+      height: 55,
       colorDark : "#0a0002",
       colorLight : "#ffffff",
       correctLevel : QRCode.CorrectLevel.H
     });
 
-    // Animación de partículas flotantes y destellos en el fondo
     const canvas = document.getElementById('particles-canvas');
     const ctx = canvas.getContext('2d');
 
@@ -415,12 +399,12 @@
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    const particles = Array.from({ length: 45 }, () => ({
+    const particles = Array.from({ length: 30 }, () => ({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
-      radius: Math.random() * 2 + 0.5,
+      radius: Math.random() * 1.5 + 0.5,
       alpha: Math.random(),
-      speed: Math.random() * 0.4 + 0.1,
+      speed: Math.random() * 0.3 + 0.1,
       decay: Math.random() * 0.01 + 0.005
     }));
 
@@ -440,7 +424,7 @@
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(255, 243, 168, ${Math.max(0, p.alpha)})`;
-        ctx.shadowBlur = 8;
+        ctx.shadowBlur = 6;
         ctx.shadowColor = '#d4af37';
         ctx.fill();
       });
