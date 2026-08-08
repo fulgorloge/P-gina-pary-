@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@600;700&family=UnifrakturMaguntina&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
     :root {
       --bg-dark: #050203;
@@ -46,11 +47,11 @@
     #flash-overlay {
       position: fixed;
       top: 0; left: 0; width: 100vw; height: 100vh;
-      background: radial-gradient(circle, rgba(255, 243, 168, 0.8) 0%, rgba(255, 0, 60, 0.4) 50%, transparent 100%);
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(255, 0, 60, 0.5) 50%, transparent 100%);
       pointer-events: none;
       z-index: 99;
       opacity: 0;
-      transition: opacity 0.1s ease-out;
+      transition: opacity 0.12s ease-out;
     }
 
     .instructions {
@@ -72,7 +73,7 @@
       to { opacity: 1; transform: scale(1.02); }
     }
 
-    /* Contenedor Adaptable */
+    /* CONTENEDOR 3D FLIP */
     .ticket-wrapper {
       position: relative;
       z-index: 2;
@@ -82,11 +83,108 @@
       filter: drop-shadow(0 0 25px rgba(212, 175, 55, 0.25)) drop-shadow(0 15px 35px rgba(0, 0, 0, 0.9));
     }
 
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .ticket-wrapper.flipped .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+
     .ticket-frame {
       padding: 2px;
       background: var(--gold-gradient);
       border-radius: 16px;
       position: relative;
+      backface-visibility: hidden;
+    }
+
+    /* REVERSO DEL TIQUETE */
+    .ticket-back {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(145deg, #0d0003 0%, #1a0006 50%, #050203 100%);
+      border-radius: 16px;
+      padding: 2px;
+      transform: rotateY(180deg);
+      backface-visibility: hidden;
+      z-index: 5;
+    }
+
+    .ticket-back-content {
+      width: 100%; height: 100%;
+      background: #0d0003;
+      border-radius: 14px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: inset 0 0 30px rgba(0,0,0,0.9);
+    }
+
+    .back-title {
+      font-family: var(--font-techno);
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      color: var(--gold-light);
+      text-transform: uppercase;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.4);
+      padding-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .back-rules {
+      list-style: none;
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.8);
+      margin: 12px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .back-rules li::before {
+      content: "• ";
+      color: var(--gold-mid);
+    }
+
+    .map-box {
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      border-radius: 6px;
+      background: rgba(255, 0, 60, 0.05);
+      padding: 10px;
+      text-align: center;
+      font-family: var(--font-techno);
+      font-size: 0.65rem;
+      letter-spacing: 1px;
+      color: var(--gold-light);
+    }
+
+    /* BOTÓN FLIP PARA GIRAR */
+    .flip-trigger-btn {
+      position: absolute;
+      top: 10px; right: 10px;
+      z-index: 25;
+      background: rgba(0, 0, 0, 0.7);
+      border: 1px solid var(--gold-mid);
+      color: var(--gold-light);
+      border-radius: 50%;
+      width: 30px; height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: transform 0.3s;
+    }
+
+    .flip-trigger-btn:hover {
+      transform: scale(1.1) rotate(180deg);
     }
 
     .ticket {
@@ -97,6 +195,30 @@
       border-radius: 14px;
       box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.95);
       transform-style: preserve-3d;
+      overflow: hidden;
+    }
+
+    .hologram-watermark {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%) rotate(-15deg);
+      font-family: var(--font-techno);
+      font-size: 2.2rem;
+      font-weight: 900;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      pointer-events: none;
+      z-index: 3;
+      white-space: nowrap;
+      opacity: 0.12;
+      background: linear-gradient(
+        var(--holo-angle, 45deg),
+        #ff0055, #00ffff, #ffff00, #ff00ff, #00ffaa
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      mix-blend-mode: screen;
+      transition: transform 0.1s ease-out;
     }
 
     .ticket::before {
@@ -109,7 +231,6 @@
       pointer-events: none;
     }
 
-    /* Destellos de Esquina */
     .star-flare {
       position: absolute;
       width: 22px; height: 22px;
@@ -130,7 +251,6 @@
       100% { transform: scale(1.2); opacity: 1; }
     }
 
-    /* Muescas circulares laterales alineadas a la línea */
     .notch {
       position: absolute;
       width: 22px; height: 22px;
@@ -142,11 +262,9 @@
       transition: transform 0.5s ease, opacity 0.5s ease;
     }
 
-    /* Posición exacta de las muescas en móvil (coincide con la junta) */
     .notch-left { left: -11px; top: calc(100% - 73px - 11px); }
     .notch-right { right: -11px; top: calc(100% - 73px - 11px); }
 
-    /* SECCIONES DEL TICKET */
     .main-section {
       padding: 24px 18px 28px;
       display: flex;
@@ -154,6 +272,7 @@
       align-items: center;
       text-align: center;
       position: relative;
+      z-index: 4;
       transition: transform 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.8s ease;
       transform-origin: top center;
     }
@@ -169,11 +288,11 @@
       background: rgba(0, 0, 0, 0.4);
       text-align: center;
       position: relative;
+      z-index: 4;
       transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1), opacity 1s ease, filter 1s ease;
       transform-origin: bottom center;
     }
 
-    /* LÍNEA INTERACTIVA DE CORTE UBICADA EXACTAMENTE EN LA JUNTA DE LAS DOS SECCIONES */
     .stub-border-interactive {
       position: absolute;
       left: 12px; right: 12px;
@@ -221,7 +340,6 @@
       transform: translate(-50%, -50%) scale(1);
     }
 
-    /* ANIMACIONES DE TORSIÓN Y RASGADO */
     .ticket.bending .main-section { transform: rotateX(10deg) translateY(-4px) scale(0.995); }
     .ticket.bending .stub-section { transform: rotateX(-14deg) translateY(6px) scale(0.995); }
 
@@ -369,7 +487,36 @@
       letter-spacing: 1.2px;
     }
 
-    /* ADAPTACIÓN ESCRITORIO (DISEÑO HORIZONTAL) */
+    .download-btn {
+      position: relative;
+      z-index: 20;
+      margin-top: 20px;
+      padding: 12px 24px;
+      font-family: var(--font-techno);
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #000;
+      background: var(--gold-gradient);
+      border: none;
+      border-radius: 6px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+      display: none;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.5s ease;
+    }
+
+    .download-btn.visible {
+      display: inline-block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .download-btn:active { transform: scale(0.96); }
+
     @media (min-width: 580px) {
       .ticket { flex-direction: row; }
       .main-section { flex: 1; padding: 20px; }
@@ -388,7 +535,6 @@
         font-size: 0.55rem;
       }
 
-      /* Alineación de la línea interactiva en la junta vertical de escritorio */
       .stub-border-interactive {
         left: auto;
         right: calc(155px - 14px);
@@ -416,29 +562,6 @@
       .notch-left, .notch-right { display: none; }
       .notch-top { display: block; right: calc(155px - 11px); top: -11px; }
       .notch-bottom { display: block; right: calc(155px - 11px); bottom: -11px; top: auto; }
-
-      .ticket.bending .main-section { transform: rotateY(-10deg) translateX(-4px); }
-      .ticket.bending .stub-section { transform: rotateY(14deg) translateX(6px); }
-
-      .ticket.torn .main-section {
-        transform: translateX(-25px) translateZ(30px) rotate(-2deg);
-        clip-path: polygon(
-          0% 0%, 100% 0%, calc(100% - 6px) 5%, 100% 10%, calc(100% - 6px) 15%, 100% 20%,
-          calc(100% - 6px) 25%, 100% 30%, calc(100% - 6px) 35%, 100% 40%, calc(100% - 6px) 45%,
-          100% 50%, calc(100% - 6px) 55%, 100% 60%, calc(100% - 6px) 65%, 100% 70%,
-          calc(100% - 6px) 75%, 100% 80%, calc(100% - 6px) 85%, 100% 90%, calc(100% - 6px) 95%,
-          100% 100%, 0% 100%
-        );
-      }
-
-      .ticket.torn .stub-section {
-        transform: translateX(220px) rotate(25deg) translateZ(-80px);
-        clip-path: polygon(
-          6px 0%, 0% 5%, 6px 10%, 0% 15%, 6px 20%, 0% 25%, 6px 30%, 0% 35%, 6px 40%,
-          0% 45%, 6px 50%, 0% 55%, 6px 60%, 0% 65%, 6px 70%, 0% 75%, 6px 80%,
-          0% 85%, 6px 90%, 0% 95%, 6px 100%, 100% 100%, 100% 0%
-        );
-      }
     }
   </style>
 </head>
@@ -449,59 +572,87 @@
 
   <div class="instructions" id="instruction-text">✂️ DESLIZA SOBRE LA LÍNEA PARA CORTAR EL TIQUETE ✂️</div>
 
-  <div class="ticket-wrapper">
+  <div class="ticket-wrapper" id="ticket-wrapper">
+    <button class="flip-trigger-btn" id="flip-btn" title="Ver Reverso">🔄</button>
+    
     <div class="star-flare flare-1"></div>
     <div class="star-flare flare-2"></div>
     <div class="star-flare flare-3"></div>
     <div class="star-flare flare-4"></div>
 
-    <div class="ticket-frame" id="ticket-frame">
-      <div class="notch notch-left notch-top"></div>
-      <div class="notch notch-right notch-bottom"></div>
+    <div class="flip-card-inner">
+      <!-- FRENTE DEL TIQUETE -->
+      <div class="ticket-frame" id="ticket-frame">
+        <div class="notch notch-left notch-top"></div>
+        <div class="notch notch-right notch-bottom"></div>
 
-      <!-- Línea táctil de recorte exactamente alineada -->
-      <div class="stub-border-interactive" id="cut-line">
-        <div class="blade-indicator" id="blade-indicator"></div>
-        <div class="stub-border-line">
-          <div class="cut-progress" id="cut-progress"></div>
+        <div class="stub-border-interactive" id="cut-line">
+          <div class="blade-indicator" id="blade-indicator"></div>
+          <div class="stub-border-line">
+            <div class="cut-progress" id="cut-progress"></div>
+          </div>
+        </div>
+
+        <div class="ticket" id="ticket">
+          <div class="hologram-watermark" id="watermark">VALIDATED VIP</div>
+
+          <div class="main-section">
+            <div class="badge">
+              <span class="badge-icon"></span> Official Pass
+            </div>
+
+            <div class="main-header">VIP Pass</div>
+            <div class="event-title">The Sinister Forest</div>
+            <div class="sub-header">Event Of The Year</div>
+
+            <div class="date-info">
+              11 AGO // 23:00H | RAW TECHNO
+            </div>
+
+            <div class="meta-grid">
+              <div class="meta-box">
+                <div class="meta-label">Pass Holder</div>
+                <div class="meta-value" id="display-name">JP</div>
+              </div>
+              <div class="meta-box">
+                <div class="meta-label">Ticket Code</div>
+                <div class="meta-value" id="display-code">TSF-448791</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="stub-section">
+            <div class="stub-vertical-text">EVENT OF THE YEAR — 11 AGO</div>
+            <div class="stub-footer">ADMIT ONE // DNI REQUIRED</div>
+          </div>
         </div>
       </div>
 
-      <div class="ticket" id="ticket">
-        <!-- Sección Principal -->
-        <div class="main-section">
-          <div class="badge">
-            <span class="badge-icon"></span> Official Pass
+      <!-- REVERSO DEL TIQUETE -->
+      <div class="ticket-back">
+        <div class="ticket-back-content">
+          <div class="back-title">
+            <span>REGLAMENTO DE ACCESO</span>
+            <span style="color:#ff003c;">+18</span>
           </div>
 
-          <div class="main-header">VIP Pass</div>
-          <div class="event-title">The Sinister Forest</div>
-          <div class="sub-header">Event Of The Year</div>
+          <ul class="back-rules">
+            <li>Presentar DNI o documento oficial físico original.</li>
+            <li>Apertura de puertas: 22:30H. Cierre de acceso: 02:00H.</li>
+            <li>Prohibido el ingreso de bebidas u objetos punzocortantes.</li>
+            <li>Derecho de admisión reservado por la organización.</li>
+          </ul>
 
-          <div class="date-info">
-            11 AGO // 23:00H | RAW TECHNO
+          <div class="map-box">
+            📍 UBICACIÓN: SECRET FOREST ARENA (STAGE 01)<br>
+            <span style="color:rgba(255,255,255,0.6); font-size: 0.55rem;">MUESTRA ESTE COMPROBANTE EN PUERTA</span>
           </div>
-
-          <div class="meta-grid">
-            <div class="meta-box">
-              <div class="meta-label">Pass Holder</div>
-              <div class="meta-value" id="display-name">JP</div>
-            </div>
-            <div class="meta-box">
-              <div class="meta-label">Ticket Code</div>
-              <div class="meta-value" id="display-code">TSF-448791</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Talón Inferior -->
-        <div class="stub-section">
-          <div class="stub-vertical-text">EVENT OF THE YEAR — 11 AGO</div>
-          <div class="stub-footer">ADMIT ONE // DNI REQUIRED</div>
         </div>
       </div>
     </div>
   </div>
+
+  <button class="download-btn" id="download-btn">📥 Descargar Comprobante</button>
 
   <script>
     const urlParams = new URLSearchParams(window.location.search);
@@ -511,78 +662,84 @@
     document.getElementById("display-name").innerText = decodeURIComponent(rawName).toUpperCase();
     document.getElementById("display-code").innerText = decodeURIComponent(rawCode).toUpperCase();
 
-    // LÓGICA DE CORTE SOBRE LA LÍNEA EXACTA
+    const ticketWrapper = document.getElementById('ticket-wrapper');
+    const flipBtn = document.getElementById('flip-btn');
     const cutLine = document.getElementById('cut-line');
     const cutProgress = document.getElementById('cut-progress');
     const bladeIndicator = document.getElementById('blade-indicator');
     const ticket = document.getElementById('ticket');
     const instructionText = document.getElementById('instruction-text');
     const flashOverlay = document.getElementById('flash-overlay');
+    const downloadBtn = document.getElementById('download-btn');
+    const watermark = document.getElementById('watermark');
 
     let isCutting = false;
     let isTorn = false;
     let lastProgress = 0;
 
+    // GIRO 3D FLIP
+    flipBtn.addEventListener('click', () => {
+      ticketWrapper.classList.toggle('flipped');
+    });
+
+    // MARCA DE AGUA
+    if (window.DeviceOrientationEvent) {
+      window.addEventListener('deviceorientation', (e) => {
+        const gamma = e.gamma || 0;
+        const beta = e.beta || 0;
+        watermark.style.setProperty('--holo-angle', `${(gamma + beta) * 2}deg`);
+      });
+    }
+
+    window.addEventListener('mousemove', (e) => {
+      watermark.style.setProperty('--holo-angle', `${(e.clientX / window.innerWidth) * 360}deg`);
+    });
+
+    // AUDIO
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     
     function playMicroScratchSound(pitch = 1) {
       if (audioCtx.state === 'suspended') audioCtx.resume();
-      
       const bufferSize = audioCtx.sampleRate * 0.04;
       const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
       const data = buffer.getChannelData(0);
-      for (let i = 0; i < bufferSize; i++) {
-        data[i] = (Math.random() * 2 - 1) * Math.sin(i / 2);
-      }
+      for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1) * Math.sin(i / 2);
       
       const noise = audioCtx.createBufferSource();
       noise.buffer = buffer;
-      
       const filter = audioCtx.createBiquadFilter();
       filter.type = 'bandpass';
-      filter.frequency.value = 1800 * pitch + (Math.random() * 300 - 150);
+      filter.frequency.value = 1800 * pitch;
       filter.Q.value = 4;
-
       const gain = audioCtx.createGain();
       gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
       gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.04);
-
-      noise.connect(filter);
-      filter.connect(gain);
-      gain.connect(audioCtx.destination);
+      noise.connect(filter); filter.connect(gain); gain.connect(audioCtx.destination);
       noise.start();
     }
 
     function playImpactTearSound() {
       if (audioCtx.state === 'suspended') audioCtx.resume();
-      
       const bufferSize = audioCtx.sampleRate * 0.5;
       const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
       const data = buffer.getChannelData(0);
-      for (let i = 0; i < bufferSize; i++) {
-        data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.25));
-      }
+      for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.25));
       
       const noise = audioCtx.createBufferSource();
       noise.buffer = buffer;
-      
       const filter = audioCtx.createBiquadFilter();
       filter.type = 'lowpass';
       filter.frequency.setValueAtTime(3500, audioCtx.currentTime);
       filter.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.5);
-
       const gain = audioCtx.createGain();
       gain.gain.setValueAtTime(0.9, audioCtx.currentTime);
       gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
-
-      noise.connect(filter);
-      filter.connect(gain);
-      gain.connect(audioCtx.destination);
+      noise.connect(filter); filter.connect(gain); gain.connect(audioCtx.destination);
       noise.start();
     }
 
     function handleStart(e) {
-      if (isTorn) return;
+      if (isTorn || ticketWrapper.classList.contains('flipped')) return;
       isCutting = true;
       ticket.classList.add('bending');
       cutLine.classList.add('cutting');
@@ -623,11 +780,8 @@
 
       pct = Math.max(0, Math.min(1, pct));
 
-      if (isHorizontal) {
-        cutProgress.style.height = (pct * 100) + '%';
-      } else {
-        cutProgress.style.width = (pct * 100) + '%';
-      }
+      if (isHorizontal) cutProgress.style.height = (pct * 100) + '%';
+      else cutProgress.style.width = (pct * 100) + '%';
 
       if (Math.abs(pct - lastProgress) > 0.035) {
         playMicroScratchSound(0.9 + pct * 0.5);
@@ -652,11 +806,24 @@
 
         playImpactTearSound();
         if (navigator.vibrate) navigator.vibrate([40, 60, 100]);
-        emitBurstSparks(clientX, clientY);
+        emitSilverSparks(clientX, clientY);
+
+        setTimeout(() => downloadBtn.classList.add('visible'), 600);
       }
     }
 
-    // CANVAS DE CHISPAS
+    downloadBtn.addEventListener('click', () => {
+      html2canvas(document.getElementById('ticket-frame'), {
+        backgroundColor: null,
+        scale: 2
+      }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = `VIP_Pass_${rawCode}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      });
+    });
+
     const canvas = document.getElementById('particles-canvas');
     const ctx = canvas.getContext('2d');
     let sparkParticles = [];
@@ -682,18 +849,20 @@
       }
     }
 
-    function emitBurstSparks(x, y) {
-      for (let i = 0; i < 40; i++) {
+    function emitSilverSparks(x, y) {
+      for (let i = 0; i < 65; i++) {
         const angle = Math.random() * Math.PI * 2;
-        const speed = Math.random() * 12 + 2;
+        const speed = Math.random() * 15 + 3;
+        const isSilver = Math.random() > 0.4;
         sparkParticles.push({
           x: x, y: y,
           vx: Math.cos(angle) * speed,
           vy: Math.sin(angle) * speed,
           size: Math.random() * 3.5 + 1.5,
           alpha: 1,
-          color: Math.random() > 0.4 ? '#fff3a8' : (Math.random() > 0.5 ? '#ff8000' : '#ff003c'),
-          decay: Math.random() * 0.02 + 0.01
+          color: isSilver ? '#e6f2ff' : '#d4af37',
+          glow: isSilver ? '#ffffff' : '#fcf6ba',
+          decay: Math.random() * 0.015 + 0.008
         });
       }
     }
@@ -728,7 +897,7 @@
         const sp = sparkParticles[i];
         sp.x += sp.vx;
         sp.y += sp.vy;
-        sp.vy += 0.2;
+        sp.vy += 0.22;
         sp.alpha -= sp.decay;
 
         if (sp.alpha <= 0) {
@@ -739,8 +908,8 @@
         ctx.beginPath();
         ctx.arc(sp.x, sp.y, sp.size, 0, Math.PI * 2);
         ctx.fillStyle = sp.color;
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = sp.color;
+        ctx.shadowBlur = 12;
+        ctx.shadowColor = sp.glow || sp.color;
         ctx.globalAlpha = Math.max(0, sp.alpha);
         ctx.fill();
         ctx.globalAlpha = 1.0;
