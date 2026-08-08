@@ -3,515 +3,520 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Premium Pass // The Sinister Forest</title>
+  <title>Ultra VIP Pass // The Sinister Forest</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <!-- Usamos 'Poppins' para una jerarquía clara y 'Orbitron' para toques futuristas/tech -->
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Orbitron:wght@600;800;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
   <style>
-    /* -----------------------------------------------------------
-       1. VARIABLES Y RESET
-       ----------------------------------------------------------- */
     :root {
-      /* Paleta de colores */
-      --bg-dark: #08080a; /* Fondo ultra oscuro */
-      --card-base: #1a1a1d; /* Base de la tarjeta */
-      --metal-crimson: #5c0010; /* Rojo metalizado oscuro */
-      --metal-bright: #9e001c; /* Rojo metalizado brillante */
-      --cyan-neon: #00ffff; /* Cian neón para la calavera/QR */
-      --cyan-glow: rgba(0, 255, 255, 0.5);
-      --text-main: #e0e0e0;
-      --text-muted: #888888;
-      --gold-accent: #c5a059; /* Dorado sutil para emblemas */
-      
-      /* Fuentes */
-      --font-primary: 'Poppins', sans-serif;
-      --font-tech: 'Orbitron', sans-serif;
+      --bg-dark: #030204;
+      --red-bright: #ff003c;
+      --red-deep: #40000a;
+      --cyan-neon: #00f0ff;
+      --cyan-glow: rgba(0, 240, 255, 0.6);
+      --gold-light: #f3e5ab;
+      --gold-dark: #a88038;
+      --metal-border: linear-gradient(135deg, #e6e6e6, #888888 30%, #333333 50%, #888888 70%, #ffffff);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    
+
     body {
       background-color: var(--bg-dark);
-      /* Textura de fondo sutil */
       background-image: 
-        radial-gradient(circle at 50% -20%, #2a0008 0%, transparent 40%),
-        repeating-linear-gradient(45deg, #0a0a0c 0px, #0a0a0c 1px, transparent 1px, transparent 10px);
-      font-family: var(--font-primary);
-      color: var(--text-main);
+        radial-gradient(circle at 50% 20%, rgba(255, 0, 60, 0.25), transparent 60%),
+        radial-gradient(circle at 80% 80%, rgba(0, 240, 255, 0.1), transparent 50%),
+        repeating-linear-gradient(0deg, rgba(0,0,0,0.15) 0px, rgba(0,0,0,0.15) 1px, transparent 1px, transparent 4px);
+      font-family: 'Space Grotesk', sans-serif;
+      color: #fff;
       min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 40px 20px;
+      padding: 30px 15px;
       overflow-x: hidden;
     }
 
-    /* -----------------------------------------------------------
-       2. CONTENEDOR PRINCIPAL Y PERSPECTIVA 3D
-       ----------------------------------------------------------- */
+    /* --- Escena y Perspectiva 3D --- */
     .scene {
-      perspective: 1500px; /* Necesario para el efecto 3D */
+      perspective: 1200px;
     }
 
-    .ticket-container {
+    .ticket-card {
       width: 100%;
-      max-width: 480px; /* Ancho similar a la imagen */
+      max-width: 420px;
+      background: #110206;
+      border-radius: 24px;
+      padding: 4px; /* Espacio para el borde metálico */
       position: relative;
       transform-style: preserve-3d;
-      transform: rotateY(-10deg) rotateX(5deg); /* Rotación inicial */
-      transition: transform 0.6s ease-out;
-      filter: drop-shadow(0 30px 60px rgba(0,0,0,0.8));
-    }
-    
-    /* Efecto hover suave para interactuar */
-    .ticket-container:hover {
-      transform: rotateY(0deg) rotateX(0deg);
+      transition: transform 0.1s ease-out;
+      box-shadow: 
+        0 30px 60px rgba(0,0,0,0.9),
+        0 0 40px rgba(255, 0, 60, 0.3),
+        inset 0 0 15px rgba(255, 255, 255, 0.2);
     }
 
-    /* -----------------------------------------------------------
-       3. ESTRUCTURA DE LA TARJETA (Metal y Marco)
-       ----------------------------------------------------------- */
-    .premium-pass {
-      background: var(--card-base);
-      border-radius: 20px;
-      padding: 5px; /* Espacio para el marco exterior */
-      position: relative;
-      overflow: hidden;
-      
-      /* Marco de metal biselado 3D */
-      box-shadow: 
-        inset 0 0 15px rgba(0,0,0,0.5), /* Sombra interna */
-        0 2px 0 #333, 0 4px 0 #222, 0 6px 1px rgba(0,0,0,0.4); /* Grosor del borde 3D */
-    }
-    
-    /* Marco metálico exterior biselado */
-    .premium-pass::before {
+    /* Borde Metálico Biselado 3D */
+    .ticket-card::before {
       content: '';
       position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      border-radius: 20px;
-      border: 4px solid #3a3a3d; /* Color metal frío */
-      border-top-color: #555; /* Brillo superior */
-      border-bottom-color: #111; /* Sombra inferior */
+      inset: 0;
+      border-radius: 24px;
+      padding: 3px;
+      background: var(--metal-border);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
       pointer-events: none;
       z-index: 10;
     }
 
-    /* -----------------------------------------------------------
-       4. FONDO ROJO METALIZADO CON RELIEVE DE BOSQUE
-       ----------------------------------------------------------- */
-    .inner-content {
-      background: var(--metal-crimson);
-      /* Degradado complejo para simular metal cepillado rojo */
-      background-image: 
-        linear-gradient(160deg, var(--metal-bright) 0%, var(--metal-crimson) 40%, #2a0005 100%),
-        /* Textura de ruido metálico (usando un gradiente repetitivo muy fino) */
-        repeating-radial-gradient(circle at center, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 4px);
-      border-radius: 16px;
-      padding: 30px 25px;
+    /* Interior Metalizado con textura Cepillada */
+    .inner-card {
       position: relative;
+      background: 
+        linear-gradient(135deg, rgba(15,3,6,0.95) 0%, rgba(74,0,14,0.9) 40%, rgba(180,0,40,0.85) 50%, rgba(64,0,10,0.9) 65%, rgba(10,1,3,0.98) 100%),
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 3px);
+      border-radius: 20px;
+      padding: 28px 22px;
+      overflow: hidden;
       z-index: 1;
     }
-    
-    /* Textura de ramas de bosque oscuro (Relieve sutil en el fondo) */
-    .inner-content::before {
-      content: '';
+
+    /* --- EFECTO HOLOGRÁFICO DINÁMICO --- */
+    .hologram-overlay {
       position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background-image: url('data:image/svg+xml,%3Csvg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath d="M10 10 C 20 40, 40 20, 50 50 M60 10 C 70 30, 80 10, 90 40 M10 60 C 30 70, 20 90, 50 80 M70 60 C 80 80, 90 70, 90 90" stroke="%23300008" stroke-width="1.5" fill="none" opacity="0.4"/%3E%3C/svg%3E');
-      background-size: 150px;
-      opacity: 0.6;
+      inset: -50%;
+      background: linear-gradient(
+        115deg,
+        transparent 40%,
+        rgba(0, 240, 255, 0.15) 45%,
+        rgba(255, 0, 100, 0.25) 50%,
+        rgba(255, 215, 0, 0.15) 55%,
+        transparent 60%
+      );
+      transform: rotate(15deg);
       pointer-events: none;
+      z-index: 8;
+      animation: holoShift 7s infinite linear;
+      mix-blend-mode: color-dodge;
     }
 
-    /* -----------------------------------------------------------
-       5. CABECERA Y BADGE
-       ----------------------------------------------------------- */
-    header {
+    @keyframes holoShift {
+      0% { transform: translateY(-30%) rotate(15deg); }
+      50% { transform: translateY(30%) rotate(15deg); }
+      100% { transform: translateY(-30%) rotate(15deg); }
+    }
+
+    /* --- ILUSTRACIÓN DE RAMAS / BOSQUE (Relieve 3D) --- */
+    .forest-emboss {
+      position: absolute;
+      inset: 0;
+      opacity: 0.18;
+      pointer-events: none;
+      background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 100 100"%3E%3Cg stroke="%23ffffff" stroke-width="1.2" fill="none"%3E%3Cpath d="M10,90 Q30,50 20,10 M20,50 Q40,30 50,10 M20,70 Q50,60 80,90 M80,90 Q70,40 90,10 M70,50 Q50,40 40,10" /%3E%3C/g%3E%3C/svg%3E');
+      background-size: 180px;
+      filter: drop-shadow(2px 2px 1px #000) drop-shadow(-1px -1px 1px rgba(255,255,255,0.3));
+    }
+
+    /* --- ENCABEZADO Y BADGE --- */
+    .header {
       text-align: center;
-      margin-bottom: 25px;
       position: relative;
-      z-index: 2;
+      z-index: 5;
+      margin-bottom: 20px;
     }
 
-    .main-title {
-      font-family: var(--font-tech);
-      font-weight: 900;
-      font-size: 1.8rem;
-      text-transform: uppercase;
-      letter-spacing: 3px;
-      color: #fff;
-      /* Efecto de texto grabado sutil */
-      text-shadow: 0 2px 4px rgba(0,0,0,0.5), 0 0 1px rgba(255,255,255,0.3);
-      margin-bottom: 8px;
-    }
-
-    .status-badge {
+    .badge-verified {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      background: linear-gradient(180deg, #3a3a3d, #1a1a1d);
-      padding: 6px 16px;
+      gap: 6px;
+      background: rgba(0, 0, 0, 0.7);
+      border: 1px solid rgba(0, 240, 255, 0.4);
+      padding: 4px 14px;
       border-radius: 50px;
-      border: 1px solid #444;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.1), 0 2px 4px rgba(0,0,0,0.3);
-    }
-    
-    .status-icon {
-      width: 10px; height: 10px;
-      background-color: var(--cyan-neon);
-      border-radius: 50%;
-      box-shadow: 0 0 10px var(--cyan-neon), 0 0 20px var(--cyan-neon);
-      animation: pulseGlow 2s infinite;
-    }
-    
-    .status-text {
-      font-size: 0.7rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      color: #fff;
-    }
-
-    /* -----------------------------------------------------------
-       6. SECCIÓN CENTRAL: CALAVERA HOLOGRÁFICA Y DATOS
-       ----------------------------------------------------------- */
-    .hero-section {
-      display: flex;
-      gap: 20px;
-      align-items: center;
-      margin-bottom: 25px;
-      position: relative;
-      z-index: 2;
-    }
-
-    /* Contenedor de la Calavera con Efecto Neón Cian */
-    .skull-container {
-      width: 100px; height: 100px;
-      background: radial-gradient(circle at center, #102a2a 0%, #08080a 70%);
-      border-radius: 12px;
-      border: 2px solid #222;
-      display: flex; justify-content: center; align-items: center;
-      position: relative;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.5), inset 0 0 15px rgba(0,0,0,0.8);
-    }
-    
-    /* Brillo Neón Cian detrás de la calavera */
-    .skull-container::before {
-      content: '';
-      position: absolute;
-      width: 60px; height: 60px;
-      background-color: var(--cyan-neon);
-      border-radius: 50%;
-      filter: blur(25px);
-      opacity: 0.7;
-    }
-
-    /* Calavera SVG estilizada en Cian */
-    .skull-icon {
-      width: 70px; height: 70px;
-      position: relative;
-      z-index: 1;
-      filter: drop-shadow(0 0 5px var(--cyan-neon));
-    }
-
-    .user-data {
-      flex: 1;
-    }
-
-    .data-group {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.6rem;
+      letter-spacing: 2px;
+      color: var(--cyan-neon);
+      box-shadow: 0 0 12px rgba(0, 240, 255, 0.3);
       margin-bottom: 12px;
-    }
-
-    .label {
-      font-size: 0.65rem;
-      color: var(--text-muted);
       text-transform: uppercase;
-      letter-spacing: 1px;
-      font-weight: 400;
-      margin-bottom: 2px;
     }
 
-    .value-primary {
-      font-size: 1.4rem;
-      font-weight: 800;
-      color: #fff;
-      line-height: 1.2;
-    }
-    
-    .value-secondary {
-      font-family: monospace;
-      font-size: 0.9rem;
-      color: var(--text-main);
-      background: rgba(0,0,0,0.3);
-      padding: 2px 6px;
-      border-radius: 4px;
+    .dot-live {
+      width: 6px; height: 6px;
+      background-color: var(--cyan-neon);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--cyan-neon);
+      animation: blink 1.5s infinite;
     }
 
-    /* -----------------------------------------------------------
-       7. CÓDIGO QR ESTILIZADO
-       ----------------------------------------------------------- */
-    .qr-section {
-      text-align: center;
-      margin-bottom: 30px;
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+
+    .title-main {
+      font-family: 'Cinzel', serif;
+      font-size: 1.8rem;
+      font-weight: 900;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      background: linear-gradient(180deg, #ffffff 20%, #ff8095 70%, #ff003c 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.9));
+      line-height: 1.1;
+    }
+
+    /* --- CALAVERA 3D REALISTA CON RESPLANDOR CIAN --- */
+    .hero-display {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 16px;
+      padding: 16px;
+      backdrop-filter: blur(10px);
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.8), 0 8px 25px rgba(0,0,0,0.5);
       position: relative;
-      z-index: 2;
+      z-index: 5;
+      margin-bottom: 18px;
     }
 
-    .qr-container {
-      display: inline-block;
-      background-color: #000;
-      padding: 15px;
+    .skull-frame {
+      width: 90px;
+      height: 90px;
+      min-width: 90px;
+      background: radial-gradient(circle, #082028 0%, #020508 80%);
       border-radius: 12px;
-      border: 1px solid #222;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.5), inset 0 0 10px rgba(0,0,0,0.8);
+      border: 1px solid rgba(0, 240, 255, 0.3);
       position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.2), inset 0 0 10px rgba(0,0,0,0.9);
+      overflow: hidden;
     }
-    
-    /* Efecto de escaneo neón cian sobre el QR */
-    .qr-container::after {
+
+    /* Base del Resplandor de Neón Cian */
+    .skull-frame::after {
       content: '';
       position: absolute;
-      top: 0; left: 0; width: 100%; height: 4px;
-      background: linear-gradient(90deg, transparent, var(--cyan-neon), transparent);
-      box-shadow: 0 0 10px var(--cyan-neon);
-      animation: scanQR 3s infinite linear;
+      bottom: -10px;
+      width: 60px;
+      height: 20px;
+      background: var(--cyan-neon);
+      filter: blur(15px);
       opacity: 0.8;
     }
 
-    /* Generamos un QR falso visual usando degradados */
-    .qr-code-placeholder {
-      width: 140px; height: 140px;
-      background-image: 
-        /* Tres cuadrados de esquina típicos */
-        linear-gradient(90deg, var(--cyan-neon) 20px, transparent 20px, transparent 120px, var(--cyan-neon) 120px),
-        linear-gradient(0deg, var(--cyan-neon) 20px, transparent 20px, transparent 120px, var(--cyan-neon) 120px),
-        /* Patrón de datos aleatorio sutil en cian */
-        repeating-linear-gradient(45deg, transparent 0px, transparent 2px, rgba(0, 255, 255, 0.3) 2px, rgba(0, 255, 255, 0.3) 4px),
-        repeating-linear-gradient(-45deg, transparent 0px, transparent 2px, rgba(0, 255, 255, 0.3) 2px, rgba(0, 255, 255, 0.3) 4px);
-      background-size: 140px 140px, 140px 140px, 8px 8px, 8px 8px;
-      background-position: center;
-      filter: drop-shadow(0 0 2px var(--cyan-glow));
-    }
-
-    /* -----------------------------------------------------------
-       8. PANELES VIP (ZONA Y MESA)
-       ----------------------------------------------------------- */
-    .vip-panels-container {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 15px;
-      position: relative;
+    .skull-svg {
+      width: 65px;
+      height: 65px;
+      filter: drop-shadow(0 0 6px var(--cyan-glow)) drop-shadow(0 5px 8px #000);
       z-index: 2;
     }
 
-    /* Estilo de panel empotrado/tallado (efecto 3D inverso) */
-    .vip-panel {
-      background: rgba(0,0,0,0.4);
-      border-radius: 12px;
-      padding: 15px;
-      border: 1px solid rgba(255,255,255,0.05);
-      /* Sombra interna para efecto 'carved' (tallado) */
-      box-shadow: inset 0 2px 10px rgba(0,0,0,0.8), 0 1px 1px rgba(255,255,255,0.1);
-      position: relative;
+    .user-info {
+      flex: 1;
+      overflow: hidden;
     }
 
-    .panel-header {
+    .info-label {
+      font-size: 0.58rem;
+      color: rgba(255, 255, 255, 0.5);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 2px;
+    }
+
+    .info-name {
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+    }
+
+    .info-code {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.85rem;
+      color: #ff8095;
+      letter-spacing: 2px;
+      margin-top: 4px;
+    }
+
+    /* --- CÓDIGO QR Y LÁSER ESCÁNER --- */
+    .qr-block {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 14px;
+      margin-bottom: 18px;
+      position: relative;
+      z-index: 5;
+    }
+
+    .qr-box {
+      width: 85px;
+      height: 85px;
+      min-width: 85px;
+      background: #fff;
+      padding: 6px;
+      border-radius: 10px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+    }
+
+    .qr-box img {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Línea Láser Verde/Cian en Movimiento */
+    .laser-line {
+      position: absolute;
+      left: 0; top: 0;
+      width: 100%; height: 3px;
+      background: var(--cyan-neon);
+      box-shadow: 0 0 8px var(--cyan-neon), 0 0 15px var(--cyan-neon);
+      animation: scan 2.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes scan {
+      0% { top: 5%; }
+      100% { top: 90%; }
+    }
+
+    .access-status {
+      flex: 1;
+    }
+
+    .status-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.75rem;
+      color: #00ffaa;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 4px;
+      text-shadow: 0 0 8px rgba(0, 255, 170, 0.4);
+    }
+
+    .status-desc {
+      font-size: 0.65rem;
+      color: rgba(255, 255, 255, 0.6);
+      line-height: 1.3;
+    }
+
+    /* --- PANELES VIP DORADOS (TALLADOS EN RELIEVE) --- */
+    .vip-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      position: relative;
+      z-index: 5;
+      margin-bottom: 20px;
+    }
+
+    .vip-card {
+      background: linear-gradient(145deg, rgba(20, 15, 5, 0.8), rgba(5, 5, 5, 0.9));
+      border: 1px solid var(--gold-dark);
+      border-radius: 12px;
+      padding: 12px;
+      position: relative;
+      box-shadow: inset 0 1px 1px rgba(255, 230, 150, 0.3), 0 4px 10px rgba(0,0,0,0.5);
+    }
+
+    .vip-head {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 8px;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-      padding-bottom: 5px;
+      margin-bottom: 4px;
     }
 
-    .panel-title {
-      font-size: 0.7rem;
-      font-weight: 700;
-      color: var(-- gold-accent); /* Color dorado sutil */
+    .vip-label {
+      font-size: 0.58rem;
+      font-family: 'Orbitron', sans-serif;
+      color: var(--gold-light);
       text-transform: uppercase;
       letter-spacing: 1px;
     }
 
-    /* Icono de emblema dorado tallado */
-    .emblem-icon {
-      width: 14px; height: 14px;
-      background: var(--gold-accent);
-      border-radius: 3px;
-      box-shadow: 0 0 5px rgba(197, 160, 89, 0.5);
+    .gold-icon {
+      width: 12px; height: 12px;
+      fill: var(--gold-light);
+      filter: drop-shadow(0 0 2px var(--gold-dark));
     }
 
-    .panel-value {
-      font-family: var(--font-tech);
-      font-size: 1.1rem;
-      font-weight: 700;
+    .vip-value {
+      font-size: 1.05rem;
+      font-weight: 900;
       color: #fff;
       text-transform: uppercase;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.8);
-    }
-    
-    .panel-sub {
-      font-size: 0.6rem;
-      color: var(--text-muted);
-      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.9);
     }
 
-    /* -----------------------------------------------------------
-       9. FOOTER: FECHA Y CONDICIONES
-       ----------------------------------------------------------- */
-    footer {
-      margin-top: 30px;
+    /* --- PIE DE PÁGINA --- */
+    .footer-info {
       text-align: center;
       position: relative;
-      z-index: 2;
-      border-top: 1px solid rgba(255,255,255,0.08);
-      padding-top: 20px;
+      z-index: 5;
+      border-top: 1px dashed rgba(255,255,255,0.2);
+      padding-top: 14px;
     }
 
-    .event-details {
-      font-family: var(--font-tech);
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: #fff;
-      letter-spacing: 1px;
-      margin-bottom: 6px;
+    .event-time {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 4px;
     }
 
-    .terms-notice {
-      font-size: 0.65rem;
-      color: var(--text-muted);
-      font-weight: 300;
-    }
-
-    /* -----------------------------------------------------------
-       10. ANIMACIONES
-       ----------------------------------------------------------- */
-    @keyframes pulseGlow {
-      0%, 100% { opacity: 1; box-shadow: 0 0 10px var(--cyan-neon); }
-      50% { opacity: 0.6; box-shadow: 0 0 5px var(--cyan-neon); }
-    }
-    
-    @keyframes scanQR {
-      0% { top: 0; }
-      50% { top: 100%; transform: translateY(-4px); }
-      100% { top: 0; }
-    }
-
-    /* -----------------------------------------------------------
-       11. MEDIA QUERIES (RESPONSIVE)
-       ----------------------------------------------------------- */
-    @media (max-width: 400px) {
-      .hero-section { flex-direction: column; text-align: center; gap: 10px; }
-      .main-title { font-size: 1.5rem; }
-      .vip-panels-container { grid-template-columns: 1fr; }
+    .event-rules {
+      font-size: 0.6rem;
+      color: rgba(255, 255, 255, 0.4);
+      letter-spacing: 0.5px;
     }
   </style>
 </head>
 <body>
 
-  <!-- Escena 3D para la perspectiva -->
   <div class="scene">
-    
-    <!-- Contenedor de la tarjeta con rotación -->
-    <div class="ticket-container" id="ticket">
-      <div class="premium-pass">
-        <div class="inner-content">
-          
-          <!-- Cabecera -->
-          <header>
-            <h1 class="main-title">The Sinister Forest</h1>
-            <div class="status-badge">
-              <span class="status-icon"></span>
-              <span class="status-text">Official Verified Pass</span>
-            </div>
-          </header>
+    <div class="ticket-card" id="card">
+      <div class="inner-card">
+        
+        <!-- Capas de efectos -->
+        <div class="hologram-overlay"></div>
+        <div class="forest-emboss"></div>
 
-          <!-- Sección Central -->
-          <div class="hero-section">
-            <div class="skull-container">
-              <!-- Calavera SVG estilizada cian -->
-              <svg class="skull-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                <path d="M50 10 C 30 10, 15 25, 15 45 C 15 60, 25 75, 35 80 L 35 90 L 65 90 L 65 80 C 75 75, 85 60, 85 45 C 85 25, 70 10, 50 10 Z M35 40 A 10 10 0 1 1 35 41 Z M65 40 A 10 10 0 1 1 65 41 Z M50 65 Q 50 75, 40 75 Q 50 75, 60 75 Q 50 75, 50 65 Z" fill="none" stroke="#00ffff" stroke-width="4" stroke-linecap="round"/>
-              </svg>
-            </div>
-            <div class="user-data">
-              <div class="data-group">
-                <div class="label">Pass Holder</div>
-                <div class="value-primary">GUEST</div>
-              </div>
-              <div class="data-group">
-                <div class="label">Unique Code</div>
-                <span class="value-secondary">TSF-000000</span>
-              </div>
-            </div>
+        <!-- Header -->
+        <header class="header">
+          <div class="badge-verified">
+            <span class="dot-live"></span> Official Verified Pass
+          </div>
+          <h1 class="title-main">The Sinister<br>Forest</h1>
+        </header>
+
+        <!-- Hero Section (Calavera 3D + Datos) -->
+        <div class="hero-display">
+          <div class="skull-frame">
+            <!-- Calavera Vectorial Detallada con sombreado interno -->
+            <svg class="skull-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M50 12 C28 12 16 28 16 48 C16 60 22 70 30 76 L30 88 L70 88 L70 76 C78 70 84 60 84 48 C84 28 72 12 50 12 Z" fill="#0b171c" stroke="#00f0ff" stroke-width="2"/>
+              <!-- Cuencas Oculares -->
+              <circle cx="36" cy="48" r="10" fill="#00f0ff" fill-opacity="0.2" stroke="#00f0ff" stroke-width="2"/>
+              <circle cx="64" cy="48" r="10" fill="#00f0ff" fill-opacity="0.2" stroke="#00f0ff" stroke-width="2"/>
+              <circle cx="36" cy="48" r="3" fill="#ffffff"/>
+              <circle cx="64" cy="48" r="3" fill="#ffffff"/>
+              <!-- Nariz -->
+              <path d="M50 58 L45 68 L55 68 Z" fill="#00f0ff"/>
+              <!-- Dientes -->
+              <path d="M38 80 L38 88 M46 80 L46 88 M54 80 L54 88 M62 80 L62 88" stroke="#00f0ff" stroke-width="2"/>
+            </svg>
           </div>
 
-          <!-- Código QR -->
-          <div class="qr-section">
-            <div class="qr-container">
-              <!-- Placeholder visual del código QR -->
-              <div class="qr-code-placeholder"></div>
+          <div class="user-info">
+            <div class="info-label">Titular del Pase</div>
+            <div class="info-name" id="display-name">GUEST</div>
+            <div class="info-label" style="margin-top: 8px;">Código Único</div>
+            <div class="info-code" id="display-code">TSF-000000</div>
+          </div>
+        </div>
+
+        <!-- Código QR con Escáner Láser -->
+        <div class="qr-block">
+          <div class="qr-box">
+            <div class="laser-line"></div>
+            <img id="qr-img" src="" alt="QR Code" />
+          </div>
+          <div class="access-status">
+            <div class="status-title">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="#00ffaa"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              Acceso Confirmado
             </div>
+            <div class="status-desc">Ticket auténtico y cifrado en red. Válido únicamente para 1 entrada.</div>
+          </div>
+        </div>
+
+        <!-- Paneles VIP Dorados Tallados -->
+        <div class="vip-grid">
+          <div class="vip-card">
+            <div class="vip-head">
+              <span class="vip-label">Zona VIP</span>
+              <svg class="gold-icon" viewBox="0 0 24 24"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+            </div>
+            <div class="vip-value">El Abismo</div>
           </div>
 
-          <!-- Paneles VIP (GRID) -->
-          <div class="vip-panels-container">
-            <!-- Zona VIP -->
-            <div class="vip-panel">
-              <div class="panel-header">
-                <span class="panel-title">Zona VIP</span>
-                <span class="emblem-icon"></span> <!-- Emblema sutil -->
-              </div>
-              <div class="panel-value">El Abismo</div>
-              <div class="panel-sub">Acceso Exclusivo</div>
+          <div class="vip-card">
+            <div class="vip-head">
+              <span class="vip-label">Mesa</span>
+              <svg class="gold-icon" viewBox="0 0 24 24"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
             </div>
-            <!-- Mesa -->
-            <div class="vip-panel">
-              <div class="panel-header">
-                <span class="panel-title">Mesa</span>
-                <span class="emblem-icon"></span> <!-- Emblema sutil -->
-              </div>
-              <div class="panel-value">Z-13</div>
-              <div class="panel-sub">Mesa Reservada</div>
-            </div>
+            <div class="vip-value">Z-13</div>
           </div>
+        </div>
 
-          <!-- Footer -->
-          <footer>
-            <div class="event-details">11 AGO // 23:00H | RAW TECHNO</div>
-            <div class="terms-notice">Presentar DNI / Cédula original en puerta</div>
-          </footer>
+        <!-- Footer -->
+        <footer class="footer-info">
+          <div class="event-time">11 AGO // 23:00H | RAW TECHNO</div>
+          <div class="event-rules">OBLIGATORIO PRESENTAR DNI / CÉDULA EN PUERTA</div>
+        </footer>
 
-        </div> <!-- /inner-content -->
-      </div> <!-- /premium-pass -->
-    </div> <!-- /ticket-container -->
-    
-  </div> <!-- /scene -->
+      </div>
+    </div>
+  </div>
 
   <script>
-    /* Pequeño script opcional para que la tarjeta siga ligeramente el movimiento del ratón */
-    const ticket = document.getElementById('ticket');
-    const constrain = 20; // Grados máximos de rotación
+    // Obtención de parámetros dinámicos de URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const nameParam = urlParams.get('name') || "GUEST";
+    const codeParam = urlParams.get('code') || "TSF-000000";
 
-    function transforms(x, y, el) {
-      let box = el.getBoundingClientRect();
-      let calcX = -(y - box.y - (box.height / 2)) / constrain;
-      let calcY = (x - box.x - (box.width / 2)) / constrain;
+    const cleanName = decodeURIComponent(nameParam).toUpperCase();
+    const cleanCode = decodeURIComponent(codeParam).toUpperCase();
+
+    document.getElementById("display-name").innerText = cleanName;
+    document.getElementById("display-code").innerText = cleanCode;
+
+    // Generar código QR mediante API
+    const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=TSF-PASS:${cleanCode}:${cleanName}&color=050508`;
+    document.getElementById("qr-img").src = qrApiUrl;
+
+    // --- EFECTO DE INCLINACIÓN (TILT 3D INTERACTIVO) ---
+    const card = document.getElementById('card');
+
+    document.addEventListener('mousemove', (e) => {
+      const { clientX, clientY } = e;
+      const { innerWidth, innerHeight } = window;
       
-      return `rotateX(${calcX}deg) rotateY(${calcY}deg) `;
-    };
+      // Calcular la rotación en base al centro de la pantalla
+      const rotateX = ((clientY / innerHeight) - 0.5) * -25;
+      const rotateY = ((clientX / innerWidth) - 0.5) * 25;
 
-    function callback(e, el) {
-      el.style.transform = transforms(e.clientX, e.clientY, el);
-    };
+      card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    });
 
-    // Solo activamos el efecto si no es un dispositivo táctil
-    if (window.matchMedia("(pointer: fine)").matches) {
-      document.body.addEventListener('mousemove', (e) => {
-        // callback(e, ticket); // Descomenta esta línea para activar el efecto de seguimiento del ratón
-      });
-    }
+    // Resetear posición al salir el cursor de la ventana
+    document.addEventListener('mouseleave', () => {
+      card.style.transform = `rotateX(0deg) rotateY(0deg)`;
+    });
   </script>
 </body>
 </html>
