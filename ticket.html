@@ -7,7 +7,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@600;700&family=UnifrakturMaguntina&display=swap" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <style>
     :root {
       --bg-dark: #050203;
@@ -18,7 +17,7 @@
       --font-ui: 'Rajdhani', sans-serif;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
 
     body {
       background-color: var(--bg-dark);
@@ -30,6 +29,7 @@
       color: #fff;
       min-height: 100vh;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       padding: 16px;
@@ -43,16 +43,35 @@
       z-index: 1;
     }
 
+    .instructions {
+      position: relative;
+      z-index: 10;
+      font-family: var(--font-techno);
+      font-size: 0.65rem;
+      color: var(--gold-light);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      text-align: center;
+      text-shadow: 0 0 8px rgba(212, 175, 55, 0.6);
+      animation: pulseText 1.5s infinite alternate;
+    }
+
+    @keyframes pulseText {
+      from { opacity: 0.6; transform: scale(0.98); }
+      to { opacity: 1; transform: scale(1.02); }
+    }
+
     /* Contenedor Adaptable */
     .ticket-wrapper {
       position: relative;
       z-index: 2;
       width: 100%;
       max-width: 620px;
+      perspective: 1000px;
       filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.25)) drop-shadow(0 15px 35px rgba(0, 0, 0, 0.9));
     }
 
-    /* Marco dorado exterior para permitir border-radius real */
     .ticket-frame {
       padding: 2px;
       background: var(--gold-gradient);
@@ -60,18 +79,15 @@
       position: relative;
     }
 
-    /* Estructura Base del Ticket */
     .ticket {
       position: relative;
       display: flex;
       flex-direction: column;
       background: linear-gradient(145deg, #120004 0%, #2a000a 50%, #0d0003 100%);
       border-radius: 14px;
-      overflow: hidden;
-      box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.95), 0 0 15px rgba(212, 175, 55, 0.2);
+      box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.95);
     }
 
-    /* Textura de Fondo */
     .ticket::before {
       content: '';
       position: absolute;
@@ -82,35 +98,10 @@
       pointer-events: none;
     }
 
-    /* Destello Diagonal Holográfico */
-    .ticket::after {
-      content: '';
-      position: absolute;
-      top: -150%; left: -150%;
-      width: 400%; height: 400%;
-      background: linear-gradient(
-        45deg,
-        transparent 43%,
-        rgba(255, 243, 168, 0.03) 47%,
-        rgba(255, 255, 255, 0.35) 50%,
-        rgba(255, 243, 168, 0.03) 53%,
-        transparent 57%
-      );
-      transform: rotate(25deg);
-      pointer-events: none;
-      animation: shineSweep 4s infinite ease-in-out;
-    }
-
-    @keyframes shineSweep {
-      0% { transform: translateY(-100%) rotate(25deg); }
-      35%, 100% { transform: translateY(100%) rotate(25deg); }
-    }
-
-    /* Destellos de Luz en Esquinas */
+    /* Destellos de Luz */
     .star-flare {
       position: absolute;
-      width: 22px;
-      height: 22px;
+      width: 22px; height: 22px;
       background: radial-gradient(circle, #ffffff 15%, rgba(255, 243, 168, 0.9) 35%, transparent 70%);
       clip-path: polygon(50% 0%, 58% 42%, 100% 50%, 58% 58%, 50% 100%, 42% 58%, 0% 50%, 42% 42%);
       z-index: 20;
@@ -118,41 +109,61 @@
       animation: flarePulse 2s infinite alternate ease-in-out;
     }
 
-    .flare-1 { top: -8px; left: -8px; animation-delay: 0s; }
-    .flare-2 { top: -8px; right: -8px; animation-delay: 0.6s; }
-    .flare-3 { bottom: -8px; left: -8px; animation-delay: 1.2s; }
-    .flare-4 { bottom: -8px; right: -8px; animation-delay: 0.3s; }
+    .flare-1 { top: -8px; left: -8px; }
+    .flare-2 { top: -8px; right: -8px; }
+    .flare-3 { bottom: -8px; left: -8px; }
+    .flare-4 { bottom: -8px; right: -8px; }
 
     @keyframes flarePulse {
-      0% { transform: scale(0.5) rotate(0deg); opacity: 0.3; }
-      100% { transform: scale(1.2) rotate(90deg); opacity: 1; filter: drop-shadow(0 0 6px #fff3a8); }
+      0% { transform: scale(0.5); opacity: 0.3; }
+      100% { transform: scale(1.2); opacity: 1; }
     }
 
-    /* Muescas y Divisores en Móvil */
     .notch {
       position: absolute;
-      width: 22px;
-      height: 22px;
+      width: 22px; height: 22px;
       background-color: var(--bg-dark);
       border-radius: 50%;
       z-index: 10;
       border: 2px solid #d4af37;
       box-shadow: inset 0 0 6px rgba(0,0,0,0.9);
+      transition: all 0.5s ease;
     }
 
-    .notch-left { left: -11px; bottom: 165px; }
-    .notch-right { right: -11px; bottom: 165px; }
+    .notch-left { left: -11px; bottom: 120px; }
+    .notch-right { right: -11px; bottom: 120px; }
 
-    .stub-border {
+    /* LÍNEA INTERACTIVA DE CORTE */
+    .stub-border-interactive {
       position: absolute;
-      left: 14px;
-      right: 14px;
-      bottom: 176px;
-      border-top: 1.5px dashed rgba(212, 175, 55, 0.6);
-      z-index: 5;
+      left: 14px; right: 14px; bottom: 131px;
+      height: 20px;
+      transform: translateY(50%);
+      z-index: 30;
+      cursor: ns-resize;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    /* Sección Principal */
+    .stub-border-line {
+      width: 100%;
+      height: 2px;
+      border-top: 2px dashed rgba(212, 175, 55, 0.8);
+      position: relative;
+    }
+
+    .cut-progress {
+      position: absolute;
+      left: 0; top: -2px;
+      height: 4px;
+      background: #ff003c;
+      box-shadow: 0 0 8px #ff003c;
+      width: 0%;
+      transition: width 0.05s linear;
+    }
+
+    /* Partes divididas para la animación de rasgado */
     .main-section {
       padding: 24px 18px 28px;
       display: flex;
@@ -160,6 +171,37 @@
       align-items: center;
       text-align: center;
       position: relative;
+      transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s ease;
+      transform-origin: top center;
+    }
+
+    .stub-section {
+      padding: 20px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: rgba(0, 0, 0, 0.4);
+      text-align: center;
+      position: relative;
+      transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s ease;
+      transform-origin: bottom center;
+    }
+
+    /* Clases de animación de corte completado */
+    .ticket.torn .main-section {
+      transform: translateY(-20px) rotate(-2deg);
+    }
+
+    .ticket.torn .stub-section {
+      transform: translateY(60px) rotate(8deg);
+      opacity: 0.2;
+      filter: blur(1px);
+    }
+
+    .ticket.torn .stub-border-interactive {
+      display: none;
     }
 
     .badge {
@@ -259,76 +301,52 @@
       font-weight: 700;
       color: #fff;
       letter-spacing: 1px;
-      word-break: break-all;
-    }
-
-    /* Talón (Stub Section) Reorganizado en Móvil */
-    .stub-section {
-      padding: 16px 16px 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      background: rgba(0, 0, 0, 0.4);
-      text-align: center;
     }
 
     .stub-vertical-text {
       font-family: var(--font-techno);
-      font-size: 0.58rem;
-      letter-spacing: 1.5px;
+      font-size: 0.65rem;
+      letter-spacing: 2px;
       color: var(--gold-light);
       text-transform: uppercase;
     }
 
-    .qr-wrapper {
-      background: #fff;
-      padding: 6px;
-      border-radius: 6px;
-      border: 1.5px solid #d4af37;
-      box-shadow: 0 0 12px rgba(212, 175, 55, 0.4);
-    }
-
-    .qr-wrapper canvas, .qr-wrapper img { display: block; }
-
     .stub-footer {
       font-family: var(--font-techno);
-      font-size: 0.48rem;
+      font-size: 0.52rem;
       color: rgba(255, 255, 255, 0.7);
-      letter-spacing: 1px;
+      letter-spacing: 1.2px;
     }
 
-    /* MEDIA QUERY: ESCRITORIO (Diseño Horizontal) */
+    /* ESCRITORIO */
     @media (min-width: 580px) {
-      .ticket {
-        flex-direction: row;
+      .stub-border-interactive {
+        left: auto; right: 145px; top: 14px; bottom: 14px;
+        width: 20px; height: auto;
+        transform: translateX(50%);
+        cursor: ew-resize;
       }
 
-      .main-section {
-        flex: 1;
-        padding: 20px;
-        align-items: center;
+      .stub-border-line {
+        width: 2px; height: 100%;
+        border-top: none;
+        border-left: 2px dashed rgba(212, 175, 55, 0.8);
       }
 
-      .badge {
-        position: absolute;
-        top: 12px;
-        left: 15px;
-        margin-bottom: 0;
+      .cut-progress {
+        width: 4px; height: 0%;
+        left: -2px; top: 0;
       }
 
-      .main-header {
-        margin-top: 10px;
-      }
-
-      .date-info {
-        width: auto;
-      }
+      .ticket { flex-direction: row; }
+      .main-section { flex: 1; padding: 20px; }
+      .badge { position: absolute; top: 12px; left: 15px; margin-bottom: 0; }
+      .main-header { margin-top: 10px; }
+      .date-info { width: auto; }
 
       .stub-section {
         width: 155px;
-        padding: 14px 10px;
+        padding: 20px 10px;
         justify-content: space-between;
         border-left: 1px solid rgba(212, 175, 55, 0.2);
       }
@@ -336,33 +354,19 @@
       .stub-vertical-text {
         writing-mode: vertical-rl;
         transform: rotate(180deg);
-        font-size: 0.52rem;
+        font-size: 0.55rem;
       }
 
-      .notch-left { display: none; }
-      .notch-right { display: none; }
+      .notch-left, .notch-right { display: none; }
+      .notch-top { display: block; right: 145px; top: -11px; }
+      .notch-bottom { display: block; right: 145px; bottom: -11px; }
 
-      .notch-top {
-        display: block;
-        right: 145px;
-        top: -11px;
-        bottom: auto;
+      .ticket.torn .main-section {
+        transform: translateX(-30px) rotate(-3deg);
       }
 
-      .notch-bottom {
-        display: block;
-        right: 145px;
-        bottom: -11px;
-        top: auto;
-      }
-
-      .stub-border {
-        left: auto;
-        right: 154px;
-        top: 10px;
-        bottom: 10px;
-        border-top: none;
-        border-left: 1.5px dashed rgba(212, 175, 55, 0.6);
+      .ticket.torn .stub-section {
+        transform: translateX(60px) rotate(6deg);
       }
     }
   </style>
@@ -370,6 +374,8 @@
 <body>
 
   <canvas id="particles-canvas"></canvas>
+
+  <div class="instructions" id="instruction-text">✂️ DESLIZA SOBRE LA LÍNEA PARA CORTAR EL TIQUETE ✂️</div>
 
   <div class="ticket-wrapper">
     <div class="star-flare flare-1"></div>
@@ -380,9 +386,15 @@
     <div class="ticket-frame">
       <div class="notch notch-left notch-top"></div>
       <div class="notch notch-right notch-bottom"></div>
-      <div class="stub-border"></div>
 
-      <div class="ticket">
+      <!-- Línea táctil de recorte -->
+      <div class="stub-border-interactive" id="cut-line">
+        <div class="stub-border-line">
+          <div class="cut-progress" id="cut-progress"></div>
+        </div>
+      </div>
+
+      <div class="ticket" id="ticket">
         <!-- Sección Principal -->
         <div class="main-section">
           <div class="badge">
@@ -409,10 +421,9 @@
           </div>
         </div>
 
-        <!-- Talón (Stub) -->
+        <!-- Talón Inferior -->
         <div class="stub-section">
           <div class="stub-vertical-text">EVENT OF THE YEAR — 11 AGO</div>
-          <div class="qr-wrapper" id="qrcode"></div>
           <div class="stub-footer">ADMIT ONE // DNI REQUIRED</div>
         </div>
       </div>
@@ -424,23 +435,119 @@
     const rawName = urlParams.get('name') || "JP";
     const rawCode = urlParams.get('code') || "TSF-448791";
 
-    const cleanName = decodeURIComponent(rawName).toUpperCase();
-    const cleanCode = decodeURIComponent(rawCode).toUpperCase();
+    document.getElementById("display-name").innerText = decodeURIComponent(rawName).toUpperCase();
+    document.getElementById("display-code").innerText = decodeURIComponent(rawCode).toUpperCase();
 
-    document.getElementById("display-name").innerText = cleanName;
-    document.getElementById("display-code").innerText = cleanCode;
+    // LÓGICA DE CORTE INTERACTIVO (SLIDE TO CUT)
+    const cutLine = document.getElementById('cut-line');
+    const cutProgress = document.getElementById('cut-progress');
+    const ticket = document.getElementById('ticket');
+    const instructionText = document.getElementById('instruction-text');
+    let isCutting = false;
+    let isTorn = false;
 
-    const qrData = `EVENT:TheSinisterForest|PASS:${cleanCode}|HOLDER:${cleanName}`;
-    new QRCode(document.getElementById("qrcode"), {
-      text: qrData,
-      width: 70,
-      height: 70,
-      colorDark : "#0a0002",
-      colorLight : "#ffffff",
-      correctLevel : QRCode.CorrectLevel.H
-    });
+    // Generador de audio sintético para efecto rasgado
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playRipSound() {
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const bufferSize = audioCtx.sampleRate * 0.4;
+      const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = Math.random() * 2 - 1;
+      }
+      const noise = audioCtx.createBufferSource();
+      noise.buffer = buffer;
+      const filter = audioCtx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.value = 1000;
+      const gain = audioCtx.createGain();
+      gain.gain.setValueAtTime(1, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+      noise.connect(filter);
+      filter.connect(gain);
+      gain.connect(audioCtx.destination);
+      noise.start();
+    }
 
-    // Partículas de fondo
+    function handleStart(e) {
+      if (isTorn) return;
+      isCutting = true;
+      updateCut(e);
+    }
+
+    function handleMove(e) {
+      if (!isCutting || isTorn) return;
+      updateCut(e);
+    }
+
+    function handleEnd() {
+      if (isTorn) return;
+      isCutting = false;
+      cutProgress.style.width = '0%';
+      cutProgress.style.height = '0%';
+    }
+
+    function updateCut(e) {
+      const rect = cutLine.getBoundingClientRect();
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      const isHorizontal = window.innerWidth >= 580;
+
+      let pct = 0;
+      if (isHorizontal) {
+        pct = (clientY - rect.top) / rect.height;
+      } else {
+        pct = (clientX - rect.left) / rect.width;
+      }
+
+      pct = Math.max(0, Math.min(1, pct));
+
+      if (isHorizontal) {
+        cutProgress.style.height = (pct * 100) + '%';
+      } else {
+        cutProgress.style.width = (pct * 100) + '%';
+      }
+
+      // Generar chispa visual al deslizar
+      createSpark(clientX, clientY);
+
+      if (pct >= 0.85) {
+        isTorn = true;
+        isCutting = false;
+        ticket.classList.add('torn');
+        instructionText.innerText = "ACCESO VALIDADO // TALÓN CORTADO";
+        instructionText.style.color = "#00ffaa";
+        playRipSound();
+      }
+    }
+
+    function createSpark(x, y) {
+      const spark = document.createElement('div');
+      spark.style.position = 'fixed';
+      spark.style.left = x + 'px';
+      spark.style.top = y + 'px';
+      spark.style.width = '4px';
+      spark.style.height = '4px';
+      spark.style.background = '#ff003c';
+      spark.style.borderRadius = '50%';
+      spark.style.boxShadow = '0 0 10px #ff003c, 0 0 20px #ffe596';
+      spark.style.pointerEvents = 'none';
+      spark.style.zIndex = '100';
+      document.body.appendChild(spark);
+
+      setTimeout(() => spark.remove(), 300);
+    }
+
+    cutLine.addEventListener('mousedown', handleStart);
+    window.addEventListener('mousemove', handleMove);
+    window.addEventListener('mouseup', handleEnd);
+
+    cutLine.addEventListener('touchstart', handleStart);
+    window.addEventListener('touchmove', handleMove);
+    window.addEventListener('touchend', handleEnd);
+
+    // Canvas de Partículas de Fondo
     const canvas = document.getElementById('particles-canvas');
     const ctx = canvas.getContext('2d');
 
