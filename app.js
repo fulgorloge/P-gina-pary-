@@ -230,13 +230,33 @@ function initCutMechanics() {
   window.addEventListener('touchend', endDrag);
 }
 
-// Funciones de Descarga y Validación del Pass
-async function downloadQR() {
+// Descarga independiente para Frente o Atrás sin efecto espejo
+async function downloadQR(side) {
   const ticketWrapper = document.getElementById('ticket-wrapper');
+  const backElement = document.getElementById('ticket-back-element');
   const alias = localStorage.getItem('userName') || 'GUEST_RAVER';
+  const wasFlipped = ticketWrapper.classList.contains('flipped');
   
   try {
-    showToast('Generando imagen del pase...');
+    showToast(`Generando imagen de la ${side === 'front' ? 'parte delantera' : 'parte trasera'}...`);
+    
+    if (side === 'front') {
+      if (wasFlipped) {
+        ticketWrapper.classList.remove('flipped');
+        await new Promise(resolve => setTimeout(resolve, 400));
+      }
+    } else {
+      // Para descargar el reverso sin espejo, removemos el rotateY de CSS temporalmente antes de capturar
+      if (backElement) {
+        backElement.style.transform = 'rotateY(0deg)';
+        backElement.style.position = 'relative';
+      }
+      if (!wasFlipped) {
+        ticketWrapper.classList.add('flipped');
+        await new Promise(resolve => setTimeout(resolve, 400));
+      }
+    }
+
     const canvas = await html2canvas(ticketWrapper, {
       backgroundColor: null,
       scale: 2,
@@ -245,7 +265,7 @@ async function downloadQR() {
     
     const link = document.createElement('a');
     link.href = canvas.toDataURL('image/png');
-    link.download = `TSF_VIP_PASS_${alias.toUpperCase()}.png`;
+    link.download = `TSF_VIP_PASS_${alias.toUpperCase()}_${side.toUpperCase()}.png`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -253,6 +273,20 @@ async function downloadQR() {
     showToast('¡Pase VIP descargado con éxito!');
   } catch (error) {
     showToast('Error al exportar la imagen');
+  } finally {
+    // Restaurar estilos del reverso
+    if (side === 'back' && backElement) {
+      backElement.style.transform = '';
+      backElement.style.position = '';
+    }
+    // Restaurar estado visual original de la tarjeta
+    if (wasFlipped !== ticketWrapper.classList.contains('flipped')) {
+      if (wasFlipped) {
+        ticketWrapper.classList.add('flipped');
+      } else {
+        ticketWrapper.classList.remove('flipped');
+      }
+    }
   }
 }
 
