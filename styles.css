@@ -304,16 +304,6 @@ h1.glitch {
 #location-title { font-size: 0.7rem; font-weight: 700; color: var(--accent); }
 #location-details { font-size: 0.65rem; color: var(--text-muted); margin-top: 4px; }
 
-.gallery-nav-btn {
-  display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%;
-  background: rgba(255, 0, 60, 0.12); border: 1px solid var(--accent); color: #fff;
-  text-decoration: none; font-family: var(--font); font-size: 0.75rem; font-weight: 700;
-  letter-spacing: 2px; padding: 12px; border-radius: 12px; margin-bottom: 15px;
-  text-transform: uppercase; box-shadow: 0 0 15px rgba(255, 0, 60, 0.2); transition: all 0.3s ease;
-}
-
-.gallery-nav-btn:hover { background: var(--accent); box-shadow: 0 0 25px var(--accent-glow); transform: translateY(-2px); }
-
 .action-dual-btn { display: flex; gap: 8px; margin-bottom: 15px; }
 .rsvp-btn, .ticket-btn {
   flex: 1; background: transparent; border: 1px solid var(--accent); color: var(--accent);
@@ -330,7 +320,7 @@ h1.glitch {
 
 footer { font-size: 0.6rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 4px; }
 
-/* Estilos de los Tickets VIP y Mecánica de Corte */
+/* Estilos de los Tickets VIP y Mecánica de Corte Corregidos */
 .instructions {
   position: relative;
   z-index: 10;
@@ -377,6 +367,7 @@ footer { font-size: 0.6rem; color: var(--text-muted); display: flex; flex-direct
   border-radius: 16px;
   position: relative;
   backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .ticket-back {
@@ -387,6 +378,7 @@ footer { font-size: 0.6rem; color: var(--text-muted); display: flex; flex-direct
   padding: 2px;
   transform: rotateY(180deg);
   backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   z-index: 5;
 }
 
@@ -399,6 +391,7 @@ footer { font-size: 0.6rem; color: var(--text-muted); display: flex; flex-direct
   flex-direction: column;
   justify-content: space-between;
   box-shadow: inset 0 0 30px rgba(0,0,0,0.9);
+  text-align: left;
 }
 
 .back-title {
@@ -417,12 +410,11 @@ footer { font-size: 0.6rem; color: var(--text-muted); display: flex; flex-direct
 .back-rules {
   list-style: none;
   font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.85);
   margin: 12px 0;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  text-align: left;
+  gap: 8px;
 }
 
 .back-rules li::before {
