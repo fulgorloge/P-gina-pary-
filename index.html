@@ -92,18 +92,9 @@
     }
 
     @keyframes strobe-flash {
-      0% {
-        background-color: #ffffff;
-        filter: invert(1) brightness(2);
-      }
-      50% {
-        background-color: #020203;
-        filter: invert(0) brightness(1);
-      }
-      100% {
-        background-color: #ff003c;
-        filter: contrast(2) brightness(1.5);
-      }
+      0% { background-color: #ffffff; filter: invert(1) brightness(2); }
+      50% { background-color: #020203; filter: invert(0) brightness(1); }
+      100% { background-color: #ff003c; filter: contrast(2) brightness(1.5); }
     }
 
     .header-top {
@@ -679,7 +670,7 @@
 
     <div class="spotify-embed-container">
       <iframe id="spotify-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/2q9Z3H25b89Fk2G9L3zQ2R?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-      <button class="change-song-trigger" onclick="promptChangeSong()">🎵 CAMBIAR CANCIÓN DE SPOTIFY</button>
+      <button class="change-song-trigger" onclick="promptChangeSong()">🎵 CAMBIAR / GUARDAR CANCIÓN PREDETERMINADA</button>
     </div>
 
     <div class="countdown-grid" id="countdown">
@@ -731,7 +722,7 @@
 
     <div style="margin-bottom: 15px;">
       <button class="calendar-btn" style="width: 100%; background: rgba(255, 0, 60, 0.15); border-color: var(--accent); margin-bottom: 0;" onclick="openGalleryModal()">
-        🎬 VER GALERÍA Y CLIPS EN VIVO
+        🎬 VER GALERÍA Y SUBIR MULTIMEDIA
       </button>
     </div>
 
@@ -750,40 +741,28 @@
     </footer>
   </div>
 
-  <!-- MODAL DE GALERÍA DE CLIPS EN VIVO -->
+  <!-- MODAL DE GALERÍA Y SUBIDA DE FOTOS Y VIDEOS -->
   <div class="modal" id="gallery-modal">
     <div class="modal-content" style="max-width: 680px;">
       <span class="close-modal" onclick="closeGalleryModal()">&times;</span>
       <div class="ticket-badge">ARCHIVOS CLANDESTINOS</div>
-      <h2 style="font-size: 1.3rem; margin-bottom: 15px; font-family: var(--font-techno); color: #fff;">GALERÍA Y CLIPS EN VIVO</h2>
+      <h2 style="font-size: 1.3rem; margin-bottom: 10px; font-family: var(--font-techno); color: #fff;">GALERÍA Y CLIPS EN VIVO</h2>
+      <p style="font-size: 0.65rem; color: var(--text-muted); margin-bottom: 15px;">Sube tus fotos o videos cortos del rave para que aparezcan en el feed.</p>
       
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; max-height: 400px; overflow-y: auto; padding: 5px;">
-        <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: 12px; overflow: hidden; padding: 8px;">
-          <div style="width: 100%; height: 110px; background: #000; border-radius: 8px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
-            <div style="position: absolute; font-size: 2rem;">🎧</div>
-            <div style="position: absolute; bottom: 6px; left: 6px; font-size: 0.5rem; background: rgba(0,0,0,0.7); padding: 2px 6px; border-radius: 4px; color: var(--accent);">SET #01</div>
-          </div>
-          <p style="font-size: 0.65rem; color: #fff; margin-top: 8px; font-weight: 700;">Prueba de Sonido Clandestina</p>
-        </div>
-
-        <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: 12px; overflow: hidden; padding: 8px;">
-          <div style="width: 100%; height: 110px; background: #000; border-radius: 8px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
-            <div style="position: absolute; font-size: 2rem;">🌲</div>
-            <div style="position: absolute; bottom: 6px; left: 6px; font-size: 0.5rem; background: rgba(0,0,0,0.7); padding: 2px 6px; border-radius: 4px; color: var(--accent);">ZONA</div>
-          </div>
-          <p style="font-size: 0.65rem; color: #fff; margin-top: 8px; font-weight: 700;">Inspección del Bosque</p>
-        </div>
-
-        <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: 12px; overflow: hidden; padding: 8px;">
-          <div style="width: 100%; height: 110px; background: #000; border-radius: 8px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
-            <div style="position: absolute; font-size: 2rem;">⚡</div>
-            <div style="position: absolute; bottom: 6px; left: 6px; font-size: 0.5rem; background: rgba(0,0,0,0.7); padding: 2px 6px; border-radius: 4px; color: var(--accent);">STROBE</div>
-          </div>
-          <p style="font-size: 0.65rem; color: #fff; margin-top: 8px; font-weight: 700;">Pruebas de Iluminación</p>
-        </div>
+      <!-- BOTÓN PARA SUBIR ARCHIVO -->
+      <div style="margin-bottom: 20px;">
+        <input type="file" id="media-upload-input" accept="image/*,video/*" style="display: none;" onchange="handleMediaUpload(event)" />
+        <button class="contribution-btn" style="width: 100%; padding: 12px; font-size: 0.75rem;" onclick="document.getElementById('media-upload-input').click()">
+          📤 SUBIR FOTO O VÍDEO
+        </button>
       </div>
 
-      <button class="contribution-btn" style="width: 100%; margin-top: 15px;" onclick="closeGalleryModal()">CERRAR GALERÍA</button>
+      <!-- CONTENEDOR DE LA GALERÍA -->
+      <div id="gallery-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; max-height: 360px; overflow-y: auto; padding: 5px; text-align: left;">
+        <!-- Se rellena dinámicamente -->
+      </div>
+
+      <button class="contribution-btn secondary" style="width: 100%; margin-top: 15px;" onclick="closeGalleryModal()">CERRAR GALERÍA</button>
     </div>
   </div>
 
@@ -938,22 +917,23 @@
         if (inputEl) inputEl.value = savedUser;
       }
       
-      const savedTrack = localStorage.getItem('spotifyTrackId');
-      if (savedTrack) {
-        const iframe = document.getElementById('spotify-iframe');
-        if (iframe) {
-          iframe.src = `https://open.spotify.com/embed/track/${savedTrack}?utm_source=generator&theme=0`;
-        }
+      // Cargar canción predeterminada guardada o usar la por defecto
+      const defaultTrackId = "2q9Z3H25b89Fk2G9L3zQ2R";
+      const savedTrack = localStorage.getItem('spotifyTrackId') || defaultTrackId;
+      const iframe = document.getElementById('spotify-iframe');
+      if (iframe) {
+        iframe.src = `https://open.spotify.com/embed/track/${savedTrack}?utm_source=generator&theme=0`;
       }
 
       initParticleCanvas();
       initCutMechanics();
       startCountdown();
+      loadGalleryItems();
     });
 
     function promptChangeSong() {
       playSound('click');
-      const input = prompt("Pega el enlace de Spotify de la canción o el ID de la pista (ej: 2q9Z3H25b89Fk2G9L3zQ2R):");
+      const input = prompt("Pega el enlace de Spotify de la canción o el ID de la pista para dejarla predeterminada en la página (ej: 2q9Z3H25b89Fk2G9L3zQ2R):");
       if (!input) return;
 
       let trackId = input.trim();
@@ -974,19 +954,111 @@
       if (iframe) {
         iframe.src = `https://open.spotify.com/embed/track/${trackId}?utm_source=generator&theme=0`;
       }
-      showToast('¡Canción de Spotify actualizada!');
+      showToast('¡Canción predeterminada guardada con éxito!');
     }
 
+    // Funciones de Galería y Subida Multimedia con localStorage
     function openGalleryModal() {
       playSound('click');
       const modal = document.getElementById('gallery-modal');
       if (modal) modal.style.display = 'flex';
+      loadGalleryItems();
     }
 
     function closeGalleryModal() {
       playSound('click');
       const modal = document.getElementById('gallery-modal');
       if (modal) modal.style.display = 'none';
+    }
+
+    function handleMediaUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      if (file.size > 15 * 1024 * 1024) {
+        showToast('El archivo es muy pesado (máximo 15MB)');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const base64Data = e.target.result;
+        const fileType = file.type.startsWith('video') ? 'video' : 'image';
+        
+        const mediaItem = {
+          type: fileType,
+          data: base64Data,
+          date: new Date().toLocaleDateString()
+        };
+
+        let customGallery = JSON.parse(localStorage.getItem('customGallery') || '[]');
+        customGallery.unshift(mediaItem); // Añadir al principio
+        localStorage.setItem('customGallery', JSON.stringify(customGallery));
+
+        loadGalleryItems();
+        showToast('¡Archivo subido a la galería con éxito!');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function loadGalleryItems() {
+      const grid = document.getElementById('gallery-grid');
+      if (!grid) return;
+
+      // Clips predeterminados del rave
+      let html = `
+        <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: 12px; overflow: hidden; padding: 8px;">
+          <div style="width: 100%; height: 110px; background: #000; border-radius: 8px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
+            <div style="position: absolute; font-size: 2rem;">🎧</div>
+            <div style="position: absolute; bottom: 6px; left: 6px; font-size: 0.5rem; background: rgba(0,0,0,0.7); padding: 2px 6px; border-radius: 4px; color: var(--accent);">SET #01</div>
+          </div>
+          <p style="font-size: 0.65rem; color: #fff; margin-top: 8px; font-weight: 700;">Prueba de Sonido Clandestina</p>
+        </div>
+
+        <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: 12px; overflow: hidden; padding: 8px;">
+          <div style="width: 100%; height: 110px; background: #000; border-radius: 8px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
+            <div style="position: absolute; font-size: 2rem;">🌲</div>
+            <div style="position: absolute; bottom: 6px; left: 6px; font-size: 0.5rem; background: rgba(0,0,0,0.7); padding: 2px 6px; border-radius: 4px; color: var(--accent);">ZONA</div>
+          </div>
+          <p style="font-size: 0.65rem; color: #fff; margin-top: 8px; font-weight: 700;">Inspección del Bosque</p>
+        </div>
+      `;
+
+      let customGallery = JSON.parse(localStorage.getItem('customGallery') || '[]');
+      customGallery.forEach((item, index) => {
+        if (item.type === 'image') {
+          html += `
+            <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: 12px; overflow: hidden; padding: 8px; position: relative;">
+              <div style="width: 100%; height: 110px; background: #000; border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+                <img src="${item.data}" style="width: 100%; height: 100%; object-fit: cover;" />
+              </div>
+              <p style="font-size: 0.65rem; color: #fff; margin-top: 8px; font-weight: 700;">Aporte Raver (${item.date})</p>
+              <button onclick="deleteMedia(${index})" style="position:absolute; top:12px; right:12px; background:rgba(255,0,60,0.8); border:none; color:#fff; border-radius:50%; width:20px; height:20px; font-size:0.6rem; cursor:pointer;">×</button>
+            </div>
+          `;
+        } else {
+          html += `
+            <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: 12px; overflow: hidden; padding: 8px; position: relative;">
+              <div style="width: 100%; height: 110px; background: #000; border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+                <video src="${item.data}" controls style="width: 100%; height: 100%; object-fit: cover;"></video>
+              </div>
+              <p style="font-size: 0.65rem; color: #fff; margin-top: 8px; font-weight: 700;">Clip en Vivo (${item.date})</p>
+              <button onclick="deleteMedia(${index})" style="position:absolute; top:12px; right:12px; background:rgba(255,0,60,0.8); border:none; color:#fff; border-radius:50%; width:20px; height:20px; font-size:0.6rem; cursor:pointer;">×</button>
+            </div>
+          `;
+        }
+      });
+
+      grid.innerHTML = html;
+    }
+
+    function deleteMedia(index) {
+      playSound('click');
+      let customGallery = JSON.parse(localStorage.getItem('customGallery') || '[]');
+      customGallery.splice(index, 1);
+      localStorage.setItem('customGallery', JSON.stringify(customGallery));
+      loadGalleryItems();
+      showToast('Archivo eliminado de la galería');
     }
 
     function initParticleCanvas() {
