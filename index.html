@@ -88,12 +88,22 @@
     }
 
     body.strobe-active {
-      animation: strobe-flash 0.15s infinite alternate;
+      animation: strobe-flash 0.08s infinite steps(2, start);
     }
 
     @keyframes strobe-flash {
-      0% { background-color: #020203; }
-      100% { background-color: #220008; }
+      0% {
+        background-color: #ffffff;
+        filter: invert(1) brightness(2);
+      }
+      50% {
+        background-color: #020203;
+        filter: invert(0) brightness(1);
+      }
+      100% {
+        background-color: #ff003c;
+        filter: contrast(2) brightness(1.5);
+      }
     }
 
     .header-top {
@@ -142,8 +152,9 @@
 
     .strobe-btn:hover, .strobe-btn.active {
       background: var(--accent);
-      box-shadow: 0 0 10px var(--accent-glow);
+      box-shadow: 0 0 15px var(--accent);
       border-color: #ff003c;
+      color: #fff;
     }
 
     h1.glitch {
@@ -265,41 +276,26 @@
     .progress-bg { background: rgba(255,255,255,0.08); height: 4px; border-radius: 4px; overflow: hidden; }
     .progress-fill { background: var(--accent); height: 100%; box-shadow: 0 0 8px var(--accent); transition: width 0.4s ease; }
 
-    .spotify-embed-container { margin-bottom: 10px; border-radius: 12px; overflow: hidden; border: 1px solid var(--glass-border); }
+    .spotify-embed-container { margin-bottom: 15px; border-radius: 12px; overflow: hidden; border: 1px solid var(--glass-border); background: #000; position: relative; }
     
-    .spotify-custom-box {
-      background: rgba(0, 0, 0, 0.35);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 12px;
-      padding: 10px 12px;
-      margin-bottom: 15px;
-      display: flex;
-      gap: 6px;
-    }
-    .spotify-input {
-      flex: 1;
-      padding: 8px 10px;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid var(--glass-border);
-      border-radius: 8px;
-      color: #fff;
-      font-family: var(--font);
-      font-size: 0.65rem;
-      outline: none;
-    }
-    .spotify-input:focus { border-color: var(--accent); box-shadow: 0 0 8px var(--accent-glow); }
-    .spotify-load-btn {
-      background: var(--accent);
-      color: #fff;
+    .change-song-trigger {
+      display: block;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.04);
       border: none;
-      padding: 0 12px;
-      border-radius: 8px;
-      font-weight: 700;
-      font-size: 0.65rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      color: var(--text-muted);
+      font-family: var(--font);
+      font-size: 0.55rem;
+      letter-spacing: 1.5px;
+      padding: 6px;
       cursor: pointer;
-      transition: 0.3s;
+      transition: 0.2s;
     }
-    .spotify-load-btn:hover { filter: brightness(1.2); }
+    .change-song-trigger:hover {
+      background: rgba(255, 0, 60, 0.15);
+      color: #fff;
+    }
 
     .countdown-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 15px; }
     .time-box { background: rgba(0, 0, 0, 0.55); border: 1px solid rgba(255, 255, 255, 0.08); padding: 10px 2px; border-radius: 12px; }
@@ -309,7 +305,7 @@
     .calendar-btn {
       display: block; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border);
       color: #fff; text-decoration: none; font-size: 0.65rem; font-weight: 700; letter-spacing: 1px;
-      padding: 10px; border-radius: 10px; margin-bottom: 15px; transition: 0.3s; cursor: pointer;
+      padding: 10px; border-radius: 10px; margin-bottom: 15px; transition: 0.3s; cursor: pointer; text-align: center;
     }
     .calendar-btn:hover { background: rgba(255, 255, 255, 0.15); }
 
@@ -336,20 +332,13 @@
     #location-title { font-size: 0.7rem; font-weight: 700; color: var(--accent); }
     #location-details { font-size: 0.65rem; color: var(--text-muted); margin-top: 4px; }
 
-    .action-dual-btn { display: flex; gap: 8px; margin-bottom: 10px; }
+    .action-dual-btn { display: flex; gap: 8px; margin-bottom: 15px; }
     .rsvp-btn, .ticket-btn {
       flex: 1; background: transparent; border: 1px solid var(--accent); color: var(--accent);
       padding: 10px 4px; border-radius: 8px; font-family: var(--font); font-weight: 700; font-size: 0.65rem; cursor: pointer; transition: 0.3s;
     }
     .rsvp-btn.confirmed { background: var(--accent); color: #fff; }
     .ticket-btn { background: var(--accent); color: #fff; box-shadow: 0 0 10px var(--accent-glow); }
-
-    .gallery-btn {
-      display: block; width: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border);
-      color: #fff; text-decoration: none; font-size: 0.65rem; font-weight: 700; letter-spacing: 1px;
-      padding: 10px; border-radius: 10px; margin-bottom: 15px; transition: 0.3s; cursor: pointer; text-align: center;
-    }
-    .gallery-btn:hover { background: rgba(255, 0, 60, 0.15); border-color: var(--accent); color: var(--accent); }
 
     .social-share { padding-top: 12px; border-top: 1px solid var(--glass-border); margin-bottom: 12px; }
     .share-title { font-size: 0.58rem; letter-spacing: 2px; color: var(--text-muted); margin-bottom: 8px; }
@@ -359,7 +348,6 @@
 
     footer { font-size: 0.6rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 4px; }
 
-    /* Modales y Ticket */
     .modal { display: none; position: fixed; z-index: 200; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); justify-content: center; align-items: center; overflow-y: auto; padding: 20px;}
     .modal-content { background: #0a0a0c; border: 1px solid var(--accent); border-radius: 20px; padding: 25px; width: 90%; max-width: 620px; text-align: center; position: relative; box-shadow: 0 0 30px var(--accent-glow); }
     .close-modal { position: absolute; right: 15px; top: 10px; font-size: 1.5rem; color: #fff; cursor: pointer; }
@@ -368,7 +356,6 @@
     .ticket-input { width: 100%; padding: 10px 14px; background: rgba(255, 255, 255, 0.08); border: 1px solid var(--accent); border-radius: 8px; color: #fff; font-family: var(--font); font-size: 0.8rem; text-align: center; outline: none; margin-bottom: 12px; }
     .ticket-input:focus { box-shadow: 0 0 10px var(--accent-glow); }
 
-    /* Estilos Tiquete VIP Avanzado */
     .ticket-wrapper {
       position: relative;
       width: 100%;
@@ -690,13 +677,9 @@
       </div>
     </div>
 
-    <div class="spotify-embed-container" id="spotify-container">
-      <iframe id="spotify-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/1H5ol1dPZSqbalE0bl22VH?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-    </div>
-
-    <div class="spotify-custom-box">
-      <input type="text" id="spotify-url-input" class="spotify-input" placeholder="Pega link o URI de Spotify (Canción/Playlist)..." />
-      <button class="spotify-load-btn" onclick="loadCustomSpotifyTrack()">CARGAR</button>
+    <div class="spotify-embed-container">
+      <iframe id="spotify-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/2q9Z3H25b89Fk2G9L3zQ2R?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      <button class="change-song-trigger" onclick="promptChangeSong()">🎵 CAMBIAR CANCIÓN DE SPOTIFY</button>
     </div>
 
     <div class="countdown-grid" id="countdown">
@@ -746,7 +729,11 @@
       <button class="ticket-btn" onclick="openModal()">OBTENER MI PASES VIP</button>
     </div>
 
-    <a href="photos://" class="gallery-btn" onclick="openGallery(event)">🖼️ ABRIR GALERÍA</a>
+    <div style="margin-bottom: 15px;">
+      <button class="calendar-btn" style="width: 100%; background: rgba(255, 0, 60, 0.15); border-color: var(--accent); margin-bottom: 0;" onclick="openGalleryModal()">
+        🎬 VER GALERÍA Y CLIPS EN VIVO
+      </button>
+    </div>
 
     <div class="social-share">
       <div class="share-title">COMPARTE EL RAVE</div>
@@ -761,6 +748,43 @@
       <span>THE SINISTER FOREST // ENVIGADO, COLOMBIA</span>
       <span>ESTRICTAMENTE +18 // NOS RESERVAMOS EL DERECHO DE ADMISIÓN</span>
     </footer>
+  </div>
+
+  <!-- MODAL DE GALERÍA DE CLIPS EN VIVO -->
+  <div class="modal" id="gallery-modal">
+    <div class="modal-content" style="max-width: 680px;">
+      <span class="close-modal" onclick="closeGalleryModal()">&times;</span>
+      <div class="ticket-badge">ARCHIVOS CLANDESTINOS</div>
+      <h2 style="font-size: 1.3rem; margin-bottom: 15px; font-family: var(--font-techno); color: #fff;">GALERÍA Y CLIPS EN VIVO</h2>
+      
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; max-height: 400px; overflow-y: auto; padding: 5px;">
+        <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: 12px; overflow: hidden; padding: 8px;">
+          <div style="width: 100%; height: 110px; background: #000; border-radius: 8px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
+            <div style="position: absolute; font-size: 2rem;">🎧</div>
+            <div style="position: absolute; bottom: 6px; left: 6px; font-size: 0.5rem; background: rgba(0,0,0,0.7); padding: 2px 6px; border-radius: 4px; color: var(--accent);">SET #01</div>
+          </div>
+          <p style="font-size: 0.65rem; color: #fff; margin-top: 8px; font-weight: 700;">Prueba de Sonido Clandestina</p>
+        </div>
+
+        <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: 12px; overflow: hidden; padding: 8px;">
+          <div style="width: 100%; height: 110px; background: #000; border-radius: 8px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
+            <div style="position: absolute; font-size: 2rem;">🌲</div>
+            <div style="position: absolute; bottom: 6px; left: 6px; font-size: 0.5rem; background: rgba(0,0,0,0.7); padding: 2px 6px; border-radius: 4px; color: var(--accent);">ZONA</div>
+          </div>
+          <p style="font-size: 0.65rem; color: #fff; margin-top: 8px; font-weight: 700;">Inspección del Bosque</p>
+        </div>
+
+        <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: 12px; overflow: hidden; padding: 8px;">
+          <div style="width: 100%; height: 110px; background: #000; border-radius: 8px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
+            <div style="position: absolute; font-size: 2rem;">⚡</div>
+            <div style="position: absolute; bottom: 6px; left: 6px; font-size: 0.5rem; background: rgba(0,0,0,0.7); padding: 2px 6px; border-radius: 4px; color: var(--accent);">STROBE</div>
+          </div>
+          <p style="font-size: 0.65rem; color: #fff; margin-top: 8px; font-weight: 700;">Pruebas de Iluminación</p>
+        </div>
+      </div>
+
+      <button class="contribution-btn" style="width: 100%; margin-top: 15px;" onclick="closeGalleryModal()">CERRAR GALERÍA</button>
+    </div>
   </div>
 
   <!-- MODAL DE TIQUETE VIP INTERACTIVO -->
@@ -913,54 +937,56 @@
         const inputEl = document.getElementById('user-alias-input');
         if (inputEl) inputEl.value = savedUser;
       }
+      
+      const savedTrack = localStorage.getItem('spotifyTrackId');
+      if (savedTrack) {
+        const iframe = document.getElementById('spotify-iframe');
+        if (iframe) {
+          iframe.src = `https://open.spotify.com/embed/track/${savedTrack}?utm_source=generator&theme=0`;
+        }
+      }
+
       initParticleCanvas();
       initCutMechanics();
       startCountdown();
     });
 
-    function loadCustomSpotifyTrack(urlOverride = null) {
+    function promptChangeSong() {
       playSound('click');
-      const input = document.getElementById('spotify-url-input');
-      const iframe = document.getElementById('spotify-iframe');
-      if (!iframe) return;
+      const input = prompt("Pega el enlace de Spotify de la canción o el ID de la pista (ej: 2q9Z3H25b89Fk2G9L3zQ2R):");
+      if (!input) return;
 
-      let val = urlOverride !== null ? urlOverride : (input ? input.value.trim() : '');
-      if (!val) {
-        showToast('Ingresa un enlace válido de Spotify');
+      let trackId = input.trim();
+      if (trackId.includes('spotify.com/track/')) {
+        const match = trackId.match(/track\/([a-zA-Z0-9]+)/);
+        if (match && match[1]) {
+          trackId = match[1];
+        }
+      }
+
+      if (trackId.length < 15) {
+        showToast('Enlace o ID de Spotify no válido');
         return;
       }
 
-      let embedUrl = '';
-      if (val.includes('open.spotify.com')) {
-        const match = val.match(/spotify\.com\/(track|playlist|album|artist)\/([a-zA-Z0-9_-]+)/);
-        if (match) {
-          embedUrl = `https://open.spotify.com/embed/${match[1]}/${match[2]}?utm_source=generator&theme=0`;
-        }
-      } else if (val.startsWith('spotify:')) {
-        const parts = val.split(':');
-        if (parts.length >= 3) {
-          embedUrl = `https://open.spotify.com/embed/${parts[1]}/${parts[2]}?utm_source=generator&theme=0`;
-        }
-      } else if (val.length === 22) {
-        embedUrl = `https://open.spotify.com/embed/track/${val}?utm_source=generator&theme=0`;
+      localStorage.setItem('spotifyTrackId', trackId);
+      const iframe = document.getElementById('spotify-iframe');
+      if (iframe) {
+        iframe.src = `https://open.spotify.com/embed/track/${trackId}?utm_source=generator&theme=0`;
       }
-
-      if (embedUrl) {
-        iframe.src = embedUrl;
-        showToast('¡Reproductor actualizado!');
-        if (input) input.value = '';
-      } else {
-        showToast('Formato de Spotify no reconocido');
-      }
+      showToast('¡Canción de Spotify actualizada!');
     }
 
-    function openGallery(e) {
-      e.preventDefault();
+    function openGalleryModal() {
       playSound('click');
-      window.location.href = 'photos://';
-      setTimeout(() => {
-        showToast('Abriendo galería...');
-      }, 1000);
+      const modal = document.getElementById('gallery-modal');
+      if (modal) modal.style.display = 'flex';
+    }
+
+    function closeGalleryModal() {
+      playSound('click');
+      const modal = document.getElementById('gallery-modal');
+      if (modal) modal.style.display = 'none';
     }
 
     function initParticleCanvas() {
@@ -1378,7 +1404,7 @@
             locBox.innerHTML = `
               <p id="location-title" style="color:#00ff66;">📍 UBICACIÓN REVELADA</p>
               <p id="location-details" style="color:#fff; font-weight:bold; margin-bottom:10px;">Parque Lineal La Frontera // Envigado, Antioquia</p>
-              <a href="https://maps.google.com/?q=Parque+Lineal+La+Frontera+Envigado" target="_blank" class="calendar-btn" style="margin-bottom:0; background:var(--accent);">
+              <a href="https://maps.google.com/?q=Key+Parque+Lineal+La+Frontera+Envigado" target="_blank" class="calendar-btn" style="margin-bottom:0; background:var(--accent);">
                 VER EN GOOGLE MAPS
               </a>
             `;
