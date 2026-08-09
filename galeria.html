@@ -3,365 +3,1304 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Sinister Forest // Spotify Vault</title>
-  
+  <title>The Sinister Forest // Underground Techno Experience</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700;900&display=swap" rel="stylesheet">
-  
-  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@600;700&family=Space+Grotesk:wght@400;600;700&family=UnifrakturMaguntina&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    :root {
+      --bg: #020203;
+      --bg-dark: #050203;
+      --card-bg: rgba(12, 12, 15, 0.78);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --accent: #ff003c;
+      --accent-glow: rgba(255, 0, 60, 0.55);
+      --text: #ffffff;
+      --text-muted: rgba(255, 255, 255, 0.5);
+      --font: 'Space Grotesk', sans-serif;
+      --font-techno: 'Orbitron', sans-serif;
+      --font-ui: 'Rajdhani', sans-serif;
+      --gold-light: #fff3a8;
+      --gold-mid: #d4af37;
+      --gold-gradient: linear-gradient(135deg, #bf953f 0%, #fcf6ba 25%, #b38728 50%, #fbf5b7 75%, #aa771c 100%);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
+
+    body {
+      background-color: var(--bg);
+      background-image: 
+        radial-gradient(circle at 50% 50%, #4a000e 0%, #0a0305 70%),
+        radial-gradient(circle at 20% 20%, rgba(255, 215, 0, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(255, 0, 60, 0.15) 0%, transparent 40%);
+      font-family: var(--font);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    #particle-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    #flash-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(255, 0, 60, 0.5) 50%, transparent 100%);
+      pointer-events: none;
+      z-index: 99;
+      opacity: 0;
+      transition: opacity 0.12s ease-out;
+    }
+
+    .grain {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0.04;
+      background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)"/></svg>');
+    }
+
+    .container {
+      background: var(--card-bg);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 35px var(--accent-glow);
+      border-radius: 24px;
+      width: 100%;
+      max-width: 440px;
+      padding: 30px 22px;
+      text-align: center;
+      position: relative;
+      z-index: 10;
+    }
+
+    body.strobe-active {
+      animation: strobe-flash 0.15s infinite alternate;
+    }
+
+    @keyframes strobe-flash {
+      0% { background-color: #020203; }
+      100% { background-color: #220008; }
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .status-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.58rem;
+      letter-spacing: 1px;
+      color: var(--accent);
+      background: rgba(255, 0, 60, 0.12);
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid var(--accent-glow);
+      font-weight: 700;
+    }
+
+    .blink-dot {
+      width: 6px; height: 6px;
+      background-color: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--accent);
+      animation: blink 0.8s infinite alternate;
+    }
+
+    @keyframes blink { from { opacity: 0.2; } to { opacity: 1; } }
+
+    .strobe-btn {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid var(--glass-border);
+      color: #fff;
+      font-family: var(--font);
+      font-size: 0.6rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .strobe-btn:hover, .strobe-btn.active {
+      background: var(--accent);
+      box-shadow: 0 0 10px var(--accent-glow);
+      border-color: #ff003c;
+    }
+
+    h1.glitch {
+      font-weight: 900;
+      font-size: 1.8rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      position: relative;
+      color: #fff;
+      text-shadow: 0 0 10px var(--accent-glow);
+    }
+
+    .subtitle { font-size: 0.65rem; letter-spacing: 3px; color: var(--text-muted); margin-top: 4px; }
+
+    .audio-visualizer {
+      display: flex; justify-content: center; align-items: flex-end; gap: 4px; height: 24px; margin: 12px 0;
+    }
+
+    .audio-visualizer span {
+      width: 4px; height: 100%; background: var(--accent); border-radius: 3px;
+      transform-origin: bottom; animation: equalizer 1s infinite ease-in-out alternate;
+      box-shadow: 0 0 6px var(--accent);
+    }
+
+    .audio-visualizer span:nth-child(1) { animation-delay: 0.1s; }
+    .audio-visualizer span:nth-child(2) { animation-delay: 0.4s; }
+    .audio-visualizer span:nth-child(3) { animation-delay: 0.2s; }
+    .audio-visualizer span:nth-child(4) { animation-delay: 0.6s; }
+    .audio-visualizer span:nth-child(5) { animation-delay: 0.3s; }
+    .audio-visualizer span:nth-child(6) { animation-delay: 0.5s; }
+    .audio-visualizer span:nth-child(7) { animation-delay: 0.2s; }
+    .audio-visualizer span:nth-child(8) { animation-delay: 0.7s; }
+    .audio-visualizer span:nth-child(9) { animation-delay: 0.3s; }
+
+    @keyframes equalizer { 0% { transform: scaleY(0.15); } 100% { transform: scaleY(1); } }
+
+    .lineup-section {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 16px 14px;
+      margin-bottom: 15px;
+    }
+
+    .lineup-title {
+      font-size: 0.6rem;
+      letter-spacing: 2px;
+      color: var(--accent);
+      font-weight: 700;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+    .dj-card.headliner {
+      background: rgba(255, 0, 60, 0.08);
+      border: 1px solid var(--accent);
+      border-radius: 12px;
+      padding: 14px 16px;
+      text-align: center;
+      box-shadow: 0 0 15px var(--accent-glow);
+      transition: transform 0.3s ease;
+    }
+
+    .dj-card.headliner:hover { transform: scale(1.02); }
+
+    .dj-tag {
+      font-size: 0.55rem;
+      letter-spacing: 2px;
+      color: var(--accent);
+      font-weight: 700;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .dj-name {
+      font-size: 1.8rem;
+      font-weight: 900;
+      letter-spacing: 3px;
+      color: #fff;
+      text-transform: uppercase;
+      text-shadow: 0 0 10px var(--accent-glow);
+    }
+
+    .dj-genre {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      letter-spacing: 2px;
+      margin-top: 2px;
+    }
+
+    .dj-socials {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 10px;
+      font-size: 0.6rem;
+    }
+
+    .dj-link {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 700;
+      letter-spacing: 1px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--glass-border);
+      padding: 4px 12px;
+      border-radius: 20px;
+      transition: all 0.2s;
+    }
+
+    .dj-link:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+      background: rgba(255, 0, 60, 0.12);
+    }
+
+    .capacity-bar { margin-bottom: 15px; }
+    .capacity-text { font-size: 0.6rem; letter-spacing: 1px; color: var(--accent); font-weight: 700; margin-bottom: 4px; display: flex; justify-content: space-between; }
+    .progress-bg { background: rgba(255,255,255,0.08); height: 4px; border-radius: 4px; overflow: hidden; }
+    .progress-fill { background: var(--accent); height: 100%; box-shadow: 0 0 8px var(--accent); transition: width 0.4s ease; }
+
+    .spotify-embed-container { margin-bottom: 15px; border-radius: 12px; overflow: hidden; border: 1px solid var(--glass-border); }
+
+    .countdown-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 15px; }
+    .time-box { background: rgba(0, 0, 0, 0.55); border: 1px solid rgba(255, 255, 255, 0.08); padding: 10px 2px; border-radius: 12px; }
+    .time-number { display: block; font-size: 1.4rem; font-weight: 700; color: #fff; font-family: var(--font-techno); }
+    .time-label { font-size: 0.55rem; color: var(--text-muted); text-transform: uppercase; }
+
+    .calendar-btn {
+      display: block; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border);
+      color: #fff; text-decoration: none; font-size: 0.65rem; font-weight: 700; letter-spacing: 1px;
+      padding: 10px; border-radius: 10px; margin-bottom: 15px; transition: 0.3s; cursor: pointer;
+    }
+    .calendar-btn:hover { background: rgba(255, 255, 255, 0.15); }
+
+    .contribution-section {
+      background: rgba(0, 0, 0, 0.35); border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 16px; padding: 16px 12px; margin-bottom: 15px;
+    }
+    .contribution-badge { font-size: 0.58rem; letter-spacing: 2px; color: var(--text-muted); }
+    .amount-container { display: flex; justify-content: center; align-items: baseline; gap: 4px; margin: 4px 0; }
+    .currency { font-size: 1rem; color: var(--accent); font-weight: 700; }
+    .amount { font-size: 2rem; font-weight: 900; }
+    .unit { font-size: 0.75rem; color: var(--text-muted); }
+    .nequi-number { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 10px; white-space: nowrap; }
+    .nequi-number span { color: #fff; font-weight: 700; }
+    .btn-group { display: flex; gap: 8px; }
+    .contribution-btn {
+      flex: 1; background: var(--accent); color: #fff; padding: 10px 6px; border-radius: 8px;
+      text-decoration: none; font-weight: 700; font-size: 0.68rem; border: none; cursor: pointer; transition: 0.3s;
+    }
+    .contribution-btn.secondary { background: rgba(255, 255, 255, 0.1); }
+    .contribution-btn:hover { filter: brightness(1.2); }
+
+    .location-box { background: rgba(255, 255, 255, 0.02); border: 1px dashed rgba(255, 255, 255, 0.15); border-radius: 12px; padding: 14px; margin-bottom: 15px; }
+    #location-title { font-size: 0.7rem; font-weight: 700; color: var(--accent); }
+    #location-details { font-size: 0.65rem; color: var(--text-muted); margin-top: 4px; }
+
+    .action-dual-btn { display: flex; gap: 8px; margin-bottom: 15px; }
+    .rsvp-btn, .ticket-btn {
+      flex: 1; background: transparent; border: 1px solid var(--accent); color: var(--accent);
+      padding: 10px 4px; border-radius: 8px; font-family: var(--font); font-weight: 700; font-size: 0.65rem; cursor: pointer; transition: 0.3s;
+    }
+    .rsvp-btn.confirmed { background: var(--accent); color: #fff; }
+    .ticket-btn { background: var(--accent); color: #fff; box-shadow: 0 0 10px var(--accent-glow); }
+
+    .social-share { padding-top: 12px; border-top: 1px solid var(--glass-border); margin-bottom: 12px; }
+    .share-title { font-size: 0.58rem; letter-spacing: 2px; color: var(--text-muted); margin-bottom: 8px; }
+    .social-btns { display: flex; gap: 6px; justify-content: center; }
+    .s-btn { cursor: pointer; padding: 8px 10px; border-radius: 12px; border: none; font-size: 0.65rem; font-weight: 700; font-family: var(--font); color: #fff; }
+    .wa { background: #128C7E; } .fb { background: #1877F2; } .copy { background: rgba(255,255,255,0.1); }
+
+    footer { font-size: 0.6rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 4px; }
+
+    /* Modales y Ticket */
+    .modal { display: none; position: fixed; z-index: 200; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); justify-content: center; align-items: center; overflow-y: auto; padding: 20px;}
+    .modal-content { background: #0a0a0c; border: 1px solid var(--accent); border-radius: 20px; padding: 25px; width: 90%; max-width: 620px; text-align: center; position: relative; box-shadow: 0 0 30px var(--accent-glow); }
+    .close-modal { position: absolute; right: 15px; top: 10px; font-size: 1.5rem; color: #fff; cursor: pointer; }
+    .ticket-badge { font-size: 0.55rem; letter-spacing: 2px; color: var(--accent); margin-bottom: 5px; font-weight: 700; }
+    .ticket-instruction { font-size: 0.7rem; color: var(--text-muted); margin: 15px 0 10px 0; }
+    .ticket-input { width: 100%; padding: 10px 14px; background: rgba(255, 255, 255, 0.08); border: 1px solid var(--accent); border-radius: 8px; color: #fff; font-family: var(--font); font-size: 0.8rem; text-align: center; outline: none; margin-bottom: 12px; }
+    .ticket-input:focus { box-shadow: 0 0 10px var(--accent-glow); }
+
+    /* Estilos Tiquete VIP Avanzado */
+    .ticket-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 580px;
+      perspective: 1200px;
+      filter: drop-shadow(0 0 25px rgba(212, 175, 55, 0.25)) drop-shadow(0 15px 35px rgba(0, 0, 0, 0.9));
+      margin: 15px auto;
+    }
+
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .ticket-wrapper.flipped .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .ticket-frame {
+      padding: 2px;
+      background: var(--gold-gradient);
+      border-radius: 16px;
+      position: relative;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+
+    .ticket-back {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(145deg, #0d0003 0%, #1a0006 50%, #050203 100%);
+      border-radius: 16px;
+      padding: 2px;
+      transform: rotateY(180deg);
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      z-index: 5;
+    }
+
+    .ticket-back-content {
+      width: 100%; height: 100%;
+      background: #0d0003;
+      border-radius: 14px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: inset 0 0 30px rgba(0,0,0,0.9);
+      text-align: left;
+    }
+
+    .back-title {
+      font-family: var(--font-techno);
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      color: var(--gold-light);
+      text-transform: uppercase;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.4);
+      padding-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .back-rules {
+      list-style: none;
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.85);
+      margin: 12px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .back-rules li::before { content: "• "; color: var(--gold-mid); }
+
+    .map-box {
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      border-radius: 6px;
+      background: rgba(255, 0, 60, 0.05);
+      padding: 10px;
+      text-align: center;
+      font-family: var(--font-techno);
+      font-size: 0.65rem;
+      letter-spacing: 1px;
+      color: var(--gold-light);
+    }
+
+    .flip-trigger-btn {
+      position: absolute;
+      top: 10px; right: 10px;
+      z-index: 25;
+      background: rgba(0, 0, 0, 0.7);
+      border: 1px solid var(--gold-mid);
+      color: var(--gold-light);
+      border-radius: 50%;
+      width: 30px; height: 30px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 0.8rem; transition: transform 0.3s;
+    }
+    .flip-trigger-btn:hover { transform: scale(1.1) rotate(180deg); }
+
+    .ticket {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      background: linear-gradient(145deg, #120004 0%, #2a000a 50%, #0d0003 100%);
+      border-radius: 14px;
+      box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.95);
+      overflow: hidden;
+    }
+
+    .hologram-watermark-pattern {
+      position: absolute;
+      top: -50%; left: -50%; width: 200%; height: 200%;
+      transform: rotate(-25deg);
+      font-family: var(--font-techno);
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 3px;
+      line-height: 1.8;
+      pointer-events: none;
+      z-index: 3;
+      opacity: 0.18;
+      word-break: break-all;
+      background: linear-gradient(var(--holo-angle, 45deg), #ff007f 0%, #7f00ff 33%, #00f3ff 66%, #ff007f 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      mix-blend-mode: screen;
+    }
+
+    .ticket::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: radial-gradient(rgba(255, 0, 60, 0.2) 1px, transparent 0);
+      background-size: 10px 10px;
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    .star-flare {
+      position: absolute; width: 22px; height: 22px;
+      background: radial-gradient(circle, #ffffff 15%, rgba(255, 243, 168, 0.9) 35%, transparent 70%);
+      clip-path: polygon(50% 0%, 58% 42%, 100% 50%, 58% 58%, 50% 100%, 42% 58%, 0% 50%, 42% 42%);
+      z-index: 20; pointer-events: none;
+    }
+    .flare-1 { top: -8px; left: -8px; }
+    .flare-2 { top: -8px; right: -8px; }
+    .flare-3 { bottom: -8px; left: -8px; }
+    .flare-4 { bottom: -8px; right: -8px; }
+
+    .notch {
+      position: absolute; width: 22px; height: 22px;
+      background-color: var(--bg-dark); border-radius: 50%;
+      z-index: 10; border: 2px solid #d4af37;
+      box-shadow: inset 0 0 6px rgba(0,0,0,0.9);
+      transition: transform 0.5s ease, opacity 0.5s ease;
+    }
+    .notch-left { left: -11px; top: calc(100% - 73px - 11px); }
+    .notch-right { right: -11px; top: calc(100% - 73px - 11px); }
+
+    .main-section {
+      padding: 24px 18px 28px;
+      display: flex; flex-direction: column; align-items: center; text-align: center;
+      position: relative; z-index: 4;
+      transition: transform 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.8s ease;
+      transform-origin: top center;
+    }
+
+    .stub-section {
+      height: 73px; padding: 12px 16px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+      background: rgba(0, 0, 0, 0.4); text-align: center;
+      position: relative; z-index: 4;
+      transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1), opacity 1s ease, filter 1s ease;
+      transform-origin: bottom center;
+    }
+
+    .stub-border-interactive {
+      position: absolute; left: 0; right: 0;
+      top: calc(100% - 73px - 20px); height: 40px;
+      z-index: 30; cursor: ns-resize;
+      display: flex; align-items: center; justify-content: center;
+      touch-action: none;
+    }
+
+    .stub-border-line { width: 100%; height: 2px; border-top: 2px dashed rgba(212, 175, 55, 0.85); position: relative; }
+
+    .cut-progress {
+      position: absolute; left: 0; top: -2px; height: 6px;
+      background: linear-gradient(90deg, #ff003c 0%, #ff8000 50%, #fff3a8 100%);
+      box-shadow: 0 0 15px #ff003c, 0 0 25px #ff8000;
+      width: 0%; border-radius: 4px; transition: width 0.02s linear, height 0.02s linear;
+    }
+
+    .blade-indicator {
+      position: absolute; width: 24px; height: 24px; background: #ffffff; border-radius: 50%;
+      box-shadow: 0 0 15px #ff003c, 0 0 30px #ffffff, 0 0 45px #ff8000;
+      transform: translate(-50%, -50%) scale(0); pointer-events: none; z-index: 40;
+      transition: transform 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .stub-border-interactive.cutting .blade-indicator { transform: translate(-50%, -50%) scale(1); }
+
+    .ticket.bending .main-section { transform: rotateX(10deg) translateY(-4px) scale(0.995); }
+    .ticket.bending .stub-section { transform: rotateX(-14deg) translateY(6px) scale(0.995); }
+
+    .ticket.torn .main-section {
+      transform: translateY(-25px) translateZ(30px) rotate(-2deg);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.95);
+      clip-path: polygon(0% 0%, 100% 0%, 100% calc(100% - 6px), 95% 100%, 90% calc(100% - 6px), 85% 100%, 80% calc(100% - 6px), 75% 100%, 70% calc(100% - 6px), 65% 100%, 60% calc(100% - 6px), 55% 100%, 50% calc(100% - 6px), 45% 100%, 40% calc(100% - 6px), 35% 100%, 30% calc(100% - 6px), 25% 100%, 20% calc(100% - 6px), 15% 100%, 10% calc(100% - 6px), 5% 100%, 0% calc(100% - 6px));
+    }
+    .ticket.torn .stub-section {
+      transform: translateY(220px) rotate(25deg) translateZ(-80px);
+      opacity: 0; filter: blur(6px); pointer-events: none;
+    }
+    .ticket.torn .stub-border-interactive, .ticket.torn .notch { opacity: 0; pointer-events: none; }
+
+    .badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      border: 1px solid #d4af37; padding: 3px 10px; border-radius: 4px;
+      font-family: var(--font-techno); font-size: 0.5rem; letter-spacing: 1.5px;
+      color: var(--gold-light); text-transform: uppercase; background: rgba(0, 0, 0, 0.75); margin-bottom: 12px;
+    }
+    .badge-icon { width: 6px; height: 6px; background: #ff003c; border-radius: 50%; box-shadow: 0 0 6px #ff003c; }
+
+    .main-header {
+      font-family: var(--font-techno); font-size: 1.25rem; font-weight: 900; letter-spacing: 3px;
+      background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase;
+    }
+    .event-title {
+      font-family: 'UnifrakturMaguntina', cursive; font-size: 2rem; color: #fff;
+      text-shadow: 0 0 10px rgba(255, 0, 60, 0.9), 0 0 20px rgba(255, 0, 60, 0.5); line-height: 1.1; margin: 4px 0;
+    }
+    .sub-header { font-family: var(--font-techno); font-size: 0.6rem; letter-spacing: 3px; color: var(--gold-light); text-transform: uppercase; margin-bottom: 10px; }
+    .date-info {
+      font-family: var(--font-techno); font-size: 0.68rem; font-weight: 700; letter-spacing: 1.5px; color: #fff;
+      margin-bottom: 12px; border-top: 1px solid rgba(212, 175, 55, 0.5); border-bottom: 1px solid rgba(212, 175, 55, 0.5);
+      padding: 6px 14px; background: rgba(212, 175, 55, 0.08); width: 100%;
+    }
+    .meta-grid { display: flex; gap: 10px; align-items: center; justify-content: center; width: 100%; }
+    .meta-box { flex: 1; max-width: 170px; border: 1px solid rgba(212, 175, 55, 0.6); padding: 6px 8px; border-radius: 4px; background: rgba(0, 0, 0, 0.6); }
+    .meta-label { font-family: var(--font-techno); font-size: 0.45rem; color: var(--gold-light); text-transform: uppercase; letter-spacing: 1px; }
+    .meta-value { font-family: var(--font-techno); font-size: 0.75rem; font-weight: 700; color: #fff; letter-spacing: 1px; }
+    .stub-vertical-text { font-family: var(--font-techno); font-size: 0.62rem; letter-spacing: 2px; color: var(--gold-light); text-transform: uppercase; }
+    .stub-footer { font-family: var(--font-techno); font-size: 0.5rem; color: rgba(255, 255, 255, 0.7); letter-spacing: 1.2px; }
+
+    .toast {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px);
+      background: var(--accent); color: #fff; padding: 10px 20px; border-radius: 20px;
+      font-size: 0.75rem; font-weight: 700; opacity: 0; transition: all 0.3s; z-index: 300;
+      box-shadow: 0 0 15px var(--accent-glow); pointer-events: none;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+    @media (min-width: 580px) {
+      .ticket { flex-direction: row; }
+      .main-section { flex: 1; padding: 20px; }
+      .stub-section {
+        width: 155px; height: auto; padding: 20px 10px; justify-content: space-between;
+        border-left: 1px solid rgba(212, 175, 55, 0.2);
+      }
+      .stub-vertical-text { writing-mode: vertical-rl; transform: rotate(180deg); font-size: 0.55rem; }
+      .stub-border-interactive { left: auto; right: calc(155px - 20px); top: 0; bottom: 0; width: 40px; height: auto; cursor: ew-resize; }
+      .stub-border-line { width: 2px; height: 100%; border-top: none; border-left: 2px dashed rgba(212, 175, 55, 0.85); }
+      .cut-progress { width: 6px; height: 0%; left: -2px; top: 0; background: linear-gradient(180deg, #ff003c 0%, #ff8000 50%, #fff3a8 100%); }
+      .badge { position: absolute; top: 12px; left: 15px; margin-bottom: 0; }
+      .main-header { margin-top: 10px; }
+      .date-info { width: auto; }
+      .notch-left, .notch-right { display: none; }
+      .notch-top { display: block; right: calc(155px - 11px); top: -11px; }
+      .notch-bottom { display: block; right: calc(155px - 11px); bottom: -11px; top: auto; }
+    }
+  </style>
 </head>
-<body class="spotify-theme">
+<body>
 
-  <!-- Grain Overlay & Toast -->
+  <div id="flash-overlay"></div>
   <div class="grain"></div>
-  <div id="toast" class="toast">¡Media añadido a la playlist!</div>
+  <canvas id="particle-canvas"></canvas>
 
-  <!-- Modal Ampliado de Reproducción -->
-  <div id="media-modal" class="media-modal" onclick="closeMediaModal(event)">
-    <span class="lightbox-close" onclick="closeMediaModal(event)">&times;</span>
-    <div class="media-modal-container" onclick="event.stopPropagation()">
-      <div id="modal-media-wrapper"></div>
-      <div class="modal-info-bar">
-        <div class="media-track-info">
-          <p id="modal-title" class="track-name">SINISTER_TRACK.mp4</p>
-          <p id="modal-uploader" class="track-artist">@USER</p>
+  <div class="container">
+    <div class="header-top">
+      <div class="status-tag">
+        <div class="blink-dot"></div>
+        LIVE TRANSMISSION
+      </div>
+      <button class="strobe-btn" id="strobe-toggle" onclick="toggleStrobe()">STROBE OFF</button>
+    </div>
+
+    <h1 class="glitch" data-text="THE SINISTER FOREST">THE SINISTER FOREST</h1>
+    <p class="subtitle">UNDERGROUND TECHNO EXPERIENCE</p>
+
+    <div class="audio-visualizer">
+      <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+
+    <div class="lineup-section">
+      <div class="lineup-title">// HEADLINER ARTIST</div>
+      <div class="dj-card headliner">
+        <span class="dj-tag">SPECIAL GUEST</span>
+        <div class="dj-name">DJ TUCNAK</div>
+        <div class="dj-genre">UNDERGROUND TECHNO</div>
+        <div class="dj-socials">
+          <a href="https://www.instagram.com/tucnakdj?utm_source=qr&igsh=MWpvdDFuMWk1M2txZw==" target="_blank" class="dj-link">INSTAGRAM SET</a>
         </div>
       </div>
     </div>
+
+    <div class="capacity-bar">
+      <div class="capacity-text">
+        <span>AFORO CLANDESTINO</span>
+        <span id="capacity-count">82%</span>
+      </div>
+      <div class="progress-bg">
+        <div class="progress-fill" id="capacity-progress" style="width: 82%;"></div>
+      </div>
+    </div>
+
+    <div class="spotify-embed-container">
+      <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/7i4PfCGZVumvg0dds3vN21?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </div>
+
+    <div class="countdown-grid" id="countdown">
+      <div class="time-box">
+        <span class="time-number" id="cd-days">00</span>
+        <span class="time-label">Días</span>
+      </div>
+      <div class="time-box">
+        <span class="time-number" id="cd-hours">00</span>
+        <span class="time-label">Horas</span>
+      </div>
+      <div class="time-box">
+        <span class="time-number" id="cd-minutes">00</span>
+        <span class="time-label">Min</span>
+      </div>
+      <div class="time-box">
+        <span class="time-number" id="cd-seconds">00</span>
+        <span class="time-label">Seg</span>
+      </div>
+    </div>
+
+    <a href="#" class="calendar-btn" onclick="addToCalendar(event)">📅 AGENDAR EN CALENDARIO</a>
+
+    <div class="contribution-section">
+      <span class="contribution-badge">// APORTE RESPONSABLE //</span>
+      <div class="amount-container">
+        <span class="currency">$</span>
+        <span class="amount">10.000</span>
+        <span class="unit">COP</span>
+      </div>
+      <div class="nequi-number" id="nequi-box">
+        NEQUI: <span id="nequi-val">310 548 4102</span>
+      </div>
+      <div class="btn-group">
+        <button class="contribution-btn" onclick="openNequiApp()">PAGAR CON NEQUI</button>
+        <button class="contribution-btn secondary" onclick="copyNequi()">COPIAR NÚMERO</button>
+      </div>
+    </div>
+
+    <div class="location-box" id="location-box-container">
+      <p id="location-title">📍 UBICACIÓN CLANDESTINA</p>
+      <p id="location-details">Se revelará automáticamente a los titulares de pases confirmados 4 horas antes del inicio.</p>
+    </div>
+
+    <div class="action-dual-btn">
+      <button class="rsvp-btn" id="rsvp-trigger" onclick="toggleRSVP()">CONFIRMAR ASISTENCIA</button>
+      <button class="ticket-btn" onclick="openModal()">OBTENER MI PASES VIP</button>
+    </div>
+
+    <div style="margin-bottom: 15px;">
+      <a href="galeria.html" class="calendar-btn" style="background: rgba(255, 0, 60, 0.15); border-color: var(--accent);">
+        🎬 VER GALERÍA Y CLIPS EN VIVO
+      </a>
+    </div>
+
+    <div class="social-share">
+      <div class="share-title">COMPARTE EL RAVE</div>
+      <div class="social-btns">
+        <button class="s-btn wa" onclick="shareWhatsApp()">WhatsApp</button>
+        <button class="s-btn fb" onclick="shareFacebook()">Facebook</button>
+        <button class="s-btn copy" onclick="copyLink()">Copiar Enlace</button>
+      </div>
+    </div>
+
+    <footer>
+      <span>THE SINISTER FOREST // ENVIGADO, COLOMBIA</span>
+      <span>ESTRICTAMENTE +18 // NOS RESERVAMOS EL DERECHO DE ADMISIÓN</span>
+    </footer>
   </div>
 
-  <!-- Layout Principal de Spotify App -->
-  <div class="spotify-app-layout">
-
-    <!-- Sidebar Izquierda -->
-    <aside class="spotify-sidebar">
-      <div class="sidebar-logo">
-        <span class="brand-icon">⚡</span>
-        <span class="brand-name">SINISTER VAULT</span>
-      </div>
-
-      <nav class="sidebar-nav">
-        <a href="index.html" class="nav-item">
-          <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-          <span>Inicio Evento</span>
-        </a>
-        <a href="#" class="nav-item active">
-          <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
-          <span>Galería & Clips</span>
-        </a>
-      </nav>
-
-      <div class="sidebar-divider"></div>
-
-      <div class="sidebar-library">
-        <p class="library-title">TU BIBLIOTECA</p>
-        <div class="playlist-item active-playlist">
-          <div class="playlist-thumb">🔥</div>
-          <div class="playlist-info">
-            <p class="p-name">Main Stage Memories</p>
-            <p class="p-sub">Playlist Clandestina</p>
-          </div>
-        </div>
-      </div>
-    </aside>
-
-    <!-- Área Principal de Contenido -->
-    <main class="spotify-main-content">
+  <!-- MODAL DE TIQUETE VIP INTERACTIVO -->
+  <div class="modal" id="ticket-modal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeModal()">&times;</span>
       
-      <!-- Top Header -->
-      <header class="spotify-topbar">
-        <a href="index.html" class="spotify-back-btn">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
-          <span>Volver al Evento</span>
-        </a>
-        <div class="spotify-user-pill">
-          <span class="user-badge-dot"></span>
-          <span id="header-user-name">GUEST_RAVER</span>
-        </div>
-      </header>
-
-      <!-- Banner Hero Playlist -->
-      <section class="playlist-hero">
-        <div class="hero-cover">
-          <span class="hero-icon">🎬</span>
-        </div>
-        <div class="hero-details">
-          <span class="badge-public">PLAYLIST PÚBLICA DE LA NOCHE</span>
-          <h1 class="hero-title">THE SINISTER VAULT</h1>
-          <p class="hero-description">Archivo fotográfico y videoclips compartidos por la comunidad en vivo durante la noche de techno.</p>
-          <div class="hero-meta">
-            <span class="author-bold">DJ TUCNAK</span> • <span id="item-count-badge">3 archivos cargados</span>
-          </div>
-        </div>
-      </section>
-
-      <!-- Action Bar (Play + Add Media) -->
-      <section class="playlist-actions">
-        <button class="big-play-btn" onclick="playAllMedia()" title="Reproducir todo">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="black"><path d="M8 5v14l11-7z"/></svg>
-        </button>
-
-        <div class="upload-trigger-btn" onclick="document.getElementById('file-input').click()">
-          <span class="plus-icon">+</span>
-          <span>SUBIR FOTOS O VIDEOS</span>
-          <input type="file" id="file-input" accept="image/*,video/*" multiple onchange="handleFiles(this.files)">
-        </div>
-      </section>
-
-      <!-- Filtros -->
-      <div class="filter-pills">
-        <button class="pill active" onclick="filterMedia('all', event)">Todos los archivos</button>
-        <button class="pill" onclick="filterMedia('image', event)">📸 Fotos</button>
-        <button class="pill" onclick="filterMedia('video', event)">🎬 Videos Clips</button>
+      <!-- VISTA DE FORMULARIO DE ALIAS -->
+      <div id="ticket-form-view">
+        <div class="ticket-badge">GENERADOR DE PASE CLANDESTINO</div>
+        <h2 style="font-size: 1.2rem; margin-bottom: 15px; font-family: var(--font-techno);">INGRESA TU ALIAS / NOMBRE</h2>
+        <input type="text" id="user-alias-input" class="ticket-input" placeholder="Ej: RAVER_X" maxlength="18" />
+        <button class="contribution-btn" style="width: 100%; padding: 12px; font-size: 0.8rem;" onclick="generateTicket()">GENERAR MI PASE VIP</button>
       </div>
 
-      <!-- Grid Multimedia estilo Tarjetas Spotify -->
-      <section class="spotify-cards-grid" id="media-grid">
+      <!-- VISTA DE RESULTADO CON TIQUETE -->
+      <div id="ticket-result-view" style="display: none;">
+        <div class="ticket-badge" id="instruction-text">✂️ DESLIZA SOBRE LA LÍNEA PARA CORTAR EL TIQUETE ✂️</div>
+        
+        <div class="ticket-wrapper" id="ticket-wrapper">
+          <button class="flip-trigger-btn" id="flip-btn" onclick="toggleFlipCard()" title="Ver Reverso">🔄</button>
+          
+          <div class="star-flare flare-1"></div>
+          <div class="star-flare flare-2"></div>
+          <div class="star-flare flare-3"></div>
+          <div class="star-flare flare-4"></div>
 
-        <!-- Muestra 1: Video -->
-        <div class="spotify-card media-element" data-type="video" data-src="https://www.w3schools.com/html/mov_bbb.mp4" data-title="Drop Principal Opening" data-uploader="@TUCNAK_RAW">
-          <div class="card-cover">
-            <video src="https://www.w3schools.com/html/mov_bbb.mp4" muted loop preload="metadata"></video>
-            <span class="media-type-badge">VIDEO</span>
-            <button class="card-play-button" onclick="playMedia(event, this)">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="black"><path d="M8 5v14l11-7z"/></svg>
-            </button>
-          </div>
-          <div class="card-body">
-            <p class="card-title">Drop Principal Opening</p>
-            <p class="card-sub">@TUCNAK_RAW • 1.2k reproducciones</p>
+          <div class="flip-card-inner">
+            <!-- ANVERSO -->
+            <div class="ticket-frame" id="ticket-frame">
+              <div class="notch notch-left notch-top"></div>
+              <div class="notch notch-right notch-bottom"></div>
+
+              <div class="stub-border-interactive" id="cut-line">
+                <div class="blade-indicator" id="blade-indicator"></div>
+                <div class="stub-border-line">
+                  <div class="cut-progress" id="cut-progress"></div>
+                </div>
+              </div>
+
+              <div class="ticket" id="ticket">
+                <div class="hologram-watermark-pattern" id="watermark">VIP PASS // THE SINISTER FOREST // </div>
+                
+                <div class="main-section">
+                  <div class="badge"><span class="badge-icon"></span> ACCESS CONFIRMED</div>
+                  <h2 class="main-header">THE SINISTER FOREST</h2>
+                  <div class="event-title" id="modal-user-display">GUEST_RAVER</div>
+                  <p class="sub-header">UNDERGROUND TECHNO EXPERIENCE</p>
+                  
+                  <div class="date-info">10 AGOSTO 2026 // 23:59 HRS</div>
+
+                  <div class="meta-grid">
+                    <div class="meta-box">
+                      <div class="meta-label">CÓDIGO ÚNICO</div>
+                      <div class="meta-value" id="ticket-code-val">PASS-#8921</div>
+                    </div>
+                    <div class="meta-box" style="display: flex; align-items: center; justify-content: center; background: #fff; padding: 4px;">
+                      <img src="" alt="QR Code" id="ticket-qr" style="width: 55px; height: 55px; border-radius: 4px;" />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="stub-section">
+                  <span class="stub-vertical-text">CONTROL DE ACCESO</span>
+                  <span class="stub-footer">ESTRICTAMENTE SECRETO</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- REVERSO -->
+            <div class="ticket-back" id="ticket-back-element">
+              <div class="ticket-back-content">
+                <div class="back-title">
+                  <span>CONDICIONES DE ACCESO</span>
+                  <span>TSF-2026</span>
+                </div>
+                <ul class="back-rules">
+                  <li>Prohibido el uso de cámaras y flash en la pista principal.</li>
+                  <li>Ubicación estricta bajo confidencialidad hasta el conteo final.</li>
+                  <li>Presentar este pase digital o impreso en la entrada clandestina.</li>
+                </ul>
+                <div class="map-box">
+                  ENVIGADO // ANTIOQUIA — ZONA PROTEGIDA
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
 
-        <!-- Muestra 2: Imagen -->
-        <div class="spotify-card media-element" data-type="image" data-src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=800" data-title="Luces & Estrobos Main Room" data-uploader="@TECHNO_GUEST">
-          <div class="card-cover">
-            <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=400" alt="Luces Room" />
-            <span class="media-type-badge">FOTO</span>
-            <button class="card-play-button" onclick="playMedia(event, this)">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="black"><path d="M8 5v14l11-7z"/></svg>
-            </button>
-          </div>
-          <div class="card-body">
-            <p class="card-title">Luces & Estrobos Main Room</p>
-            <p class="card-sub">@TECHNO_GUEST • 01:12 H</p>
-          </div>
+        <div style="display: flex; gap: 8px; margin-top: 15px;">
+          <button class="contribution-btn secondary" onclick="resetTicketForm()">CAMBIAR ALIAS</button>
+          <button class="contribution-btn" id="secret-reward-box" style="display: none;" onclick="downloadBothSidesInOneImage()">📥 DESCARGAR PASE COMPLETO</button>
         </div>
-
-        <!-- Muestra 3: Video -->
-        <div class="spotify-card media-element" data-type="video" data-src="https://www.w3schools.com/html/movie.mp4" data-title="Visuales Láser Forest" data-uploader="@CLANDESTINO_01">
-          <div class="card-cover">
-            <video src="https://www.w3schools.com/html/movie.mp4" muted loop preload="metadata"></video>
-            <span class="media-type-badge">VIDEO</span>
-            <button class="card-play-button" onclick="playMedia(event, this)">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="black"><path d="M8 5v14l11-7z"/></svg>
-            </button>
-          </div>
-          <div class="card-body">
-            <p class="card-title">Visuales Láser Forest</p>
-            <p class="card-sub">@CLANDESTINO_01 • 890 reproducciones</p>
-          </div>
-        </div>
-
-      </section>
-    </main>
+      </div>
+    </div>
   </div>
 
-  <!-- Reproductor Inferior Fijo de Spotify -->
-  <footer class="spotify-bottom-player">
-    <div class="player-left">
-      <div class="player-thumb" id="player-thumb-bg">🎵</div>
-      <div class="player-track-details">
-        <p class="player-track-title" id="player-title">Selecciona un archivo</p>
-        <p class="player-track-artist" id="player-artist">The Sinister Vault</p>
-      </div>
-    </div>
+  <div class="toast" id="toast"></div>
 
-    <div class="player-center">
-      <div class="player-controls">
-        <button class="ctrl-btn" onclick="prevMedia()">⏮</button>
-        <button class="ctrl-btn main-play" id="main-play-toggle" onclick="togglePlayerPlay()">▶</button>
-        <button class="ctrl-btn" onclick="nextMedia()">⏭</button>
-      </div>
-      <div class="progress-bar-wrapper">
-        <span class="time-text" id="curr-time">0:00</span>
-        <div class="progress-bar"><div class="progress-fill" id="player-progress"></div></div>
-        <span class="time-text" id="total-time">0:30</span>
-      </div>
-    </div>
-
-    <div class="player-right">
-      <span class="volume-icon">🔊</span>
-      <div class="volume-bar"><div class="volume-fill"></div></div>
-    </div>
-  </footer>
-
-  <script src="script.js"></script>
   <script>
-    const mediaGrid = document.getElementById('media-grid');
-    const userAlias = localStorage.getItem('userName') || 'GUEST_RAVER';
-    let currentActiveCard = null;
-
-    document.getElementById('header-user-name').innerText = userAlias.toUpperCase();
-
-    function showToast(message) {
-      const toast = document.getElementById('toast');
-      toast.innerText = message;
-      toast.className = "toast show";
-      setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3000);
-    }
-
-    // Gestión de Archivos (Fotos y Videos)
-    function handleFiles(files) {
-      Array.from(files).forEach(file => {
-        const isVideo = file.type.startsWith('video/');
-        const isImage = file.type.startsWith('image/');
-
-        if (!isVideo && !isImage) return;
-
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          const fileDataUrl = e.target.result;
-          const now = new Date();
-          const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')} H`;
-
-          const card = document.createElement('div');
-          card.className = 'spotify-card media-element';
-          card.setAttribute('data-type', isVideo ? 'video' : 'image');
-          card.setAttribute('data-src', fileDataUrl);
-          card.setAttribute('data-title', file.name.substring(0, 20));
-          card.setAttribute('data-uploader', `@${userAlias.toUpperCase()}`);
-
-          if (isVideo) {
-            card.innerHTML = `
-              <div class="card-cover">
-                <video src="${fileDataUrl}" muted loop preload="metadata"></video>
-                <span class="media-type-badge">VIDEO</span>
-                <button class="card-play-button" onclick="playMedia(event, this)">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="black"><path d="M8 5v14l11-7z"/></svg>
-                </button>
-              </div>
-              <div class="card-body">
-                <p class="card-title">${file.name.substring(0, 18)}...</p>
-                <p class="card-sub">@${userAlias.toUpperCase()} • ${timeStr}</p>
-              </div>
-            `;
-          } else {
-            card.innerHTML = `
-              <div class="card-cover">
-                <img src="${fileDataUrl}" alt="Media" />
-                <span class="media-type-badge">FOTO</span>
-                <button class="card-play-button" onclick="playMedia(event, this)">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="black"><path d="M8 5v14l11-7z"/></svg>
-                </button>
-              </div>
-              <div class="card-body">
-                <p class="card-title">${file.name.substring(0, 18)}...</p>
-                <p class="card-sub">@${userAlias.toUpperCase()} • ${timeStr}</p>
-              </div>
-            `;
-          }
-
-          mediaGrid.prepend(card);
-          updateCount();
-          showToast('¡Archivo subido a la biblioteca!');
-        };
-        reader.readAsDataURL(file);
-      });
-    }
-
-    // Reproducción en Bottom Player y Modal
-    function playMedia(e, btn) {
-      e.stopPropagation();
-      const card = btn.closest('.spotify-card');
-      const src = card.getAttribute('data-src');
-      const title = card.getAttribute('data-title');
-      const uploader = card.getAttribute('data-uploader');
-      const type = card.getAttribute('data-type');
-
-      currentActiveCard = card;
-
-      // Actualizar Bottom Player
-      document.getElementById('player-title').innerText = title;
-      document.getElementById('player-artist').innerText = uploader;
-      document.getElementById('main-play-toggle').innerText = '⏸';
-      document.getElementById('player-progress').style.width = '45%';
-
-      if (type === 'video') {
-        openVideoModal(src, uploader, title);
-      } else {
-        openImageModal(src, uploader, title);
+    let audioCtx = null;
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
       }
     }
 
-    function openImageModal(url, user, title) {
-      const wrapper = document.getElementById('modal-media-wrapper');
-      wrapper.innerHTML = `<img src="${url}" class="modal-media-content" />`;
-      document.getElementById('modal-title').innerText = title;
-      document.getElementById('modal-uploader').innerText = user;
-      document.getElementById('media-modal').style.display = 'flex';
+    function playSound(type) {
+      try {
+        initAudio();
+        if (!audioCtx) return;
+        const now = audioCtx.currentTime;
+
+        if (type === 'click') {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(580, now);
+          osc.frequency.exponentialRampToValueAtTime(880, now + 0.08);
+          gain.gain.setValueAtTime(0.08, now);
+          gain.gain.linearRampToValueAtTime(0.001, now + 0.08);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.08);
+        } else if (type === 'success') {
+          [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, now + (i * 0.05));
+            gain.gain.setValueAtTime(0.08, now + (i * 0.05));
+            gain.gain.linearRampToValueAtTime(0.001, now + (i * 0.05) + 0.25);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now + (i * 0.05));
+            osc.stop(now + (i * 0.05) + 0.25);
+          });
+        }
+      } catch(e) {}
     }
 
-    function openVideoModal(url, user, title) {
-      const wrapper = document.getElementById('modal-media-wrapper');
-      wrapper.innerHTML = `<video src="${url}" class="modal-media-content" controls autoplay></video>`;
-      document.getElementById('modal-title').innerText = title;
-      document.getElementById('modal-uploader').innerText = user;
-      document.getElementById('media-modal').style.display = 'flex';
-    }
-
-    function closeMediaModal(e) {
-      const modal = document.getElementById('media-modal');
-      const wrapper = document.getElementById('modal-media-wrapper');
-      wrapper.innerHTML = '';
-      modal.style.display = 'none';
-      document.getElementById('main-play-toggle').innerText = '▶';
-    }
-
-    function togglePlayerPlay() {
-      const btn = document.getElementById('main-play-toggle');
-      if (btn.innerText === '▶') {
-        btn.innerText = '⏸';
-        showToast('Reproduciendo...');
-      } else {
-        btn.innerText = '▶';
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedUser = localStorage.getItem('userName');
+      if (savedUser) {
+        const inputEl = document.getElementById('user-alias-input');
+        if (inputEl) inputEl.value = savedUser;
       }
-    }
+      initParticleCanvas();
+      initCutMechanics();
+      startCountdown();
+    });
 
-    function filterMedia(type, event) {
-      document.querySelectorAll('.filter-pills .pill').forEach(btn => btn.classList.remove('active'));
-      event.target.classList.add('active');
+    function initParticleCanvas() {
+      const canvas = document.getElementById('particle-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let particles = [];
 
-      const items = document.querySelectorAll('.media-element');
-      items.forEach(item => {
-        if (type === 'all' || item.getAttribute('data-type') === type) {
-          item.style.display = 'flex';
-        } else {
-          item.style.display = 'none';
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resizeCanvas);
+      resizeCanvas();
+
+      class Particle {
+        constructor() {
+          this.x = Math.random() * canvas.width;
+          this.y = Math.random() * canvas.height;
+          this.size = Math.random() * 2 + 0.5;
+          this.speedX = (Math.random() - 0.5) * 0.8;
+          this.speedY = (Math.random() - 0.5) * 0.8;
+          this.color = Math.random() > 0.5 ? '#ff003c' : '#ffffff';
+          this.opacity = Math.random() * 0.5 + 0.2;
+        }
+        update() {
+          this.x += this.speedX;
+          this.y += this.speedY;
+          if (this.x < 0) this.x = canvas.width;
+          if (this.x > canvas.width) this.x = 0;
+          if (this.y < 0) this.y = canvas.height;
+          if (this.y > canvas.height) this.y = 0;
+        }
+        draw() {
+          ctx.fillStyle = this.color;
+          ctx.globalAlpha = this.opacity;
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      for (let i = 0; i < 60; i++) particles.push(new Particle());
+
+      function animateParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => { p.update(); p.draw(); });
+        requestAnimationFrame(animateParticles);
+      }
+      animateParticles();
+
+      window.addEventListener('mousemove', (e) => {
+        const xRatio = e.clientX / window.innerWidth;
+        const angle = Math.floor(xRatio * 360);
+        const watermark = document.getElementById('watermark');
+        if (watermark) {
+          watermark.style.setProperty('--holo-angle', `${angle}deg`);
         }
       });
     }
 
-    function updateCount() {
-      const count = document.querySelectorAll('.media-element').length;
-      document.getElementById('item-count-badge').innerText = `${count} archivos cargados`;
-    }
-
-    function playAllMedia() {
-      const firstCard = document.querySelector('.spotify-card');
-      if (firstCard) {
-        const playBtn = firstCard.querySelector('.card-play-button');
-        playBtn.click();
+    let strobeActive = false;
+    function toggleStrobe() {
+      playSound('click');
+      strobeActive = !strobeActive;
+      document.body.classList.toggle('strobe-active', strobeActive);
+      const btn = document.getElementById('strobe-toggle');
+      if (btn) {
+        btn.classList.toggle('active', strobeActive);
+        btn.innerText = strobeActive ? 'STROBE ON' : 'STROBE OFF';
       }
     }
 
-    function prevMedia() {
-      showToast('Archivo anterior');
+    function openModal() {
+      playSound('click');
+      const modal = document.getElementById('ticket-modal');
+      if (modal) modal.style.display = 'flex';
+      
+      const savedUser = localStorage.getItem('userName');
+      if (savedUser) {
+        const formView = document.getElementById('ticket-form-view');
+        const resultView = document.getElementById('ticket-result-view');
+        if (formView) formView.style.display = 'none';
+        if (resultView) resultView.style.display = 'block';
+        generateTicket(savedUser);
+      } else {
+        const formView = document.getElementById('ticket-form-view');
+        const resultView = document.getElementById('ticket-result-view');
+        if (formView) formView.style.display = 'block';
+        if (resultView) resultView.style.display = 'none';
+      }
     }
 
-    function nextMedia() {
-      showToast('Siguiente archivo');
+    function closeModal() {
+      playSound('click');
+      const modal = document.getElementById('ticket-modal');
+      if (modal) modal.style.display = 'none';
+    }
+
+    function generateTicket(forcedName = null) {
+      playSound('click');
+      const inputEl = document.getElementById('user-alias-input');
+      const inputVal = forcedName !== null ? forcedName : (inputEl ? inputEl.value : '');
+      const name = inputVal.trim();
+
+      if (!name) {
+        showToast('Por favor ingresa un alias válido');
+        return;
+      }
+
+      const cleanName = name.toUpperCase();
+      localStorage.setItem('userName', name);
+
+      const userDisplay = document.getElementById('modal-user-display');
+      if (userDisplay) userDisplay.innerText = cleanName;
+      
+      const qrData = `ESTADO: VÁLIDO Y ACTIVO | EVENTO: THE SINISTER FOREST | TITULAR: ${cleanName} | ACCESO AUTORIZADO 2026`;
+      const encodedData = encodeURIComponent(qrData);
+      const qrImg = document.getElementById('ticket-qr');
+      if (qrImg) {
+        qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodedData}&color=020203&bgcolor=ffffff`;
+      }
+      
+      const hash = cleanName.split('').reduce((acc, char) => acc + char.charCodeAt(0), 1000);
+      const codeVal = document.getElementById('ticket-code-val');
+      if (codeVal) codeVal.innerText = `PASS-#${hash.toString().slice(-4)}`;
+
+      const formView = document.getElementById('ticket-form-view');
+      const resultView = document.getElementById('ticket-result-view');
+      if (formView) formView.style.display = 'none';
+      if (resultView) resultView.style.display = 'block';
+    }
+
+    function resetTicketForm() {
+      playSound('click');
+      const formView = document.getElementById('ticket-form-view');
+      const resultView = document.getElementById('ticket-result-view');
+      if (formView) formView.style.display = 'block';
+      if (resultView) resultView.style.display = 'none';
+
+      const ticketEl = document.getElementById('ticket');
+      const instructionText = document.getElementById('instruction-text');
+      
+      if (ticketEl) {
+        ticketEl.classList.remove('torn', 'bending');
+        const cutProgress = document.getElementById('cut-progress');
+        if (cutProgress) {
+          cutProgress.style.width = '0%';
+          cutProgress.style.height = '0%';
+        }
+      }
+      
+      if (instructionText) {
+        instructionText.innerHTML = '✂️ DESLIZA SOBRE LA LÍNEA PARA CORTAR EL TIQUETE ✂️';
+      }
+      isTorn = false;
+      cutAmount = 0;
+      const secretRewardBox = document.getElementById('secret-reward-box');
+      if (secretRewardBox) secretRewardBox.style.display = 'none';
+    }
+
+    function toggleFlipCard() {
+      playSound('click');
+      const wrapper = document.getElementById('ticket-wrapper');
+      if (wrapper) wrapper.classList.toggle('flipped');
+    }
+
+    let isTorn = false;
+    let cutAmount = 0;
+    let isDragging = false;
+
+    function initCutMechanics() {
+      const cutLine = document.getElementById('cut-line');
+      const cutProgress = document.getElementById('cut-progress');
+      const ticket = document.getElementById('ticket');
+      const flashOverlay = document.getElementById('flash-overlay');
+      const instructionText = document.getElementById('instruction-text');
+      
+      if (!cutLine || !ticket) return;
+
+      const startDrag = (e) => {
+        if (isTorn) return;
+        isDragging = true;
+        cutLine.classList.add('cutting');
+        ticket.classList.add('bending');
+        if (navigator.vibrate) navigator.vibrate(30);
+        e.preventDefault();
+      };
+
+      const onDrag = (e) => {
+        if (!isDragging || isTorn) return;
+
+        const rect = cutLine.getBoundingClientRect();
+        const isHorizontal = window.innerWidth < 580;
+        
+        let clientCoord = isHorizontal 
+          ? (e.touches ? e.touches[0].clientX : e.clientX) 
+          : (e.touches ? e.touches[0].clientY : e.clientY);
+          
+        let startCoord = isHorizontal ? rect.left : rect.top;
+        let totalSize = isHorizontal ? rect.width : rect.height;
+
+        let pos = clientCoord - startCoord;
+        let percentage = Math.max(0, Math.min(100, (pos / totalSize) * 100));
+
+        cutAmount = percentage;
+        
+        if (cutProgress) {
+          if (isHorizontal) {
+            cutProgress.style.width = `${cutAmount}%`;
+          } else {
+            cutProgress.style.height = `${cutAmount}%`;
+          }
+        }
+
+        if (cutAmount >= 85 && !isTorn) {
+          triggerCutComplete();
+        }
+      };
+
+      const endDrag = () => {
+        if (!isDragging || isTorn) return;
+        isDragging = false;
+        cutLine.classList.remove('cutting');
+        ticket.classList.remove('bending');
+
+        if (cutAmount < 85) {
+          cutAmount = 0;
+          if (cutProgress) {
+            cutProgress.style.width = '0%';
+            cutProgress.style.height = '0%';
+          }
+        }
+      };
+
+      async function triggerCutComplete() {
+        isTorn = true;
+        isDragging = false;
+        cutLine.classList.remove('cutting');
+        ticket.classList.remove('bending');
+        ticket.classList.add('torn');
+
+        if (flashOverlay) {
+          flashOverlay.style.opacity = '1';
+          setTimeout(() => { flashOverlay.style.opacity = '0'; }, 150);
+        }
+
+        if (navigator.vibrate) navigator.vibrate([50, 50, 100]);
+        playSound('success');
+
+        if (instructionText) {
+          instructionText.innerHTML = '✨ ¡ACCESO VIP VÁLIDO Y ACTIVO! ✨';
+        }
+
+        const secretRewardBox = document.getElementById('secret-reward-box');
+        if (secretRewardBox) {
+          secretRewardBox.style.display = 'block';
+        }
+
+        showToast('¡Ticket validado con éxito!');
+      }
+
+      cutLine.addEventListener('mousedown', startDrag);
+      window.addEventListener('mousemove', onDrag);
+      window.addEventListener('mouseup', endDrag);
+
+      cutLine.addEventListener('touchstart', startDrag, { passive: false });
+      window.addEventListener('touchmove', onDrag, { passive: false });
+      window.addEventListener('touchend', endDrag);
+    }
+
+    async function downloadBothSidesInOneImage() {
+      playSound('click');
+      const ticketWrapper = document.getElementById('ticket-wrapper');
+      const backElement = document.getElementById('ticket-back-element');
+      const alias = localStorage.getItem('userName') || 'GUEST_RAVER';
+      const wasFlipped = ticketWrapper.classList.contains('flipped');
+
+      try {
+        ticketWrapper.classList.remove('flipped');
+        if (backElement) {
+          backElement.style.transform = 'rotateY(0deg)';
+          backElement.style.position = 'relative';
+          backElement.style.display = 'block';
+          backElement.style.marginTop = '20px';
+        }
+
+        await new Promise(resolve => setTimeout(resolve, 300));
+
+        const canvas = await html2canvas(ticketWrapper, {
+          backgroundColor: null,
+          scale: 3,
+          useCORS: true,
+          logging: false,
+          allowTaint: true
+        });
+
+        const link = document.createElement('a');
+        link.href = canvas.toDataURL('image/png', 1.0);
+        link.download = `TSF_VIP_PASS_${alias.toUpperCase()}_COMPLETO.png`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        showToast('¡Pase completo (Frente y Atrás) descargado!');
+      } catch (error) {
+        console.error(error);
+        showToast('Error al generar la imagen combinada.');
+      } finally {
+        if (backElement) {
+          backElement.style.transform = '';
+          backElement.style.position = '';
+          backElement.style.display = '';
+          backElement.style.marginTop = '';
+        }
+        if (wasFlipped) {
+          ticketWrapper.classList.add('flipped');
+        }
+      }
+    }
+
+    let rsvpConfirmed = false;
+    function toggleRSVP() {
+      playSound('click');
+      rsvpConfirmed = !rsvpConfirmed;
+      const btn = document.getElementById('rsvp-trigger');
+      const capCount = document.getElementById('capacity-count');
+      const capBar = document.getElementById('capacity-progress');
+
+      if (rsvpConfirmed) {
+        if (btn) { btn.classList.add('confirmed'); btn.innerText = '✓ ASISTENCIA CONFIRMADA'; }
+        if (capCount) capCount.innerText = '83%';
+        if (capBar) capBar.style.width = '83%';
+        showToast('¡Asistencia confirmada!');
+      } else {
+        if (btn) { btn.classList.remove('confirmed'); btn.innerText = 'CONFIRMAR ASISTENCIA'; }
+        if (capCount) capCount.innerText = '82%';
+        if (capBar) capBar.style.width = '82%';
+      }
+    }
+
+    function copyNequi() {
+      playSound('click');
+      const nequiVal = document.getElementById('nequi-val');
+      const textToCopy = nequiVal ? nequiVal.innerText.replace(/\s+/g, '') : '3105484102';
+      navigator.clipboard.writeText(textToCopy);
+      showToast('Número Nequi copiado');
+    }
+
+    function openNequiApp() {
+      playSound('click');
+      window.location.href = 'nequi://';
+      setTimeout(() => {
+        showToast('Abriendo Nequi...');
+      }, 1000);
+    }
+
+    function shareWhatsApp() {
+      playSound('click');
+      const text = encodeURIComponent('🔥 Asiste a THE SINISTER FOREST - Underground Techno Experience. ¡Nos vemos en el rave!');
+      window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
+    }
+
+    function shareFacebook() {
+      playSound('click');
+      const url = encodeURIComponent(window.location.href);
+      window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+    }
+
+    function copyLink() {
+      playSound('click');
+      navigator.clipboard.writeText(window.location.href);
+      showToast('Enlace del evento copiado');
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      if (!toast) return;
+      toast.innerText = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    function addToCalendar(e) {
+      e.preventDefault();
+      playSound('click');
+      alert('Evento añadido a la agenda.');
+    }
+
+    function startCountdown() {
+      const targetDate = new Date('2026-08-10T23:59:59').getTime();
+
+      const updateTimer = () => {
+        const now = new Date().getTime();
+        const diff = targetDate - now;
+
+        const daysEl = document.getElementById('cd-days');
+        const hoursEl = document.getElementById('cd-hours');
+        const minEl = document.getElementById('cd-minutes');
+        const secEl = document.getElementById('cd-seconds');
+
+        if (diff > 0) {
+          if (daysEl) daysEl.innerText = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0');
+          if (hoursEl) hoursEl.innerText = String(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+          if (minEl) minEl.innerText = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+          if (secEl) secEl.innerText = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
+        } else {
+          if (daysEl) daysEl.innerText = '00';
+          if (hoursEl) hoursEl.innerText = '00';
+          if (minEl) minEl.innerText = '00';
+          if (secEl) secEl.innerText = '00';
+
+          const locBox = document.getElementById('location-box-container');
+          if (locBox) {
+            locBox.innerHTML = `
+              <p id="location-title" style="color:#00ff66;">📍 UBICACIÓN REVELADA</p>
+              <p id="location-details" style="color:#fff; font-weight:bold; margin-bottom:10px;">Parque Lineal La Frontera // Envigado, Antioquia</p>
+              <a href="https://maps.google.com/?q=Parque+Lineal+La+Frontera+Envigado" target="_blank" class="calendar-btn" style="margin-bottom:0; background:var(--accent);">
+                VER EN GOOGLE MAPS
+              </a>
+            `;
+          }
+        }
+      };
+
+      updateTimer();
+      setInterval(updateTimer, 1000);
     }
   </script>
 </body>
