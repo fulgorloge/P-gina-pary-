@@ -265,7 +265,41 @@
     .progress-bg { background: rgba(255,255,255,0.08); height: 4px; border-radius: 4px; overflow: hidden; }
     .progress-fill { background: var(--accent); height: 100%; box-shadow: 0 0 8px var(--accent); transition: width 0.4s ease; }
 
-    .spotify-embed-container { margin-bottom: 15px; border-radius: 12px; overflow: hidden; border: 1px solid var(--glass-border); }
+    .spotify-embed-container { margin-bottom: 10px; border-radius: 12px; overflow: hidden; border: 1px solid var(--glass-border); }
+    
+    .spotify-custom-box {
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
+      padding: 10px 12px;
+      margin-bottom: 15px;
+      display: flex;
+      gap: 6px;
+    }
+    .spotify-input {
+      flex: 1;
+      padding: 8px 10px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+      color: #fff;
+      font-family: var(--font);
+      font-size: 0.65rem;
+      outline: none;
+    }
+    .spotify-input:focus { border-color: var(--accent); box-shadow: 0 0 8px var(--accent-glow); }
+    .spotify-load-btn {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 0 12px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.65rem;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .spotify-load-btn:hover { filter: brightness(1.2); }
 
     .countdown-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 15px; }
     .time-box { background: rgba(0, 0, 0, 0.55); border: 1px solid rgba(255, 255, 255, 0.08); padding: 10px 2px; border-radius: 12px; }
@@ -302,13 +336,20 @@
     #location-title { font-size: 0.7rem; font-weight: 700; color: var(--accent); }
     #location-details { font-size: 0.65rem; color: var(--text-muted); margin-top: 4px; }
 
-    .action-dual-btn { display: flex; gap: 8px; margin-bottom: 15px; }
+    .action-dual-btn { display: flex; gap: 8px; margin-bottom: 10px; }
     .rsvp-btn, .ticket-btn {
       flex: 1; background: transparent; border: 1px solid var(--accent); color: var(--accent);
       padding: 10px 4px; border-radius: 8px; font-family: var(--font); font-weight: 700; font-size: 0.65rem; cursor: pointer; transition: 0.3s;
     }
     .rsvp-btn.confirmed { background: var(--accent); color: #fff; }
     .ticket-btn { background: var(--accent); color: #fff; box-shadow: 0 0 10px var(--accent-glow); }
+
+    .gallery-btn {
+      display: block; width: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border);
+      color: #fff; text-decoration: none; font-size: 0.65rem; font-weight: 700; letter-spacing: 1px;
+      padding: 10px; border-radius: 10px; margin-bottom: 15px; transition: 0.3s; cursor: pointer; text-align: center;
+    }
+    .gallery-btn:hover { background: rgba(255, 0, 60, 0.15); border-color: var(--accent); color: var(--accent); }
 
     .social-share { padding-top: 12px; border-top: 1px solid var(--glass-border); margin-bottom: 12px; }
     .share-title { font-size: 0.58rem; letter-spacing: 2px; color: var(--text-muted); margin-bottom: 8px; }
@@ -649,8 +690,13 @@
       </div>
     </div>
 
-    <div class="spotify-embed-container">
-      <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX6JtiUYJA6BN?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    <div class="spotify-embed-container" id="spotify-container">
+      <iframe id="spotify-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX6JtiUYJA6BN?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </div>
+
+    <div class="spotify-custom-box">
+      <input type="text" id="spotify-url-input" class="spotify-input" placeholder="Pega link o URI de Spotify (Canción/Playlist)..." />
+      <button class="spotify-load-btn" onclick="loadCustomSpotifyTrack()">CARGAR</button>
     </div>
 
     <div class="countdown-grid" id="countdown">
@@ -678,7 +724,7 @@
       <span class="contribution-badge">// APORTE RESPONSABLE //</span>
       <div class="amount-container">
         <span class="currency">$</span>
-        <span class="amount">60.000</span>
+        <span class="amount">10.000</span>
         <span class="unit">COP</span>
       </div>
       <div class="nequi-number" id="nequi-box">
@@ -699,6 +745,8 @@
       <button class="rsvp-btn" id="rsvp-trigger" onclick="toggleRSVP()">CONFIRMAR ASISTENCIA</button>
       <button class="ticket-btn" onclick="openModal()">OBTENER MI PASES VIP</button>
     </div>
+
+    <a href="photos://" class="gallery-btn" onclick="openGallery(event)">🖼️ ABRIR GALERÍA</a>
 
     <div class="social-share">
       <div class="share-title">COMPARTE EL RAVE</div>
@@ -814,7 +862,6 @@
   <div class="toast" id="toast"></div>
 
   <script>
-    // Sintetizador de audio con Web Audio API (Efectos de sonido modernos, limpios y agradables para botones)
     let audioCtx = null;
     function initAudio() {
       if (!audioCtx) {
@@ -832,7 +879,6 @@
         const now = audioCtx.currentTime;
 
         if (type === 'click') {
-          // Sonido de botón elegante tipo UI scifi (agradable y suave)
           const osc = audioCtx.createOscillator();
           const gain = audioCtx.createGain();
           osc.type = 'sine';
@@ -845,7 +891,6 @@
           osc.start(now);
           osc.stop(now + 0.08);
         } else if (type === 'success') {
-          // Sonido de éxito al completar el corte del tiquete
           [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
@@ -859,9 +904,7 @@
             osc.stop(now + (i * 0.05) + 0.25);
           });
         }
-      } catch(e) {
-        // Fallback silencioso
-      }
+      } catch(e) {}
     }
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -874,6 +917,52 @@
       initCutMechanics();
       startCountdown();
     });
+
+    function loadCustomSpotifyTrack() {
+      playSound('click');
+      const input = document.getElementById('spotify-url-input');
+      const iframe = document.getElementById('spotify-iframe');
+      if (!input || !iframe) return;
+
+      let val = input.value.trim();
+      if (!val) {
+        showToast('Ingresa un enlace válido de Spotify');
+        return;
+      }
+
+      let embedUrl = '';
+      if (val.includes('open.spotify.com')) {
+        const match = val.match(/spotify\.com\/(track|playlist|album|artist)\/([a-zA-Z0-9]+)/);
+        if (match) {
+          embedUrl = `https://open.spotify.com/embed/${match[1]}/${match[2]}?utm_source=generator&theme=0`;
+        }
+      } else if (val.startsWith('spotify:')) {
+        const parts = val.split(':');
+        if (parts.length >= 3) {
+          embedUrl = `https://open.spotify.com/embed/${parts[1]}/${parts[2]}?utm_source=generator&theme=0`;
+        }
+      } else if (val.length === 22) {
+        embedUrl = `https://open.spotify.com/embed/track/${val}?utm_source=generator&theme=0`;
+      }
+
+      if (embedUrl) {
+        iframe.src = embedUrl;
+        showToast('¡Reproductor actualizado!');
+        input.value = '';
+      } else {
+        showToast('Formato de Spotify no reconocido');
+      }
+    }
+
+    function openGallery(e) {
+      e.preventDefault();
+      playSound('click');
+      // Intento de abrir la galería nativa en dispositivos móviles o emulador
+      window.location.href = 'photos://';
+      setTimeout(() => {
+        showToast('Abriendo galería...');
+      }, 1000);
+    }
 
     function initParticleCanvas() {
       const canvas = document.getElementById('particle-canvas');
@@ -989,7 +1078,6 @@
       const userDisplay = document.getElementById('modal-user-display');
       if (userDisplay) userDisplay.innerText = cleanName;
       
-      // QR original con estado VÁLIDO Y ACTIVO
       const qrData = `ESTADO: VÁLIDO Y ACTIVO | EVENTO: THE SINISTER FOREST | TITULAR: ${cleanName} | ACCESO AUTORIZADO 2026`;
       const encodedData = encodeURIComponent(qrData);
       const qrImg = document.getElementById('ticket-qr');
