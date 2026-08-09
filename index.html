@@ -650,7 +650,7 @@
     </div>
 
     <div class="spotify-embed-container">
-      <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/6Z8R6UsWhG61oXWiyQfC4g?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX6JtiUYJA6BN?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
 
     <div class="countdown-grid" id="countdown">
@@ -672,7 +672,7 @@
       </div>
     </div>
 
-    <button class="calendar-btn" onclick="addToCalendar(event)">📅 AGENDAR EN CALENDARIO</button>
+    <a href="#" class="calendar-btn" onclick="addToCalendar(event)">📅 AGENDAR EN CALENDARIO</a>
 
     <div class="contribution-section">
       <span class="contribution-badge">// APORTE RESPONSABLE //</span>
@@ -814,7 +814,7 @@
   <div class="toast" id="toast"></div>
 
   <script>
-    // Sintetizador de audio avanzado con Web Audio API (Efecto futurista/tecnológico para botones y corte limpio)
+    // Sintetizador de audio con Web Audio API (Efectos de sonido modernos, limpios y agradables para botones)
     let audioCtx = null;
     function initAudio() {
       if (!audioCtx) {
@@ -831,21 +831,21 @@
         if (!audioCtx) return;
         const now = audioCtx.currentTime;
 
-        if (type === 'cut') {
-          // Sonido limpio tipo láser / corte futurista sutil (sin ruido molesto)
+        if (type === 'click') {
+          // Sonido de botón elegante tipo UI scifi (agradable y suave)
           const osc = audioCtx.createOscillator();
           const gain = audioCtx.createGain();
           osc.type = 'sine';
-          osc.frequency.setValueAtTime(600, now);
-          osc.frequency.exponentialRampToValueAtTime(150, now + 0.12);
-          gain.gain.setValueAtTime(0.1, now);
-          gain.gain.linearRampToValueAtTime(0.001, now + 0.12);
+          osc.frequency.setValueAtTime(580, now);
+          osc.frequency.exponentialRampToValueAtTime(880, now + 0.08);
+          gain.gain.setValueAtTime(0.08, now);
+          gain.gain.linearRampToValueAtTime(0.001, now + 0.08);
           osc.connect(gain);
           gain.connect(audioCtx.destination);
           osc.start(now);
-          osc.stop(now + 0.12);
+          osc.stop(now + 0.08);
         } else if (type === 'success') {
-          // Acorde armónico futurista para validación exitosa
+          // Sonido de éxito al completar el corte del tiquete
           [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
@@ -858,19 +858,6 @@
             osc.start(now + (i * 0.05));
             osc.stop(now + (i * 0.05) + 0.25);
           });
-        } else if (type === 'click') {
-          // Efecto de sonido elegante y cristalino para botones (tipo UI sci-fi)
-          const osc = audioCtx.createOscillator();
-          const gain = audioCtx.createGain();
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(800, now);
-          osc.frequency.exponentialRampToValueAtTime(1200, now + 0.06);
-          gain.gain.setValueAtTime(0.12, now);
-          gain.gain.linearRampToValueAtTime(0.001, now + 0.06);
-          osc.connect(gain);
-          gain.connect(audioCtx.destination);
-          osc.start(now);
-          osc.stop(now + 0.06);
         }
       } catch(e) {
         // Fallback silencioso
@@ -1002,7 +989,7 @@
       const userDisplay = document.getElementById('modal-user-display');
       if (userDisplay) userDisplay.innerText = cleanName;
       
-      // QR con estado explícito VÁLIDO Y ACTIVO
+      // QR original con estado VÁLIDO Y ACTIVO
       const qrData = `ESTADO: VÁLIDO Y ACTIVO | EVENTO: THE SINISTER FOREST | TITULAR: ${cleanName} | ACCESO AUTORIZADO 2026`;
       const encodedData = encodeURIComponent(qrData);
       const qrImg = document.getElementById('ticket-qr');
@@ -1073,7 +1060,6 @@
         cutLine.classList.add('cutting');
         ticket.classList.add('bending');
         if (navigator.vibrate) navigator.vibrate(30);
-        playSound('cut');
         e.preventDefault();
       };
 
@@ -1231,7 +1217,9 @@
 
     function copyNequi() {
       playSound('click');
-      navigator.clipboard.writeText('3124567890');
+      const nequiVal = document.getElementById('nequi-val');
+      const textToCopy = nequiVal ? nequiVal.innerText.replace(/\s+/g, '') : '3124567890';
+      navigator.clipboard.writeText(textToCopy);
       showToast('Número Nequi copiado');
     }
 
@@ -1272,7 +1260,7 @@
     function addToCalendar(e) {
       e.preventDefault();
       playSound('click');
-      showToast('Evento añadido a la agenda.');
+      alert('Evento añadido a la agenda.');
     }
 
     function startCountdown() {
@@ -1303,7 +1291,7 @@
             locBox.innerHTML = `
               <p id="location-title" style="color:#00ff66;">📍 UBICACIÓN REVELADA</p>
               <p id="location-details" style="color:#fff; font-weight:bold; margin-bottom:10px;">Parque Lineal La Frontera // Envigado, Antioquia</p>
-              <a href="https://maps.google.com/?q=Parque+Lineal+La+Frontera+Envigado" target="_blank" class="calendar-btn" style="margin-bottom:0; background:var(--accent); text-decoration:none; display:block; padding:10px; border-radius:10px;">
+              <a href="https://maps.google.com/?q=Parque+Lineal+La+Frontera+Envigado" target="_blank" class="calendar-btn" style="margin-bottom:0; background:var(--accent);">
                 VER EN GOOGLE MAPS
               </a>
             `;
