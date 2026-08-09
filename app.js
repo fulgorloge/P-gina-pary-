@@ -1,10 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const savedUser = localStorage.getItem('userName');
   if (savedUser) {
-    const formattedName = savedUser.toUpperCase();
-    document.getElementById('modal-user-display').innerText = formattedName;
     document.getElementById('user-alias-input').value = savedUser;
-    updateQRAndCode(savedUser);
   }
 });
 
@@ -70,32 +67,53 @@ function toggleStrobe() {
 function openModal() {
   const modal = document.getElementById('ticket-modal');
   modal.style.display = 'flex';
+  
+  const savedUser = localStorage.getItem('userName');
+  if (savedUser) {
+    document.getElementById('ticket-form-view').style.display = 'none';
+    document.getElementById('ticket-result-view').style.display = 'block';
+    generateTicket(savedUser);
+  } else {
+    document.getElementById('ticket-form-view').style.display = 'block';
+    document.getElementById('ticket-result-view').style.display = 'none';
+  }
 }
+
 function closeModal() {
   const modal = document.getElementById('ticket-modal');
   modal.style.display = 'none';
 }
 
-// Actualización en tiempo real del Alias y QR
-function updateTicketAlias(val) {
-  const name = val.trim() || 'GUEST_RAVER';
-  const cleanName = name.toUpperCase();
-  
-  document.getElementById('modal-user-display').innerText = cleanName;
-  localStorage.setItem('userName', name);
-  
-  updateQRAndCode(name);
-}
+// Generar el ticket tras presionar el botón
+function generateTicket(forcedName = null) {
+  const inputVal = forcedName !== null ? forcedName : document.getElementById('user-alias-input').value;
+  const name = inputVal.trim();
 
-function updateQRAndCode(name) {
-  const cleanStr = name.trim() || 'GUEST_RAVER';
-  const encodedName = encodeURIComponent(cleanStr);
-  const qrImg = document.getElementById('ticket-qr');
+  if (!name) {
+    showToast('Por favor ingresa un alias válido');
+    return;
+  }
+
+  const cleanName = name.toUpperCase();
+  localStorage.setItem('userName', name);
+
+  document.getElementById('modal-user-display').innerText = cleanName;
   
+  const encodedName = encodeURIComponent(cleanName);
+  const qrImg = document.getElementById('ticket-qr');
   qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=TSF_PASS_${encodedName}_2026&color=020203&bgcolor=ffffff`;
   
-  const hash = cleanStr.split('').reduce((acc, char) => acc + char.charCodeAt(0), 1000);
+  const hash = cleanName.split('').reduce((acc, char) => acc + char.charCodeAt(0), 1000);
   document.getElementById('ticket-code-val').innerText = `PASS-#${hash.toString().slice(-4)}-TSF`;
+
+  document.getElementById('ticket-form-view').style.display = 'none';
+  document.getElementById('ticket-result-view').style.display = 'block';
+}
+
+// Volver al formulario para cambiar de alias
+function resetTicketForm() {
+  document.getElementById('ticket-form-view').style.display = 'block';
+  document.getElementById('ticket-result-view').style.display = 'none';
 }
 
 // Control de Confirmación de Asistencia (RSVP)
