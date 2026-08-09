@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
   startCountdown();
 });
 
-// Canvas de Partículas Estéticas y Efecto Holográfico
 function initParticleCanvas() {
   const canvas = document.getElementById('particle-canvas');
   if (!canvas) return;
@@ -69,7 +68,6 @@ function initParticleCanvas() {
   });
 }
 
-// Interruptor de Efecto Strobe
 let strobeActive = false;
 function toggleStrobe() {
   strobeActive = !strobeActive;
@@ -81,7 +79,6 @@ function toggleStrobe() {
   }
 }
 
-// Funciones del Modal de Ticket
 function openModal() {
   const modal = document.getElementById('ticket-modal');
   if (modal) modal.style.display = 'flex';
@@ -106,7 +103,6 @@ function closeModal() {
   if (modal) modal.style.display = 'none';
 }
 
-// Generar el ticket VIP tras presionar el botón
 function generateTicket(forcedName = null) {
   const inputEl = document.getElementById('user-alias-input');
   const inputVal = forcedName !== null ? forcedName : (inputEl ? inputEl.value : '');
@@ -139,7 +135,6 @@ function generateTicket(forcedName = null) {
   if (resultView) resultView.style.display = 'block';
 }
 
-// Volver al formulario para cambiar de alias
 function resetTicketForm() {
   const formView = document.getElementById('ticket-form-view');
   const resultView = document.getElementById('ticket-result-view');
@@ -163,13 +158,12 @@ function resetTicketForm() {
   }
 }
 
-// Voltear Tarjeta (Flip)
 function toggleFlipCard() {
   const wrapper = document.getElementById('ticket-wrapper');
   if (wrapper) wrapper.classList.toggle('flipped');
 }
 
-// Mecánica de Corte del Tiquete VIP con Función Útil al Romper
+// Mecánica de Corte y Función para Descargar Frente y Atrás en una sola imagen
 let isTorn = false;
 let cutAmount = 0;
 let isDragging = false;
@@ -238,7 +232,7 @@ function initCutMechanics() {
     }
   };
 
-  function triggerCutComplete() {
+  async function triggerCutComplete() {
     isTorn = true;
     isDragging = false;
     cutLine.classList.remove('cutting');
@@ -256,21 +250,17 @@ function initCutMechanics() {
       instructionText.innerHTML = '✨ ¡ACCESO VIP VALIDADO Y CORTADO! ✨';
     }
 
-    // ==========================================
-    // FUNCIÓN ÚTIL AL ROMPER EL TICKET:
-    // 1. Copia un código de seguridad al portapapeles.
-    // 2. Revela la caja secreta en la pantalla principal.
-    // ==========================================
-    const codeVal = document.getElementById('ticket-code-val');
-    const secretCode = codeVal ? codeVal.innerText : 'TSF-PASS-VERIFIED';
-    navigator.clipboard.writeText(secretCode).catch(() => {});
-
     const secretRewardBox = document.getElementById('secret-reward-box');
     if (secretRewardBox) {
       secretRewardBox.style.display = 'block';
     }
 
-    showToast('¡Ticket cortado! Código VIP copiado al portapapeles.');
+    showToast('¡Ticket cortado! Generando imagen combinada...');
+
+    // =========================================================================
+    // FUNCIÓN DE DESCARGA AUTOMÁTICA EN UNA SOLA IMAGEN (FRENTE + ATRÁS)
+    // =========================================================================
+    await downloadBothSidesInOneImage();
   }
 
   cutLine.addEventListener('mousedown', startDrag);
@@ -282,7 +272,62 @@ function initCutMechanics() {
   window.addEventListener('touchend', endDrag);
 }
 
-// Descarga independiente para Frente o Atrás
+// Función maestra para renderizar ambos lados juntos en un canvas y descargarlos
+async function downloadBothSidesInOneImage() {
+  const ticketWrapper = document.getElementById('ticket-wrapper');
+  const ticketFrame = document.getElementById('ticket-frame');
+  const backElement = document.getElementById('ticket-back-element');
+  const alias = localStorage.getItem('userName') || 'GUEST_RAVER';
+  const wasFlipped = ticketWrapper.classList.contains('flipped');
+
+  try {
+    // 1. Forzar que el reverso sea visible temporalmente sin transformaciones 3D de giro invertido para la captura
+    ticketWrapper.classList.remove('flipped');
+    if (backElement) {
+      backElement.style.transform = 'rotateY(0deg)';
+      backElement.style.position = 'relative';
+      backElement.style.display = 'block';
+      backElement.style.marginTop = '20px'; // Espacio vertical entre el frente y atrás en la misma imagen
+    }
+
+    await new Promise(resolve => setTimeout(resolve, 300));
+
+    // 2. Renderizar todo el contenedor (que ahora muestra ambos lados apilados)
+    const canvas = await html2canvas(ticketWrapper, {
+      backgroundColor: null,
+      scale: 3,
+      useCORS: true,
+      logging: false,
+      allowTaint: true
+    });
+
+    // 3. Descargar automáticamente
+    const link = document.createElement('a');
+    link.href = canvas.toDataURL('image/png', 1.0);
+    link.download = `TSF_VIP_PASS_${alias.toUpperCase()}_COMPLETO.png`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    showToast('¡Pase completo (Frente y Atrás) descargado!');
+  } catch (error) {
+    console.error(error);
+    showToast('Error al generar la imagen combinada.');
+  } finally {
+    // Restaurar los estilos originales del reverso
+    if (backElement) {
+      backElement.style.transform = '';
+      backElement.style.position = '';
+      backElement.style.display = '';
+      backElement.style.marginTop = '';
+    }
+    if (wasFlipped) {
+      ticketWrapper.classList.add('flipped');
+    }
+  }
+}
+
+// Descarga manual por si desean descargar solo frente o solo atrás individualmente
 async function downloadQR(side) {
   const ticketWrapper = document.getElementById('ticket-wrapper');
   const backElement = document.getElementById('ticket-back-element');
@@ -346,7 +391,6 @@ function visitQRLink() {
   showToast(`¡Pase verificado correctamente para ${alias.toUpperCase()}!`);
 }
 
-// Control de Confirmación de Asistencia (RSVP)
 let rsvpConfirmed = false;
 function toggleRSVP() {
   rsvpConfirmed = !rsvpConfirmed;
@@ -366,7 +410,6 @@ function toggleRSVP() {
   }
 }
 
-// Utilidades para Nequi y Portapapeles
 function copyNequi() {
   const nequiVal = document.getElementById('nequi-val');
   if (nequiVal) {
@@ -410,7 +453,6 @@ function addToCalendar(e) {
   alert('Evento añadido a la agenda.');
 }
 
-// Cuenta Regresiva y Revelación de Ubicación
 function startCountdown() {
   const targetDate = new Date('2026-08-10T23:59:59').getTime();
 
