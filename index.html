@@ -631,10 +631,10 @@
       <div class="lineup-title">// HEADLINER ARTIST</div>
       <div class="dj-card headliner">
         <span class="dj-tag">SPECIAL GUEST</span>
-        <div class="dj-name">KAS:ST</div>
-        <div class="dj-genre">AFTERLIFE / CONSTRUCT REPLAY</div>
+        <div class="dj-name">DJ TUCNAK</div>
+        <div class="dj-genre">UNDERGROUND TECHNO</div>
         <div class="dj-socials">
-          <a href="https://soundcloud.com/kasst" target="_blank" class="dj-link">SOUNDCLOUD SET</a>
+          <a href="https://www.instagram.com/tucnakdj?utm_source=qr&igsh=MWpvdDFuMWk1M2txZw==" target="_blank" class="dj-link">INSTAGRAM SET</a>
         </div>
       </div>
     </div>
@@ -682,7 +682,7 @@
         <span class="unit">COP</span>
       </div>
       <div class="nequi-number" id="nequi-box">
-        NEQUI: <span>312 456 7890</span>
+        NEQUI: <span id="nequi-val">310 548 4102</span>
       </div>
       <div class="btn-group">
         <button class="contribution-btn" onclick="openNequiApp()">PAGAR CON NEQUI</button>
@@ -1218,7 +1218,7 @@
     function copyNequi() {
       playSound('click');
       const nequiVal = document.getElementById('nequi-val');
-      const textToCopy = nequiVal ? nequiVal.innerText.replace(/\s+/g, '') : '3124567890';
+      const textToCopy = nequiVal ? nequiVal.innerText.replace(/\s+/g, '') : '3105484102';
       navigator.clipboard.writeText(textToCopy);
       showToast('Número Nequi copiado');
     }
