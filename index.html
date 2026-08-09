@@ -3,54 +3,125 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Sinister Forest // Underground Techno</title>
+  <title>The Sinister Forest // Underground Techno Experience</title>
 
   <!-- Fuentes de Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@600;700&family=Space+Grotesk:wght@300;500;700;900&family=UnifrakturMaguntina&display=swap" rel="stylesheet">
+  
+  <!-- Librería para exportar imagen del ticket -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
   <!-- Hoja de Estilos -->
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
-  <!-- Fondo dinámico y grano visual -->
+  <!-- Efectos visuales de fondo -->
   <canvas id="particle-canvas"></canvas>
   <div class="grain"></div>
+  <div id="flash-overlay"></div>
   <div id="toast" class="toast">¡Información copiada!</div>
 
-  <!-- Modal de Ticket Digital & Flujo de Generación -->
+  <!-- Modal de Ticket Digital & Flujo VIP -->
   <div id="ticket-modal" class="modal" onclick="if(event.target===this) closeModal()">
-    <div class="modal-content">
-      <span class="close-modal" onclick="closeModal()">&times;</span>
+    <div class="modal-content" style="max-width: 640px; padding: 15px; background: transparent; border: none; box-shadow: none;">
+      <span class="close-modal" onclick="closeModal()" style="z-index: 100; right: 20px; top: 15px;">&times;</span>
       
       <!-- Vista 1: Formulario de ingreso de alias -->
-      <div id="ticket-form-view">
+      <div id="ticket-form-view" style="background: rgba(12, 12, 15, 0.95); border: 1px solid var(--accent); border-radius: 20px; padding: 25px; text-align: center; box-shadow: 0 0 30px var(--accent-glow);">
         <p class="ticket-badge">ACCESS PASS // REGISTRO</p>
-        <h3 class="ticket-name">INGRESA TU ALIAS</h3>
-        <p class="ticket-instruction">Escribe tu nombre o alias para reclamar tu pase exclusivo del rave:</p>
+        <h3 class="ticket-name" style="font-family: 'Orbitron', sans-serif;">INGRESA TU ALIAS</h3>
+        <p class="ticket-instruction">Escribe tu nombre o alias para generar tu pase exclusivo del rave:</p>
         <input type="text" id="user-alias-input" class="ticket-input" placeholder="Ej: RAVE_MASTER" />
-        <button class="contribution-btn" style="width: 100%; margin-top: 15px;" onclick="generateTicket()">GENERAR MI TICKET</button>
+        <button class="contribution-btn" style="width: 100%; margin-top: 15px;" onclick="generateTicket()">GENERAR MI VIP PASS</button>
       </div>
 
-      <!-- Vista 2: Visualización del Ticket y QR Generado -->
-      <div id="ticket-result-view" style="display: none;">
-        <p class="ticket-badge">ACCESS PASS // CONFIRMED</p>
-        <h3 class="ticket-name" id="modal-user-display">GUEST_RAVER</h3>
+      <!-- Vista 2: Tiquete VIP Interactivo con Corte y Reverso -->
+      <div id="ticket-result-view" style="display: none; width: 100%;">
         
-        <div class="qr-placeholder">
-          <img src="" alt="QR Access Code" id="ticket-qr" />
-        </div>
-        <p class="ticket-code" id="ticket-code-val">PASS-#8921-TSF</p>
-        
-        <!-- Botones de Acción para el QR -->
-        <div style="display: flex; gap: 8px; margin-top: 12px;">
-          <button class="contribution-btn" style="font-size: 0.6rem; padding: 8px 4px;" onclick="downloadQR()">📥 DESCARGAR QR</button>
-          <button class="contribution-btn secondary" style="font-size: 0.6rem; padding: 8px 4px;" onclick="visitQRLink()">🔗 IR AL ACCESO</button>
+        <div class="instructions" id="instruction-text">✂️ DESLIZA SOBRE LA LÍNEA PARA CORTAR EL TIQUETE ✂️</div>
+
+        <div class="ticket-wrapper" id="ticket-wrapper">
+          <button class="flip-trigger-btn" id="flip-btn" title="Ver Reverso" onclick="toggleFlipCard()">🔄</button>
+          
+          <div class="star-flare flare-1"></div>
+          <div class="star-flare flare-2"></div>
+          <div class="star-flare flare-3"></div>
+          <div class="star-flare flare-4"></div>
+
+          <div class="flip-card-inner">
+            <!-- ANVERSO DEL TICKET -->
+            <div class="ticket-frame" id="ticket-frame">
+              <div class="notch notch-left notch-top"></div>
+              <div class="notch notch-right notch-bottom"></div>
+
+              <div class="stub-border-interactive" id="cut-line">
+                <div class="blade-indicator" id="blade-indicator"></div>
+                <div class="stub-border-line">
+                  <div class="cut-progress" id="cut-progress"></div>
+                </div>
+              </div>
+
+              <div class="ticket" id="ticket">
+                <div class="hologram-watermark-pattern" id="watermark">VIP PASS // THE SINISTER FOREST // </div>
+                
+                <div class="main-section">
+                  <div class="badge"><span class="badge-icon"></span> ACCESS CONFIRMED</div>
+                  <h2 class="main-header">THE SINISTER FOREST</h2>
+                  <div class="event-title" id="modal-user-display">GUEST_RAVER</div>
+                  <p class="sub-header">UNDERGROUND TECHNO EXPERIENCE</p>
+                  
+                  <div class="date-info">10 AGOSTO 2026 // 23:59 HRS</div>
+
+                  <div class="meta-grid">
+                    <div class="meta-box">
+                      <div class="meta-label">CÓDIGO ÚNICO</div>
+                      <div class="meta-value" id="ticket-code-val">PASS-#8921</div>
+                    </div>
+                    <div class="meta-box" style="display: flex; align-items: center; justify-content: center; background: #fff; padding: 4px;">
+                      <img src="" alt="QR Code" id="ticket-qr" style="width: 55px; height: 55px; border-radius: 4px;" />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="stub-section">
+                  <span class="stub-vertical-text">CONTROL DE ACCESO</span>
+                  <div class="qr-placeholder" style="display:none;"></div>
+                  <span class="stub-footer">ESTRICTAMENTE SECRETO</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- REVERSO DEL TICKET -->
+            <div class="ticket-back">
+              <div class="ticket-back-content">
+                <div class="back-title">
+                  <span>CONDICIONES DE ACCESO</span>
+                  <span>TSF-2026</span>
+                </div>
+                <ul class="back-rules">
+                  <li>Prohibido el uso de cámaras y flash en la pista principal.</li>
+                  <li>Ubicación estricta bajo confidencialidad hasta el conteo final.</li>
+                  <li>Presentar este pase digital o impreso en la entrada clandestina.</li>
+                </ul>
+                <div class="map-box">
+                  ENVIGADO // ANTIOQUIA — ZONA PROTEGIDA
+                </div>
+              </div>
+            </div>
+
+          </div>
         </div>
 
-        <button class="contribution-btn secondary" style="width: 100%; margin-top: 8px; font-size: 0.6rem; background: rgba(255,255,255,0.05);" onclick="resetTicketForm()">← Cambiar Alias</button>
+        <!-- Botones de Acción del Ticket -->
+        <div style="display: flex; gap: 8px; margin-top: 15px; justify-content: center;">
+          <button class="contribution-btn" style="font-size: 0.65rem; padding: 10px;" onclick="downloadQR()">📥 DESCARGAR PASS</button>
+          <button class="contribution-btn secondary" style="font-size: 0.65rem; padding: 10px;" onclick="visitQRLink()">🔗 IR AL ACCESO</button>
+          <button class="contribution-btn secondary" style="font-size: 0.65rem; padding: 10px; background: rgba(255,255,255,0.08);" onclick="resetTicketForm()">← CAMBIAR ALIAS</button>
+        </div>
+
       </div>
 
     </div>
