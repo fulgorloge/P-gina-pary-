@@ -5,20 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The Sinister Forest // Underground Techno Experience</title>
 
-  <!-- Fuentes de Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@600;700&family=Space+Grotesk:wght@300;500;700;900&family=UnifrakturMaguntina&display=swap" rel="stylesheet">
   
-  <!-- Librería para exportar imagen del ticket -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
-  <!-- Hoja de Estilos -->
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
-  <!-- Efectos visuales de fondo -->
   <canvas id="particle-canvas"></canvas>
   <div class="grain"></div>
   <div id="flash-overlay"></div>
@@ -29,7 +24,7 @@
     <div class="modal-content" style="max-width: 640px; padding: 15px; background: transparent; border: none; box-shadow: none;">
       <span class="close-modal" onclick="closeModal()" style="z-index: 100; right: 20px; top: 15px;">&times;</span>
       
-      <!-- Vista 1: Formulario de ingreso de alias -->
+      <!-- Vista 1: Formulario -->
       <div id="ticket-form-view" style="background: rgba(12, 12, 15, 0.95); border: 1px solid var(--accent); border-radius: 20px; padding: 25px; text-align: center; box-shadow: 0 0 30px var(--accent-glow);">
         <p class="ticket-badge">ACCESS PASS // REGISTRO</p>
         <h3 class="ticket-name" style="font-family: 'Orbitron', sans-serif;">INGRESA TU ALIAS</h3>
@@ -38,7 +33,7 @@
         <button class="contribution-btn" style="width: 100%; margin-top: 15px;" onclick="generateTicket()">GENERAR MI VIP PASS</button>
       </div>
 
-      <!-- Vista 2: Tiquete VIP Interactivo con Corte y Reverso -->
+      <!-- Vista 2: Tiquete VIP Interactivo -->
       <div id="ticket-result-view" style="display: none; width: 100%;">
         
         <div class="instructions" id="instruction-text">✂️ DESLIZA SOBRE LA LÍNEA PARA CORTAR EL TIQUETE ✂️</div>
@@ -52,7 +47,7 @@
           <div class="star-flare flare-4"></div>
 
           <div class="flip-card-inner">
-            <!-- ANVERSO DEL TICKET -->
+            <!-- ANVERSO -->
             <div class="ticket-frame" id="ticket-frame">
               <div class="notch notch-left notch-top"></div>
               <div class="notch notch-right notch-bottom"></div>
@@ -94,7 +89,7 @@
               </div>
             </div>
 
-            <!-- REVERSO DEL TICKET -->
+            <!-- REVERSO -->
             <div class="ticket-back" id="ticket-back-element">
               <div class="ticket-back-content">
                 <div class="back-title">
@@ -115,12 +110,9 @@
           </div>
         </div>
 
-        <!-- Botones de Acción del Ticket -->
+        <!-- Botones de Acción (Solo opción de cambiar alias) -->
         <div style="display: flex; gap: 8px; margin-top: 15px; justify-content: center; flex-wrap: wrap;">
-          <button class="contribution-btn" style="font-size: 0.65rem; padding: 10px;" onclick="downloadQR('front')">📥 DESCARGAR FRENTE</button>
-          <button class="contribution-btn" style="font-size: 0.65rem; padding: 10px; background: #d4af37; color:#000;" onclick="downloadQR('back')">📥 DESCARGAR ATRÁS</button>
-          <button class="contribution-btn secondary" style="font-size: 0.65rem; padding: 10px;" onclick="visitQRLink()">🔗 VERIFICAR</button>
-          <button class="contribution-btn secondary" style="font-size: 0.65rem; padding: 10px; background: rgba(255,255,255,0.08);" onclick="resetTicketForm()">← CAMBIAR</button>
+          <button class="contribution-btn secondary" style="font-size: 0.65rem; padding: 10px; background: rgba(255,255,255,0.08); width: 100%;" onclick="resetTicketForm()">← CAMBIAR ALIAS</button>
         </div>
 
       </div>
@@ -129,26 +121,19 @@
   </div>
 
   <div class="container">
-
-    <!-- Header & Interruptor de Strobe -->
     <div class="header-top">
-      <span class="status-tag">
-        <span class="blink-dot"></span> EVENTO CLANDESTINO
-      </span>
+      <span class="status-tag"><span class="blink-dot"></span> EVENTO CLANDESTINO</span>
       <button class="strobe-btn" id="strobe-toggle" onclick="toggleStrobe()">STROBE OFF</button>
     </div>
 
-    <!-- Título Principal Glitch -->
     <h1 class="glitch" data-text="THE SINISTER FOREST">THE SINISTER FOREST</h1>
     <p class="subtitle">UNDERGROUND TECHNO EXPERIENCE</p>
 
-    <!-- Ecualizador Animado -->
     <div class="audio-visualizer">
       <span></span><span></span><span></span><span></span><span></span>
       <span></span><span></span><span></span><span></span>
     </div>
 
-    <!-- Sección Lineup -->
     <section class="lineup-section">
       <p class="lineup-title">HEADLINER & LINEUP</p>
       <div class="dj-card headliner">
@@ -161,7 +146,6 @@
       </div>
     </section>
 
-    <!-- Barra de Capacidad del Aforo -->
     <div class="capacity-bar">
       <div class="capacity-text">AFORO CONFIRMADO: <span id="capacity-count">82%</span></div>
       <div class="progress-bg">
@@ -169,52 +153,23 @@
       </div>
     </div>
 
-    <!-- Reproductor Estético de Spotify -->
     <div class="spotify-embed-container">
-      <iframe 
-        style="border-radius:12px;" 
-        src="https://open.spotify.com/embed/track/1H5ol1dPZSqbalE0bl22VH?utm_source=generator&theme=0" 
-        width="100%" 
-        height="80" 
-        frameBorder="0" 
-        allowfullscreen="" 
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
-        loading="lazy">
-      </iframe>
+      <iframe style="border-radius:12px;" src="https://open.spotify.com/embed/track/1H5ol1dPZSqbalE0bl22VH?utm_source=generator&theme=0" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
 
-    <!-- Cuenta Regresiva -->
     <div class="countdown-grid">
-      <div class="time-box">
-        <span class="time-number" id="cd-days">00</span>
-        <span class="time-label">Días</span>
-      </div>
-      <div class="time-box">
-        <span class="time-number" id="cd-hours">00</span>
-        <span class="time-label">Horas</span>
-      </div>
-      <div class="time-box">
-        <span class="time-number" id="cd-minutes">00</span>
-        <span class="time-label">Min</span>
-      </div>
-      <div class="time-box">
-        <span class="time-number" id="cd-seconds">00</span>
-        <span class="time-label">Seg</span>
-      </div>
+      <div class="time-box"><span class="time-number" id="cd-days">00</span><span class="time-label">Días</span></div>
+      <div class="time-box"><span class="time-number" id="cd-hours">00</span><span class="time-label">Horas</span></div>
+      <div class="time-box"><span class="time-number" id="cd-minutes">00</span><span class="time-label">Min</span></div>
+      <div class="time-box"><span class="time-number" id="cd-seconds">00</span><span class="time-label">Seg</span></div>
     </div>
 
-    <!-- Botón Calendario -->
-    <a href="#" class="calendar-btn" onclick="addToCalendar(event)">
-      📅 AGREGAR A MI CALENDARIO
-    </a>
+    <a href="#" class="calendar-btn" onclick="addToCalendar(event)">📅 AGREGAR A MI CALENDARIO</a>
 
-    <!-- Sección de Aportes & Nequi -->
     <section class="contribution-section">
       <p class="contribution-badge">COVER / COOPERACIÓN VOLUNTARIA</p>
       <div class="amount-container">
-        <span class="currency">$</span>
-        <span class="amount">15.000</span>
-        <span class="unit">COP</span>
+        <span class="currency">$</span><span class="amount">15.000</span><span class="unit">COP</span>
       </div>
       <p class="nequi-number">NEQUI /: <span id="nequi-val">310 548 4102</span></p>
       <div class="btn-group">
@@ -223,25 +178,21 @@
       </div>
     </section>
 
-    <!-- Ubicación Secreta -->
     <div class="location-box" id="location-box-container">
       <p id="location-title">🔒 UBICACIÓN SECRETA</p>
       <p id="location-details">REVELACIÓN AL FINALIZAR EL CONTEO // ATENTO A LAS REDES</p>
     </div>
 
-    <!-- Contenedor extra que se desbloquea al romper el ticket -->
     <div id="secret-reward-box" style="display: none; background: rgba(212, 175, 55, 0.1); border: 1px solid #d4af37; border-radius: 12px; padding: 14px; margin-bottom: 15px; text-align: center;">
-      <p style="font-size: 0.7rem; font-weight: 700; color: #fff3a8; letter-spacing: 1px;">🎉 ¡ACCESO VIP VALIDADO EN SISTEMA!</p>
-      <p style="font-size: 0.65rem; color: #fff; margin-top: 4px;">Código de validez copiado al portapapeles. Presenta tu tiquete en puerta.</p>
+      <p style="font-size: 0.7rem; font-weight: 700; color: #fff3a8; letter-spacing: 1px;">🎉 ¡TICKET CORTADO Y DESCARGADO!</p>
+      <p style="font-size: 0.65rem; color: #fff; margin-top: 4px;">Tu pase dual (frente y atrás) se ha generado en una sola imagen.</p>
     </div>
 
-    <!-- Acciones Duales: RSVP + Ticket -->
     <div class="action-dual-btn">
       <button class="rsvp-btn" id="rsvp-trigger" onclick="toggleRSVP()">CONFIRMAR ASISTENCIA</button>
       <button class="ticket-btn" onclick="openModal()">MI TICKET DIGITAL</button>
     </div>
 
-    <!-- Botones de Redes y Compartir -->
     <div class="social-share">
       <p class="share-title">DIFUNDIR EN EL UNDERGROUND</p>
       <div class="social-btns">
@@ -255,10 +206,8 @@
       <p>THE SINISTER FOREST © 2026</p>
       <p>RIGHTS RESERVED // NO LIGHTS, NO PHONES, JUST MUSIC</p>
     </footer>
-
   </div>
 
-  <!-- Script Principal -->
   <script src="app.js"></script>
 </body>
 </html>
