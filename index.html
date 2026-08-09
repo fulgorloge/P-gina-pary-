@@ -56,11 +56,11 @@
     #flash-overlay {
       position: fixed;
       top: 0; left: 0; width: 100vw; height: 100vh;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(255, 0, 60, 0.5) 50%, transparent 100%);
+      background: #ffffff;
       pointer-events: none;
       z-index: 99;
       opacity: 0;
-      transition: opacity 0.12s ease-out;
+      transition: opacity 0.04s ease-out;
     }
 
     .grain {
@@ -88,13 +88,13 @@
     }
 
     body.strobe-active {
-      animation: strobe-flash 0.08s infinite steps(2, start);
+      animation: strobe-flash 0.1s infinite steps(1, start);
     }
 
     @keyframes strobe-flash {
-      0% { background-color: #ffffff; filter: invert(1) brightness(2); }
-      50% { background-color: #020203; filter: invert(0) brightness(1); }
-      100% { background-color: #ff003c; filter: contrast(2) brightness(1.5); }
+      0% { background-color: #ffffff; color: #000000; }
+      50% { background-color: #020203; color: #ffffff; }
+      100% { background-color: #ff003c; color: #ffffff; }
     }
 
     .header-top {
@@ -917,7 +917,6 @@
         if (inputEl) inputEl.value = savedUser;
       }
       
-      // Cargar canción predeterminada guardada o usar la por defecto
       const defaultTrackId = "2q9Z3H25b89Fk2G9L3zQ2R";
       const savedTrack = localStorage.getItem('spotifyTrackId') || defaultTrackId;
       const iframe = document.getElementById('spotify-iframe');
@@ -957,7 +956,6 @@
       showToast('¡Canción predeterminada guardada con éxito!');
     }
 
-    // Funciones de Galería y Subida Multimedia con localStorage
     function openGalleryModal() {
       playSound('click');
       const modal = document.getElementById('gallery-modal');
@@ -992,7 +990,7 @@
         };
 
         let customGallery = JSON.parse(localStorage.getItem('customGallery') || '[]');
-        customGallery.unshift(mediaItem); // Añadir al principio
+        customGallery.unshift(mediaItem);
         localStorage.setItem('customGallery', JSON.stringify(customGallery));
 
         loadGalleryItems();
@@ -1005,7 +1003,6 @@
       const grid = document.getElementById('gallery-grid');
       if (!grid) return;
 
-      // Clips predeterminados del rave
       let html = `
         <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: 12px; overflow: hidden; padding: 8px;">
           <div style="width: 100%; height: 110px; background: #000; border-radius: 8px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
