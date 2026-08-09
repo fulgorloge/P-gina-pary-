@@ -20,19 +20,33 @@
   <div class="grain"></div>
   <div id="toast" class="toast">¡Información copiada!</div>
 
-  <!-- Modal de Ticket Digital & QR Dinámico -->
+  <!-- Modal de Ticket Digital & Flujo de Generación -->
   <div id="ticket-modal" class="modal" onclick="if(event.target===this) closeModal()">
     <div class="modal-content">
       <span class="close-modal" onclick="closeModal()">&times;</span>
-      <p class="ticket-badge">ACCESS PASS // CONFIRMED</p>
-      <h3 class="ticket-name" id="modal-user-display">GUEST_RAVER</h3>
-      <p class="ticket-instruction">Ingresa tu alias para generar tu pase único:</p>
-      <input type="text" id="user-alias-input" class="ticket-input" placeholder="Tu Nombre / Alias" oninput="updateTicketAlias(this.value)" />
       
-      <div class="qr-placeholder">
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=SINISTER_PASS_GUEST_RAVER_2026&color=020203&bgcolor=ffffff" alt="QR Access Code" id="ticket-qr" />
+      <!-- Vista 1: Formulario de ingreso de alias -->
+      <div id="ticket-form-view">
+        <p class="ticket-badge">ACCESS PASS // REGISTRO</p>
+        <h3 class="ticket-name">INGRESA TU ALIAS</h3>
+        <p class="ticket-instruction">Escribe tu nombre o alias para reclamar tu pase exclusivo del rave:</p>
+        <input type="text" id="user-alias-input" class="ticket-input" placeholder="Ej: RAVE_MASTER" />
+        <button class="contribution-btn" style="width: 100%; margin-top: 15px;" onclick="generateTicket()">GENERAR MI TICKET</button>
       </div>
-      <p class="ticket-code" id="ticket-code-val">PASS-#8921-TSF</p>
+
+      <!-- Vista 2: Visualización del Ticket y QR Generado -->
+      <div id="ticket-result-view" style="display: none;">
+        <p class="ticket-badge">ACCESS PASS // CONFIRMED</p>
+        <h3 class="ticket-name" id="modal-user-display">GUEST_RAVER</h3>
+        
+        <div class="qr-placeholder">
+          <img src="" alt="QR Access Code" id="ticket-qr" />
+        </div>
+        <p class="ticket-code" id="ticket-code-val">PASS-#8921-TSF</p>
+        
+        <button class="contribution-btn secondary" style="width: 100%; margin-top: 10px; font-size: 0.6rem;" onclick="resetTicketForm()">← Cambiar Alias</button>
+      </div>
+
     </div>
   </div>
 
