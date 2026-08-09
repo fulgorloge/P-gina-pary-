@@ -265,7 +265,26 @@
     .progress-bg { background: rgba(255,255,255,0.08); height: 4px; border-radius: 4px; overflow: hidden; }
     .progress-fill { background: var(--accent); height: 100%; box-shadow: 0 0 8px var(--accent); transition: width 0.4s ease; }
 
-    .spotify-embed-container { margin-bottom: 15px; border-radius: 12px; overflow: hidden; border: 1px solid var(--glass-border); background: #000; }
+    .spotify-embed-container { margin-bottom: 15px; border-radius: 12px; overflow: hidden; border: 1px solid var(--glass-border); background: #000; position: relative; }
+    
+    .change-song-trigger {
+      display: block;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.04);
+      border: none;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      color: var(--text-muted);
+      font-family: var(--font);
+      font-size: 0.55rem;
+      letter-spacing: 1.5px;
+      padding: 6px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .change-song-trigger:hover {
+      background: rgba(255, 0, 60, 0.15);
+      color: #fff;
+    }
 
     .countdown-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 15px; }
     .time-box { background: rgba(0, 0, 0, 0.55); border: 1px solid rgba(255, 255, 255, 0.08); padding: 10px 2px; border-radius: 12px; }
@@ -650,7 +669,8 @@
     </div>
 
     <div class="spotify-embed-container">
-      <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/7i4PfCGZVumvg0dds3vN21?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      <iframe id="spotify-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/2q9Z3H25b89Fk2G9L3zQ2R?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      <button class="change-song-trigger" onclick="promptChangeSong()">🎵 CAMBIAR CANCIÓN DE SPOTIFY</button>
     </div>
 
     <div class="countdown-grid" id="countdown">
@@ -871,10 +891,45 @@
         const inputEl = document.getElementById('user-alias-input');
         if (inputEl) inputEl.value = savedUser;
       }
+      
+      const savedTrack = localStorage.getItem('spotifyTrackId');
+      if (savedTrack) {
+        const iframe = document.getElementById('spotify-iframe');
+        if (iframe) {
+          iframe.src = `https://open.spotify.com/embed/track/${savedTrack}?utm_source=generator&theme=0`;
+        }
+      }
+
       initParticleCanvas();
       initCutMechanics();
       startCountdown();
     });
+
+    function promptChangeSong() {
+      playSound('click');
+      const input = prompt("Pega el enlace de Spotify de la canción o el ID de la pista (ej: 2q9Z3H25b89Fk2G9L3zQ2R):");
+      if (!input) return;
+
+      let trackId = input.trim();
+      if (trackId.includes('spotify.com/track/')) {
+        const match = trackId.match(/track\/([a-zA-Z0-9]+)/);
+        if (match && match[1]) {
+          trackId = match[1];
+        }
+      }
+
+      if (trackId.length < 15) {
+        showToast('Enlace o ID de Spotify no válido');
+        return;
+      }
+
+      localStorage.setItem('spotifyTrackId', trackId);
+      const iframe = document.getElementById('spotify-iframe');
+      if (iframe) {
+        iframe.src = `https://open.spotify.com/embed/track/${trackId}?utm_source=generator&theme=0`;
+      }
+      showToast('¡Canción de Spotify actualizada!');
+    }
 
     function initParticleCanvas() {
       const canvas = document.getElementById('particle-canvas');
