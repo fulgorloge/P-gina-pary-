@@ -99,6 +99,7 @@
       border-radius: 16px;
       position: relative;
       backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
     }
 
     .ticket-back {
@@ -109,6 +110,7 @@
       padding: 2px;
       transform: rotateY(180deg);
       backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
       z-index: 5;
     }
 
@@ -121,6 +123,7 @@
       flex-direction: column;
       justify-content: space-between;
       box-shadow: inset 0 0 30px rgba(0,0,0,0.9);
+      text-align: left;
     }
 
     .back-title {
@@ -139,11 +142,11 @@
     .back-rules {
       list-style: none;
       font-size: 0.75rem;
-      color: rgba(255, 255, 255, 0.8);
+      color: rgba(255, 255, 255, 0.85);
       margin: 12px 0;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 8px;
     }
 
     .back-rules li::before {
@@ -577,6 +580,7 @@
     <div class="star-flare flare-4"></div>
 
     <div class="flip-card-inner">
+      <!-- ANVERSO -->
       <div class="ticket-frame" id="ticket-frame">
         <div class="notch notch-left notch-top"></div>
         <div class="notch notch-right notch-bottom"></div>
@@ -589,385 +593,249 @@
         </div>
 
         <div class="ticket" id="ticket">
-          <div class="hologram-watermark-pattern" id="watermark">
-            VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP VIP PASS
-          </div>
-
+          <div class="hologram-watermark-pattern" id="watermark">VIP PASS // THE SINISTER FOREST // </div>
+          
           <div class="main-section">
-            <div class="badge">
-              <span class="badge-icon"></span> Official Pass
-            </div>
-
-            <div class="main-header">VIP Pass</div>
-            <div class="event-title">The Sinister Forest</div>
-            <div class="sub-header">Event Of The Year</div>
-
-            <div class="date-info">
-              11 AGO // 23:00H | RAW TECHNO
-            </div>
+            <div class="badge"><span class="badge-icon"></span> ACCESS CONFIRMED</div>
+            <h2 class="main-header">THE SINISTER FOREST</h2>
+            <div class="event-title" id="user-name-display">GUEST_RAVER</div>
+            <p class="sub-header">UNDERGROUND TECHNO EXPERIENCE</p>
+            
+            <div class="date-info">10 AGOSTO 2026 // 23:59 HRS</div>
 
             <div class="meta-grid">
               <div class="meta-box">
-                <div class="meta-label">Pass Holder</div>
-                <div class="meta-value" id="display-name">JP</div>
+                <div class="meta-label">CÓDIGO ÚNICO</div>
+                <div class="meta-value" id="ticket-code-val">PASS-#8921</div>
               </div>
-              <div class="meta-box">
-                <div class="meta-label">Ticket Code</div>
-                <div class="meta-value" id="display-code">TSF-448791</div>
+              <div class="meta-box" style="display: flex; align-items: center; justify-content: center; background: #fff; padding: 4px;">
+                <img src="" alt="QR Code" id="dynamic-qr-code" style="width: 55px; height: 55px; border-radius: 4px;" />
               </div>
             </div>
           </div>
 
           <div class="stub-section">
-            <div class="stub-vertical-text">EVENT OF THE YEAR — 11 AGO</div>
-            <div class="stub-footer">ADMIT ONE // DNI REQUIRED</div>
+            <span class="stub-vertical-text">CONTROL DE ACCESO</span>
+            <span class="stub-footer">ESTRICTAMENTE SECRETO</span>
           </div>
         </div>
       </div>
 
-      <div class="ticket-back">
+      <!-- REVERSO -->
+      <div class="ticket-back" id="ticket-back-element">
         <div class="ticket-back-content">
           <div class="back-title">
-            <span>REGLAMENTO DE ACCESO</span>
-            <span style="color:#ff003c;">+18</span>
+            <span>CONDICIONES DE ACCESO</span>
+            <span>TSF-2026</span>
           </div>
-
           <ul class="back-rules">
-            <li>Presentar DNI o documento oficial físico original.</li>
-            <li>Apertura de puertas: 22:30H. Cierre de acceso: 02:00H.</li>
-            <li>Prohibido el ingreso de bebidas u objetos punzocortantes.</li>
-            <li>Derecho de admisión reservado por la organización.</li>
+            <li>Prohibido el uso de cámaras y flash en la pista principal.</li>
+            <li>Ubicación estricta bajo confidencialidad hasta el conteo final.</li>
+            <li>Presentar este pase digital o impreso en la entrada clandestina.</li>
           </ul>
-
           <div class="map-box">
-            📍 UBICACIÓN: SECRET FOREST ARENA (STAGE 01)<br>
-            <span style="color:rgba(255,255,255,0.6); font-size: 0.55rem;">MUESTRA ESTE COMPROBANTE EN PUERTA</span>
+            ENVIGADO // ANTIOQUIA — ZONA PROTEGIDA
           </div>
         </div>
       </div>
+
     </div>
   </div>
 
-  <button class="download-btn" id="download-btn">📥 Descargar Comprobante</button>
+  <button class="download-btn" id="download-btn">📥 DESCARGAR MI PASES VIP</button>
 
   <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const rawName = urlParams.get('name') || "JP";
-    const rawCode = urlParams.get('code') || "TSF-448791";
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Obtener el alias de la URL (ej: ?alias=JUAN) o usar localStorage o por defecto
+      const urlParams = new URLSearchParams(window.location.search);
+      let alias = urlParams.get('alias') || localStorage.getItem('userName') || 'GUEST_RAVER';
+      alias = alias.trim().toUpperCase();
 
-    document.getElementById("display-name").innerText = decodeURIComponent(rawName).toUpperCase();
-    document.getElementById("display-code").innerText = decodeURIComponent(rawCode).toUpperCase();
+      // Mostrar nombre en el tiquete
+      document.getElementById('user-name-display').innerText = alias;
 
-    const ticketWrapper = document.getElementById('ticket-wrapper');
-    const flipBtn = document.getElementById('flip-btn');
-    const cutLine = document.getElementById('cut-line');
-    const cutProgress = document.getElementById('cut-progress');
-    const bladeIndicator = document.getElementById('blade-indicator');
-    const ticket = document.getElementById('ticket');
-    const instructionText = document.getElementById('instruction-text');
-    const flashOverlay = document.getElementById('flash-overlay');
-    const downloadBtn = document.getElementById('download-btn');
-    const watermark = document.getElementById('watermark');
+      // Calcular código hash único
+      const hash = alias.split('').reduce((acc, char) => acc + char.charCodeAt(0), 1000);
+      document.getElementById('ticket-code-val').innerText = `PASS-#${hash.toString().slice(-4)}`;
 
-    let isCutting = false;
-    let isTorn = false;
-    let lastProgress = 0;
-    let lastX = 0, lastY = 0;
+      // 2. Generar QR que apunta exactamente a esta página con el parámetro del usuario
+      const currentUrl = window.location.href.split('?')[0];
+      const targetRedirectUrl = `${currentUrl}?alias=${encodeURIComponent(alias)}`;
+      
+      const qrImg = document.getElementById('dynamic-qr-code');
+      qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(targetRedirectUrl)}&color=020203&bgcolor=ffffff`;
 
-    flipBtn.addEventListener('click', () => {
-      ticketWrapper.classList.toggle('flipped');
+      // Inicializar partículas y funciones de corte
+      initParticles();
+      initFlipCard();
+      initCutMechanics();
     });
 
-    if (window.DeviceOrientationEvent) {
-      window.addEventListener('deviceorientation', (e) => {
-        const gamma = e.gamma || 0;
-        const beta = e.beta || 0;
-        watermark.style.setProperty('--holo-angle', `${(gamma + beta) * 2}deg`);
+    function initParticles() {
+      const canvas = document.getElementById('particles-canvas');
+      const ctx = canvas.getContext('2d');
+      let particles = [];
+
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      for (let i = 0; i < 50; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          size: Math.random() * 2 + 0.5,
+          speedX: (Math.random() - 0.5) * 0.5,
+          speedY: (Math.random() - 0.5) * 0.5,
+          opacity: Math.random() * 0.5 + 0.2
+        });
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#ffffff';
+        particles.forEach(p => {
+          p.x += p.speedX; p.y += p.speedY;
+          if (p.x < 0) p.x = canvas.width;
+          if (p.x > canvas.width) p.x = 0;
+          if (p.y < 0) p.y = canvas.height;
+          if (p.y > canvas.height) p.y = 0;
+          ctx.globalAlpha = p.opacity;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fill();
+        });
+        requestAnimationFrame(animate);
+      }
+      animate();
+
+      window.addEventListener('mousemove', (e) => {
+        const angle = Math.floor((e.clientX / window.innerWidth) * 360);
+        const watermark = document.getElementById('watermark');
+        if (watermark) watermark.style.setProperty('--holo-angle', `${angle}deg`);
       });
     }
 
-    window.addEventListener('mousemove', (e) => {
-      watermark.style.setProperty('--holo-angle', `${(e.clientX / window.innerWidth) * 360}deg`);
-    });
-
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    
-    function playMicroScratchSound(pitch = 1, volume = 0.25) {
-      if (audioCtx.state === 'suspended') audioCtx.resume();
-      const bufferSize = audioCtx.sampleRate * 0.04;
-      const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-      const data = buffer.getChannelData(0);
-      for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1) * Math.sin(i / 1.8);
-      
-      const noise = audioCtx.createBufferSource();
-      noise.buffer = buffer;
-      const filter = audioCtx.createBiquadFilter();
-      filter.type = 'bandpass';
-      filter.frequency.value = 1600 * pitch;
-      filter.Q.value = 2.5;
-      const gain = audioCtx.createGain();
-      gain.gain.setValueAtTime(volume, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.04);
-      noise.connect(filter); filter.connect(gain); gain.connect(audioCtx.destination);
-      noise.start();
+    function initFlipCard() {
+      const flipBtn = document.getElementById('flip-btn');
+      const wrapper = document.getElementById('ticket-wrapper');
+      flipBtn.addEventListener('click', () => {
+        wrapper.classList.toggle('flipped');
+      });
     }
 
-    function playSnapBackSound() {
-      if (audioCtx.state === 'suspended') audioCtx.resume();
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.type = 'sawtooth';
-      osc.frequency.setValueAtTime(320, audioCtx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(70, audioCtx.currentTime + 0.14);
-      gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.14);
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-      osc.start();
-      osc.stop(audioCtx.currentTime + 0.14);
-    }
+    function initCutMechanics() {
+      const cutLine = document.getElementById('cut-line');
+      const cutProgress = document.getElementById('cut-progress');
+      const ticket = document.getElementById('ticket');
+      const flashOverlay = document.getElementById('flash-overlay');
+      const instructionText = document.getElementById('instruction-text');
+      const downloadBtn = document.getElementById('download-btn');
+      const ticketWrapper = document.getElementById('ticket-wrapper');
 
-    function playImpactTearSound() {
-      if (audioCtx.state === 'suspended') audioCtx.resume();
-      const bufferSize = audioCtx.sampleRate * 0.55;
-      const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-      const data = buffer.getChannelData(0);
-      for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.22));
-      
-      const noise = audioCtx.createBufferSource();
-      noise.buffer = buffer;
-      const filter = audioCtx.createBiquadFilter();
-      filter.type = 'lowpass';
-      filter.frequency.setValueAtTime(4000, audioCtx.currentTime);
-      filter.frequency.exponentialRampToValueAtTime(180, audioCtx.currentTime + 0.55);
-      const gain = audioCtx.createGain();
-      gain.gain.setValueAtTime(1.0, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.55);
-      noise.connect(filter); filter.connect(gain); gain.connect(audioCtx.destination);
-      noise.start();
-    }
+      if (!cutLine) return;
 
-    function getCutPercentage(e) {
-      const rect = cutLine.getBoundingClientRect();
-      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-      const isHorizontal = window.innerWidth >= 580;
+      let isDragging = false;
+      let cutAmount = 0;
+      let isTorn = false;
 
-      lastX = clientX;
-      lastY = clientY;
+      const startDrag = (e) => {
+        if (isTorn) return;
+        isDragging = true;
+        cutLine.classList.add('cutting');
+        ticket.classList.add('bending');
+        e.preventDefault();
+      };
 
-      let pct = 0;
-      if (isHorizontal) {
-        pct = (clientY - rect.top) / rect.height;
-      } else {
-        pct = (clientX - rect.left) / rect.width;
-      }
-      return { pct: Math.max(0, Math.min(1, pct)), clientX, clientY, isHorizontal };
-    }
+      const onDrag = (e) => {
+        if (!isDragging || isTorn) return;
 
-    function handleStart(e) {
-      if (isTorn || ticketWrapper.classList.contains('flipped')) return;
-      if (audioCtx.state === 'suspended') audioCtx.resume();
-      
-      isCutting = true;
-      ticket.classList.add('bending');
-      cutLine.classList.add('cutting');
+        const rect = cutLine.getBoundingClientRect();
+        const isHorizontal = window.innerWidth < 580;
+        
+        let clientCoord = isHorizontal ? (e.touches ? e.touches[0].clientX : e.clientX) : (e.touches ? e.touches[0].clientY : e.clientY);
+        let startCoord = isHorizontal ? rect.left : rect.top;
+        let totalSize = isHorizontal ? rect.width : rect.height;
 
-      const { pct } = getCutPercentage(e);
-      lastProgress = pct; // Inicializa inmediatamente en el punto donde se hace clic/toque
-      
-      // Reproducir sonido inmediato desde cualquier punto inicial
-      playMicroScratchSound(0.8 + pct * 0.5, 0.35);
-      if (navigator.vibrate) navigator.vibrate(8);
+        let pos = clientCoord - startCoord;
+        let percentage = Math.max(0, Math.min(100, (pos / totalSize) * 100));
 
-      updateCut(e);
-    }
+        cutAmount = percentage;
+        
+        if (isHorizontal) {
+          cutProgress.style.width = `${cutAmount}%`;
+        } else {
+          cutProgress.style.height = `${cutAmount}%`;
+        }
 
-    function handleMove(e) {
-      if (!isCutting || isTorn) return;
-      updateCut(e);
-    }
+        if (cutAmount >= 95 && !isTorn) {
+          triggerCutComplete();
+        }
+      };
 
-    function handleEnd() {
-      if (isTorn) return;
+      const endDrag = () => {
+        if (!isDragging || isTorn) return;
+        isDragging = false;
+        cutLine.classList.remove('cutting');
+        ticket.classList.remove('bending');
 
-      if (isCutting && lastProgress >= 0.80) {
+        if (cutAmount < 95) {
+          cutAmount = 0;
+          cutProgress.style.width = '0%';
+          cutProgress.style.height = '0%';
+        }
+      };
+
+      function triggerCutComplete() {
         isTorn = true;
-        isCutting = false;
+        isDragging = false;
+        cutLine.classList.remove('cutting');
         ticket.classList.remove('bending');
         ticket.classList.add('torn');
-        cutLine.classList.remove('cutting');
 
-        instructionText.innerText = "✓ ACCESO VALIDADO // TICKET CORTADO";
-        instructionText.style.color = "#00ffaa";
-        instructionText.style.animation = "none";
-
-        flashOverlay.style.opacity = '1';
-        setTimeout(() => flashOverlay.style.opacity = '0', 120);
-
-        playImpactTearSound();
-        if (navigator.vibrate) navigator.vibrate([40, 60, 100]);
-        emitSilverSparks(lastX, lastY);
-
-        setTimeout(() => downloadBtn.classList.add('visible'), 600);
-        return;
-      }
-
-      if (isCutting && lastProgress > 0.03) {
-        playSnapBackSound();
-      }
-      isCutting = false;
-      ticket.classList.remove('bending');
-      cutLine.classList.remove('cutting');
-      cutProgress.style.width = '0%';
-      cutProgress.style.height = '0%';
-      lastProgress = 0;
-    }
-
-    function updateCut(e) {
-      const { pct, clientX, clientY, isHorizontal } = getCutPercentage(e);
-
-      if (isHorizontal) {
-        bladeIndicator.style.left = '50%';
-        bladeIndicator.style.top = (pct * 100) + '%';
-        cutProgress.style.height = (pct * 100) + '%';
-      } else {
-        bladeIndicator.style.top = '50%';
-        bladeIndicator.style.left = (pct * 100) + '%';
-        cutProgress.style.width = (pct * 100) + '%';
-      }
-
-      const delta = Math.abs(pct - lastProgress);
-      if (delta > 0.005) {
-        const speedPitch = Math.min(2.2, 0.7 + delta * 8);
-        const speedVolume = Math.min(0.45, 0.15 + delta * 3);
-        
-        playMicroScratchSound(speedPitch, speedVolume);
-        
-        if (delta > 0.08) {
-          setTimeout(() => playMicroScratchSound(speedPitch * 1.15, speedVolume), 10);
+        if (flashOverlay) {
+          flashOverlay.style.opacity = '1';
+          setTimeout(() => { flashOverlay.style.opacity = '0'; }, 150);
         }
 
-        if (navigator.vibrate) navigator.vibrate(6);
-        emitFrictionSparks(clientX, clientY);
-        lastProgress = pct;
+        if (instructionText) {
+          instructionText.innerText = '✨ ¡ACCESO VIP VALIDADO Y CORTADO! ✨';
+        }
+
+        if (downloadBtn) {
+          downloadBtn.classList.add('visible');
+        }
       }
-    }
 
-    downloadBtn.addEventListener('click', () => {
-      html2canvas(document.getElementById('ticket-frame'), {
-        backgroundColor: null,
-        scale: 2
-      }).then(canvas => {
-        const link = document.createElement('a');
-        link.download = `VIP_Pass_${rawCode}.png`;
-        link.href = canvas.toDataURL('image/png');
-        link.click();
-      });
-    });
+      cutLine.addEventListener('mousedown', startDrag);
+      window.addEventListener('mousemove', onDrag);
+      window.addEventListener('mouseup', endDrag);
 
-    const canvas = document.getElementById('particles-canvas');
-    const ctx = canvas.getContext('2d');
-    let sparkParticles = [];
+      cutLine.addEventListener('touchstart', startDrag, { passive: false });
+      window.addEventListener('touchmove', onDrag, { passive: false });
+      window.addEventListener('touchend', endDrag);
 
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
-
-    function emitFrictionSparks(x, y) {
-      for (let i = 0; i < 3; i++) {
-        sparkParticles.push({
-          x: x, y: y,
-          vx: (Math.random() - 0.5) * 6,
-          vy: (Math.random() - 0.5) * 6 - 2,
-          size: Math.random() * 2.5 + 1,
-          alpha: 1,
-          color: Math.random() > 0.3 ? '#fff3a8' : '#ff003c',
-          decay: Math.random() * 0.03 + 0.02
+      if (downloadBtn) {
+        downloadBtn.addEventListener('click', async () => {
+          try {
+            downloadBtn.innerText = 'GENERANDO IMAGEN...';
+            const canvas = await html2canvas(ticketWrapper, { backgroundColor: null, scale: 2, useCORS: true });
+            const link = document.createElement('a');
+            link.href = canvas.toDataURL('image/png');
+            link.download = 'TSF_VIP_PASS_VALIDATED.png';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            downloadBtn.innerText = '📥 ¡DESCARGADO CON ÉXITO!';
+          } catch (err) {
+            downloadBtn.innerText = 'ERROR AL DESCARGAR';
+          }
         });
       }
     }
-
-    function emitSilverSparks(x, y) {
-      for (let i = 0; i < 65; i++) {
-        const angle = Math.random() * Math.PI * 2;
-        const speed = Math.random() * 15 + 3;
-        const isSilver = Math.random() > 0.4;
-        sparkParticles.push({
-          x: x, y: y,
-          vx: Math.cos(angle) * speed,
-          vy: Math.sin(angle) * speed,
-          size: Math.random() * 3.5 + 1.5,
-          alpha: 1,
-          color: isSilver ? '#e6f2ff' : '#d4af37',
-          glow: isSilver ? '#ffffff' : '#fcf6ba',
-          decay: Math.random() * 0.015 + 0.008
-        });
-      }
-    }
-
-    const bgParticles = Array.from({ length: 25 }, () => ({
-      x: Math.random() * window.innerWidth,
-      y: Math.random() * window.innerHeight,
-      radius: Math.random() * 1.5 + 0.5,
-      alpha: Math.random(),
-      speed: Math.random() * 0.3 + 0.1,
-      decay: Math.random() * 0.01 + 0.005
-    }));
-
-    function renderLoop() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      bgParticles.forEach(p => {
-        p.y -= p.speed;
-        p.alpha += p.decay;
-        if (p.alpha > 1 || p.alpha < 0) p.decay = -p.decay;
-        if (p.y < 0) { p.y = canvas.height; p.x = Math.random() * canvas.width; }
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 243, 168, ${Math.max(0, p.alpha)})`;
-        ctx.shadowBlur = 6;
-        ctx.shadowColor = '#d4af37';
-        ctx.fill();
-      });
-
-      for (let i = sparkParticles.length - 1; i >= 0; i--) {
-        const sp = sparkParticles[i];
-        sp.x += sp.vx;
-        sp.y += sp.vy;
-        sp.vy += 0.22;
-        sp.alpha -= sp.decay;
-
-        if (sp.alpha <= 0) {
-          sparkParticles.splice(i, 1);
-          continue;
-        }
-
-        ctx.beginPath();
-        ctx.arc(sp.x, sp.y, sp.size, 0, Math.PI * 2);
-        ctx.fillStyle = sp.color;
-        ctx.shadowBlur = 12;
-        ctx.shadowColor = sp.glow || sp.color;
-        ctx.globalAlpha = Math.max(0, sp.alpha);
-        ctx.fill();
-        ctx.globalAlpha = 1.0;
-      }
-
-      requestAnimationFrame(renderLoop);
-    }
-    renderLoop();
-
-    cutLine.addEventListener('mousedown', handleStart);
-    window.addEventListener('mousemove', handleMove);
-    window.addEventListener('mouseup', handleEnd);
-
-    cutLine.addEventListener('touchstart', handleStart, { passive: true });
-    window.addEventListener('touchmove', handleMove, { passive: true });
-    window.addEventListener('touchend', handleEnd);
   </script>
 </body>
 </html>
