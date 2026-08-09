@@ -44,7 +44,13 @@
         </div>
         <p class="ticket-code" id="ticket-code-val">PASS-#8921-TSF</p>
         
-        <button class="contribution-btn secondary" style="width: 100%; margin-top: 10px; font-size: 0.6rem;" onclick="resetTicketForm()">← Cambiar Alias</button>
+        <!-- Botones de Acción para el QR -->
+        <div style="display: flex; gap: 8px; margin-top: 12px;">
+          <button class="contribution-btn" style="font-size: 0.6rem; padding: 8px 4px;" onclick="downloadQR()">📥 DESCARGAR QR</button>
+          <button class="contribution-btn secondary" style="font-size: 0.6rem; padding: 8px 4px;" onclick="visitQRLink()">🔗 IR AL ACCESO</button>
+        </div>
+
+        <button class="contribution-btn secondary" style="width: 100%; margin-top: 8px; font-size: 0.6rem; background: rgba(255,255,255,0.05);" onclick="resetTicketForm()">← Cambiar Alias</button>
       </div>
 
     </div>
