@@ -163,7 +163,7 @@ function toggleFlipCard() {
   if (wrapper) wrapper.classList.toggle('flipped');
 }
 
-// Mecánica de Corte y Función para Descargar Frente y Atrás en una sola imagen
+// Mecánica de Corte y Descarga Automática Combinada
 let isTorn = false;
 let cutAmount = 0;
 let isDragging = false;
@@ -256,10 +256,6 @@ function initCutMechanics() {
     }
 
     showToast('¡Ticket cortado! Generando imagen combinada...');
-
-    // =========================================================================
-    // FUNCIÓN DE DESCARGA AUTOMÁTICA EN UNA SOLA IMAGEN (FRENTE + ATRÁS)
-    // =========================================================================
     await downloadBothSidesInOneImage();
   }
 
@@ -272,27 +268,23 @@ function initCutMechanics() {
   window.addEventListener('touchend', endDrag);
 }
 
-// Función maestra para renderizar ambos lados juntos en un canvas y descargarlos
 async function downloadBothSidesInOneImage() {
   const ticketWrapper = document.getElementById('ticket-wrapper');
-  const ticketFrame = document.getElementById('ticket-frame');
   const backElement = document.getElementById('ticket-back-element');
   const alias = localStorage.getItem('userName') || 'GUEST_RAVER';
   const wasFlipped = ticketWrapper.classList.contains('flipped');
 
   try {
-    // 1. Forzar que el reverso sea visible temporalmente sin transformaciones 3D de giro invertido para la captura
     ticketWrapper.classList.remove('flipped');
     if (backElement) {
       backElement.style.transform = 'rotateY(0deg)';
       backElement.style.position = 'relative';
       backElement.style.display = 'block';
-      backElement.style.marginTop = '20px'; // Espacio vertical entre el frente y atrás en la misma imagen
+      backElement.style.marginTop = '20px';
     }
 
     await new Promise(resolve => setTimeout(resolve, 300));
 
-    // 2. Renderizar todo el contenedor (que ahora muestra ambos lados apilados)
     const canvas = await html2canvas(ticketWrapper, {
       backgroundColor: null,
       scale: 3,
@@ -301,7 +293,6 @@ async function downloadBothSidesInOneImage() {
       allowTaint: true
     });
 
-    // 3. Descargar automáticamente
     const link = document.createElement('a');
     link.href = canvas.toDataURL('image/png', 1.0);
     link.download = `TSF_VIP_PASS_${alias.toUpperCase()}_COMPLETO.png`;
@@ -314,7 +305,6 @@ async function downloadBothSidesInOneImage() {
     console.error(error);
     showToast('Error al generar la imagen combinada.');
   } finally {
-    // Restaurar los estilos originales del reverso
     if (backElement) {
       backElement.style.transform = '';
       backElement.style.position = '';
@@ -325,70 +315,6 @@ async function downloadBothSidesInOneImage() {
       ticketWrapper.classList.add('flipped');
     }
   }
-}
-
-// Descarga manual por si desean descargar solo frente o solo atrás individualmente
-async function downloadQR(side) {
-  const ticketWrapper = document.getElementById('ticket-wrapper');
-  const backElement = document.getElementById('ticket-back-element');
-  const alias = localStorage.getItem('userName') || 'GUEST_RAVER';
-  const wasFlipped = ticketWrapper.classList.contains('flipped');
-  
-  try {
-    showToast(`Preparando diseño de la ${side === 'front' ? 'parte delantera' : 'parte trasera'}...`);
-    
-    if (side === 'front') {
-      if (wasFlipped) {
-        ticketWrapper.classList.remove('flipped');
-        await new Promise(resolve => setTimeout(resolve, 500));
-      }
-    } else {
-      if (backElement) {
-        backElement.style.transform = 'rotateY(0deg)';
-        backElement.style.position = 'relative';
-      }
-      if (!wasFlipped) {
-        ticketWrapper.classList.add('flipped');
-        await new Promise(resolve => setTimeout(resolve, 500));
-      }
-    }
-
-    const canvas = await html2canvas(ticketWrapper, {
-      backgroundColor: null,
-      scale: 3,
-      useCORS: true,
-      logging: false,
-      allowTaint: true
-    });
-    
-    const link = document.createElement('a');
-    link.href = canvas.toDataURL('image/png', 1.0);
-    link.download = `TSF_VIP_PASS_${alias.toUpperCase()}_${side.toUpperCase()}.png`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    
-    showToast('¡Pase VIP descargado con éxito!');
-  } catch (error) {
-    showToast('Error al exportar la imagen.');
-  } finally {
-    if (side === 'back' && backElement) {
-      backElement.style.transform = '';
-      backElement.style.position = '';
-    }
-    if (wasFlipped !== ticketWrapper.classList.contains('flipped')) {
-      if (wasFlipped) {
-        ticketWrapper.classList.add('flipped');
-      } else {
-        ticketWrapper.classList.remove('flipped');
-      }
-    }
-  }
-}
-
-function visitQRLink() {
-  const alias = localStorage.getItem('userName') || 'GUEST_RAVER';
-  showToast(`¡Pase verificado correctamente para ${alias.toUpperCase()}!`);
 }
 
 let rsvpConfirmed = false;
