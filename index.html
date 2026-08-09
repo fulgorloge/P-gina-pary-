@@ -691,7 +691,7 @@
     </div>
 
     <div class="spotify-embed-container" id="spotify-container">
-      <iframe id="spotify-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX6JtiUYJA6BN?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      <iframe id="spotify-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/1H5ol1dPZSqbalE0bl22VH?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
 
     <div class="spotify-custom-box">
@@ -918,13 +918,13 @@
       startCountdown();
     });
 
-    function loadCustomSpotifyTrack() {
+    function loadCustomSpotifyTrack(urlOverride = null) {
       playSound('click');
       const input = document.getElementById('spotify-url-input');
       const iframe = document.getElementById('spotify-iframe');
-      if (!input || !iframe) return;
+      if (!iframe) return;
 
-      let val = input.value.trim();
+      let val = urlOverride !== null ? urlOverride : (input ? input.value.trim() : '');
       if (!val) {
         showToast('Ingresa un enlace válido de Spotify');
         return;
@@ -932,7 +932,7 @@
 
       let embedUrl = '';
       if (val.includes('open.spotify.com')) {
-        const match = val.match(/spotify\.com\/(track|playlist|album|artist)\/([a-zA-Z0-9]+)/);
+        const match = val.match(/spotify\.com\/(track|playlist|album|artist)\/([a-zA-Z0-9_-]+)/);
         if (match) {
           embedUrl = `https://open.spotify.com/embed/${match[1]}/${match[2]}?utm_source=generator&theme=0`;
         }
@@ -948,7 +948,7 @@
       if (embedUrl) {
         iframe.src = embedUrl;
         showToast('¡Reproductor actualizado!');
-        input.value = '';
+        if (input) input.value = '';
       } else {
         showToast('Formato de Spotify no reconocido');
       }
@@ -957,7 +957,6 @@
     function openGallery(e) {
       e.preventDefault();
       playSound('click');
-      // Intento de abrir la galería nativa en dispositivos móviles o emulador
       window.location.href = 'photos://';
       setTimeout(() => {
         showToast('Abriendo galería...');
