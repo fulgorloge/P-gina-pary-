@@ -5,19 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The Sinister Forest // Underground Techno</title>
 
+  <!-- Fuentes de Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700;900&display=swap" rel="stylesheet">
 
+  <!-- Hoja de Estilos -->
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
+  <!-- Fondo dinámico y grano visual -->
   <canvas id="particle-canvas"></canvas>
   <div class="grain"></div>
   <div id="toast" class="toast">¡Información copiada!</div>
 
-  <!-- Modal Ticket / Registro -->
+  <!-- Modal de Ticket Digital & QR Dinámico -->
   <div id="ticket-modal" class="modal" onclick="if(event.target===this) closeModal()">
     <div class="modal-content">
       <span class="close-modal" onclick="closeModal()">&times;</span>
@@ -27,7 +30,7 @@
       <input type="text" id="user-alias-input" class="ticket-input" placeholder="Tu Nombre / Alias" oninput="updateTicketAlias(this.value)" />
       
       <div class="qr-placeholder">
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=SINISTER_FOREST_2026_ACCESS" alt="QR Access Code" id="ticket-qr" />
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=SINISTER_PASS_GUEST_RAVER_2026&color=020203&bgcolor=ffffff" alt="QR Access Code" id="ticket-qr" />
       </div>
       <p class="ticket-code" id="ticket-code-val">PASS-#8921-TSF</p>
     </div>
@@ -35,7 +38,7 @@
 
   <div class="container">
 
-    <!-- Header & Strobe Switch -->
+    <!-- Header & Interruptor de Strobe -->
     <div class="header-top">
       <span class="status-tag">
         <span class="blink-dot"></span> EVENTO CLANDESTINO
@@ -43,7 +46,7 @@
       <button class="strobe-btn" id="strobe-toggle" onclick="toggleStrobe()">STROBE OFF</button>
     </div>
 
-    <!-- Título Glitch -->
+    <!-- Título Principal Glitch -->
     <h1 class="glitch" data-text="THE SINISTER FOREST">THE SINISTER FOREST</h1>
     <p class="subtitle">UNDERGROUND TECHNO EXPERIENCE</p>
 
@@ -53,7 +56,7 @@
       <span></span><span></span><span></span><span></span>
     </div>
 
-    <!-- Lineup Section -->
+    <!-- Sección Lineup -->
     <section class="lineup-section">
       <p class="lineup-title">HEADLINER & LINEUP</p>
       <div class="dj-card headliner">
@@ -66,7 +69,7 @@
       </div>
     </section>
 
-    <!-- Bar de Capacidad -->
+    <!-- Barra de Capacidad del Aforo -->
     <div class="capacity-bar">
       <div class="capacity-text">AFORO CONFIRMADO: <span id="capacity-count">82%</span></div>
       <div class="progress-bg">
@@ -108,12 +111,12 @@
       </div>
     </div>
 
-    <!-- Botón Agendar a Calendario -->
+    <!-- Botón Calendario -->
     <a href="#" class="calendar-btn" onclick="addToCalendar(event)">
       📅 AGREGAR A MI CALENDARIO
     </a>
 
-    <!-- Aportes & Nequi -->
+    <!-- Sección de Aportes & Nequi -->
     <section class="contribution-section">
       <p class="contribution-badge">COVER / COOPERACIÓN VOLUNTARIA</p>
       <div class="amount-container">
@@ -145,7 +148,7 @@
       <button class="ticket-btn" onclick="openModal()">MI TICKET DIGITAL</button>
     </div>
 
-    <!-- Botones Redes / Compartir -->
+    <!-- Botones de Redes y Compartir -->
     <div class="social-share">
       <p class="share-title">DIFUNDIR EN EL UNDERGROUND</p>
       <div class="social-btns">
@@ -162,184 +165,7 @@
 
   </div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const savedUser = localStorage.getItem('userName');
-      if (savedUser) {
-        document.getElementById('modal-user-display').innerText = savedUser.toUpperCase();
-        document.getElementById('user-alias-input').value = savedUser;
-        document.getElementById('ticket-qr').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=SINISTER_PASS_${encodeURIComponent(savedUser)}`;
-      }
-    });
-
-    const canvas = document.getElementById('particle-canvas');
-    const ctx = canvas.getContext('2d');
-    let particles = [];
-
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-
-    class Particle {
-      constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.size = Math.random() * 2 + 0.5;
-        this.speedX = (Math.random() - 0.5) * 0.8;
-        this.speedY = (Math.random() - 0.5) * 0.8;
-        this.color = Math.random() > 0.5 ? '#ff003c' : '#ffffff';
-        this.opacity = Math.random() * 0.5 + 0.2;
-      }
-      update() {
-        this.x += this.speedX;
-        this.y += this.speedY;
-        if (this.x < 0) this.x = canvas.width;
-        if (this.x > canvas.width) this.x = 0;
-        if (this.y < 0) this.y = canvas.height;
-        if (this.y > canvas.height) this.y = 0;
-      }
-      draw() {
-        ctx.fillStyle = this.color;
-        ctx.globalAlpha = this.opacity;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
-
-    for (let i = 0; i < 60; i++) particles.push(new Particle());
-
-    function animateParticles() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach(p => { p.update(); p.draw(); });
-      requestAnimationFrame(animateParticles);
-    }
-    animateParticles();
-
-    let strobeActive = false;
-    function toggleStrobe() {
-      strobeActive = !strobeActive;
-      document.body.classList.toggle('strobe-active', strobeActive);
-      const btn = document.getElementById('strobe-toggle');
-      btn.classList.toggle('active', strobeActive);
-      btn.innerText = strobeActive ? 'STROBE ON' : 'STROBE OFF';
-    }
-
-    function openModal() {
-      const modal = document.getElementById('ticket-modal');
-      modal.style.display = 'flex';
-    }
-    function closeModal() {
-      const modal = document.getElementById('ticket-modal');
-      modal.style.display = 'none';
-    }
-
-    function updateTicketAlias(val) {
-      const name = val.trim() || 'GUEST_RAVER';
-      document.getElementById('modal-user-display').innerText = name.toUpperCase();
-      localStorage.setItem('userName', name);
-      
-      const qrImg = document.getElementById('ticket-qr');
-      qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=SINISTER_PASS_${encodeURIComponent(name)}`;
-    }
-
-    let rsvpConfirmed = false;
-    function toggleRSVP() {
-      rsvpConfirmed = !rsvpConfirmed;
-      const btn = document.getElementById('rsvp-trigger');
-      const capCount = document.getElementById('capacity-count');
-      const capBar = document.getElementById('capacity-progress');
-
-      if (rsvpConfirmed) {
-        btn.classList.add('confirmed');
-        btn.innerText = '✓ ASISTENCIA CONFIRMADA';
-        capCount.innerText = '83%';
-        capBar.style.width = '83%';
-        showToast('¡Asistencia confirmada!');
-      } else {
-        btn.classList.remove('confirmed');
-        btn.innerText = 'CONFIRMAR ASISTENCIA';
-        capCount.innerText = '82%';
-        capBar.style.width = '82%';
-      }
-    }
-
-    function copyNequi() {
-      const num = document.getElementById('nequi-val').innerText;
-      navigator.clipboard.writeText(num.replace(/\s+/g, ''));
-      showToast('Número Nequi copiado');
-    }
-
-    function openNequiApp() {
-      window.location.href = 'nequi://';
-      setTimeout(() => {
-        showToast('Abriendo Nequi o copia el número');
-      }, 1000);
-    }
-
-    function shareWhatsApp() {
-      const text = encodeURIComponent('🔥 Asiste a THE SINISTER FOREST - Underground Techno Experience. ¡Nos vemos en el rave!');
-      window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
-    }
-
-    function shareFacebook() {
-      const url = encodeURIComponent(window.location.href);
-      window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
-    }
-
-    function copyLink() {
-      navigator.clipboard.writeText(window.location.href);
-      showToast('Enlace del evento copiado');
-    }
-
-    function showToast(msg) {
-      const toast = document.getElementById('toast');
-      toast.innerText = msg;
-      toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 3000);
-    }
-
-    function addToCalendar(e) {
-      e.preventDefault();
-      alert('Evento añadido a la agenda.');
-    }
-
-    function startCountdown() {
-      const targetDate = new Date('2026-08-10T23:59:59').getTime();
-
-      const updateTimer = () => {
-        const now = new Date().getTime();
-        const diff = targetDate - now;
-
-        if (diff > 0) {
-          document.getElementById('cd-days').innerText = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0');
-          document.getElementById('cd-hours').innerText = String(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
-          document.getElementById('cd-minutes').innerText = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
-          document.getElementById('cd-seconds').innerText = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
-        } else {
-          document.getElementById('cd-days').innerText = '00';
-          document.getElementById('cd-hours').innerText = '00';
-          document.getElementById('cd-minutes').innerText = '00';
-          document.getElementById('cd-seconds').innerText = '00';
-
-          const locBox = document.getElementById('location-box-container');
-          locBox.innerHTML = `
-            <p id="location-title" style="color:#00ff66;">📍 UBICACIÓN REVELADA</p>
-            <p id="location-details" style="color:#fff; font-weight:bold; margin-bottom:10px;">Parque Lineal La Frontera // Envigado, Antioquia</p>
-            <a href="https://maps.google.com/?q=Parque+Lineal+La+Frontera+Envigado" target="_blank" class="calendar-btn" style="margin-bottom:0; background:var(--accent);">
-              VER EN GOOGLE MAPS
-            </a>
-          `;
-        }
-      };
-
-      updateTimer();
-      setInterval(updateTimer, 1000);
-    }
-    startCountdown();
-  </script>
+  <!-- Script Principal -->
+  <script src="app.js"></script>
 </body>
 </html>
