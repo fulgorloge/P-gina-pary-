@@ -56,7 +56,6 @@ function initParticleCanvas() {
   }
   animateParticles();
 
-  // Movimiento holográfico dinámico según el cursor/inclinación
   window.addEventListener('mousemove', (e) => {
     const xRatio = e.clientX / window.innerWidth;
     const yRatio = e.clientY / window.innerHeight;
@@ -231,7 +230,7 @@ function initCutMechanics() {
   window.addEventListener('touchend', endDrag);
 }
 
-// Funciones de Descarga y Enlace QR
+// Funciones de Descarga y Validación del Pass
 async function downloadQR() {
   const ticketWrapper = document.getElementById('ticket-wrapper');
   const alias = localStorage.getItem('userName') || 'GUEST_RAVER';
@@ -260,10 +259,7 @@ async function downloadQR() {
 function visitQRLink() {
   const alias = localStorage.getItem('userName') || 'GUEST_RAVER';
   const cleanName = alias.trim().toUpperCase();
-  const accessUrl = `https://thesinisterforest.com/verify?pass=TSF_VIP_${encodeURIComponent(cleanName)}_2026`;
-  
-  window.open(accessUrl, '_blank');
-  showToast('Abriendo enlace de acceso VIP...');
+  showToast(`¡Pase verificado correctamente para ${cleanName}!`);
 }
 
 // Control de Confirmación de Asistencia (RSVP)
