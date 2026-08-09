@@ -116,6 +116,41 @@ function resetTicketForm() {
   document.getElementById('ticket-result-view').style.display = 'none';
 }
 
+// Función para descargar la imagen del QR generado
+async function downloadQR() {
+  const qrImg = document.getElementById('ticket-qr');
+  const alias = localStorage.getItem('userName') || 'GUEST_RAVER';
+  
+  try {
+    const response = await fetch(qrImg.src);
+    const blob = await response.blob();
+    const blobUrl = window.URL.createObjectURL(blob);
+    
+    const link = document.createElement('a');
+    link.href = blobUrl;
+    link.download = `TSF_PASS_${alias.toUpperCase()}.png`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    window.URL.revokeObjectURL(blobUrl);
+    showToast('¡QR descargado con éxito!');
+  } catch (error) {
+    showToast('Error al descargar la imagen');
+  }
+}
+
+// Función para ir a la dirección o enlace cifrado del QR
+function visitQRLink() {
+  const alias = localStorage.getItem('userName') || 'GUEST_RAVER';
+  const cleanName = alias.trim().toUpperCase();
+  
+  const accessUrl = `https://thesinisterforest.com/verify?pass=TSF_${encodeURIComponent(cleanName)}_2026`;
+  
+  window.open(accessUrl, '_blank');
+  showToast('Abriendo enlace de acceso...');
+}
+
 // Control de Confirmación de Asistencia (RSVP)
 let rsvpConfirmed = false;
 function toggleRSVP() {
