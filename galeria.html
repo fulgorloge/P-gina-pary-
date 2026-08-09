@@ -111,9 +111,9 @@
 
       <!-- Filtros -->
       <div class="filter-pills">
-        <button class="pill active" onclick="filterMedia('all')">Todos los archivos</button>
-        <button class="pill" onclick="filterMedia('image')">📸 Fotos</button>
-        <button class="pill" onclick="filterMedia('video')">🎬 Videos Clips</button>
+        <button class="pill active" onclick="filterMedia('all', event)">Todos los archivos</button>
+        <button class="pill" onclick="filterMedia('image', event)">📸 Fotos</button>
+        <button class="pill" onclick="filterMedia('video', event)">🎬 Videos Clips</button>
       </div>
 
       <!-- Grid Multimedia estilo Tarjetas Spotify -->
@@ -204,6 +204,13 @@
     let currentActiveCard = null;
 
     document.getElementById('header-user-name').innerText = userAlias.toUpperCase();
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.innerText = message;
+      toast.className = "toast show";
+      setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3000);
+    }
 
     // Gestión de Archivos (Fotos y Videos)
     function handleFiles(files) {
@@ -322,7 +329,7 @@
       }
     }
 
-    function filterMedia(type) {
+    function filterMedia(type, event) {
       document.querySelectorAll('.filter-pills .pill').forEach(btn => btn.classList.remove('active'));
       event.target.classList.add('active');
 
@@ -347,6 +354,14 @@
         const playBtn = firstCard.querySelector('.card-play-button');
         playBtn.click();
       }
+    }
+
+    function prevMedia() {
+      showToast('Archivo anterior');
+    }
+
+    function nextMedia() {
+      showToast('Siguiente archivo');
     }
   </script>
 </body>
