@@ -1,15 +1,18 @@
 document.addEventListener('DOMContentLoaded', () => {
   const savedUser = localStorage.getItem('userName');
   if (savedUser) {
-    document.getElementById('user-alias-input').value = savedUser;
+    const inputEl = document.getElementById('user-alias-input');
+    if (inputEl) inputEl.value = savedUser;
   }
   initParticleCanvas();
   initCutMechanics();
+  startCountdown();
 });
 
 // Canvas de Partículas Estéticas y Efecto Holográfico
 function initParticleCanvas() {
   const canvas = document.getElementById('particle-canvas');
+  if (!canvas) return;
   const ctx = canvas.getContext('2d');
   let particles = [];
 
@@ -58,7 +61,6 @@ function initParticleCanvas() {
 
   window.addEventListener('mousemove', (e) => {
     const xRatio = e.clientX / window.innerWidth;
-    const yRatio = e.clientY / window.innerHeight;
     const angle = Math.floor(xRatio * 360);
     const watermark = document.getElementById('watermark');
     if (watermark) {
@@ -73,34 +75,41 @@ function toggleStrobe() {
   strobeActive = !strobeActive;
   document.body.classList.toggle('strobe-active', strobeActive);
   const btn = document.getElementById('strobe-toggle');
-  btn.classList.toggle('active', strobeActive);
-  btn.innerText = strobeActive ? 'STROBE ON' : 'STROBE OFF';
+  if (btn) {
+    btn.classList.toggle('active', strobeActive);
+    btn.innerText = strobeActive ? 'STROBE ON' : 'STROBE OFF';
+  }
 }
 
 // Funciones del Modal de Ticket
 function openModal() {
   const modal = document.getElementById('ticket-modal');
-  modal.style.display = 'flex';
+  if (modal) modal.style.display = 'flex';
   
   const savedUser = localStorage.getItem('userName');
   if (savedUser) {
-    document.getElementById('ticket-form-view').style.display = 'none';
-    document.getElementById('ticket-result-view').style.display = 'block';
+    const formView = document.getElementById('ticket-form-view');
+    const resultView = document.getElementById('ticket-result-view');
+    if (formView) formView.style.display = 'none';
+    if (resultView) resultView.style.display = 'block';
     generateTicket(savedUser);
   } else {
-    document.getElementById('ticket-form-view').style.display = 'block';
-    document.getElementById('ticket-result-view').style.display = 'none';
+    const formView = document.getElementById('ticket-form-view');
+    const resultView = document.getElementById('ticket-result-view');
+    if (formView) formView.style.display = 'block';
+    if (resultView) resultView.style.display = 'none';
   }
 }
 
 function closeModal() {
   const modal = document.getElementById('ticket-modal');
-  modal.style.display = 'none';
+  if (modal) modal.style.display = 'none';
 }
 
 // Generar el ticket VIP tras presionar el botón
 function generateTicket(forcedName = null) {
-  const inputVal = forcedName !== null ? forcedName : document.getElementById('user-alias-input').value;
+  const inputEl = document.getElementById('user-alias-input');
+  const inputVal = forcedName !== null ? forcedName : (inputEl ? inputEl.value : '');
   const name = inputVal.trim();
 
   if (!name) {
@@ -111,38 +120,60 @@ function generateTicket(forcedName = null) {
   const cleanName = name.toUpperCase();
   localStorage.setItem('userName', name);
 
-  document.getElementById('modal-user-display').innerText = cleanName;
+  const userDisplay = document.getElementById('modal-user-display');
+  if (userDisplay) userDisplay.innerText = cleanName;
   
   const encodedName = encodeURIComponent(cleanName);
   const qrImg = document.getElementById('ticket-qr');
-  qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=TSF_VIP_PASS_${encodedName}_2026&color=020203&bgcolor=ffffff`;
+  if (qrImg) {
+    qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=TSF_VIP_PASS_${encodedName}_2026&color=020203&bgcolor=ffffff`;
+  }
   
   const hash = cleanName.split('').reduce((acc, char) => acc + char.charCodeAt(0), 1000);
-  document.getElementById('ticket-code-val').innerText = `PASS-#${hash.toString().slice(-4)}`;
+  const codeVal = document.getElementById('ticket-code-val');
+  if (codeVal) codeVal.innerText = `PASS-#${hash.toString().slice(-4)}`;
 
-  document.getElementById('ticket-form-view').style.display = 'none';
-  document.getElementById('ticket-result-view').style.display = 'block';
+  const formView = document.getElementById('ticket-form-view');
+  const resultView = document.getElementById('ticket-result-view');
+  if (formView) formView.style.display = 'none';
+  if (resultView) resultView.style.display = 'block';
 }
 
 // Volver al formulario para cambiar de alias
 function resetTicketForm() {
-  document.getElementById('ticket-form-view').style.display = 'block';
-  document.getElementById('ticket-result-view').style.display = 'none';
+  const formView = document.getElementById('ticket-form-view');
+  const resultView = document.getElementById('ticket-result-view');
+  if (formView) formView.style.display = 'block';
+  if (resultView) resultView.style.display = 'none';
+
   const ticketEl = document.getElementById('ticket');
+  const instructionText = document.getElementById('instruction-text');
+  
   if (ticketEl) {
     ticketEl.classList.remove('torn', 'bending');
-    document.getElementById('cut-progress').style.width = '0%';
-    document.getElementById('cut-progress').style.height = '0%';
+    const cutProgress = document.getElementById('cut-progress');
+    if (cutProgress) {
+      cutProgress.style.width = '0%';
+      cutProgress.style.height = '0%';
+    }
+  }
+  
+  if (instructionText) {
+    instructionText.innerHTML = '✂️ DESLIZA SOBRE LA LÍNEA PARA CORTAR EL TIQUETE ✂️';
   }
 }
 
 // Voltear Tarjeta (Flip)
 function toggleFlipCard() {
   const wrapper = document.getElementById('ticket-wrapper');
-  wrapper.classList.toggle('flipped');
+  if (wrapper) wrapper.classList.toggle('flipped');
 }
 
-// Mecánica de Corte del Tiquete VIP
+// Mecánica de Corte del Tiquete VIP con Función Útil al Romper
+let isTorn = false;
+let cutAmount = 0;
+let isDragging = false;
+
 function initCutMechanics() {
   const cutLine = document.getElementById('cut-line');
   const cutProgress = document.getElementById('cut-progress');
@@ -150,17 +181,14 @@ function initCutMechanics() {
   const flashOverlay = document.getElementById('flash-overlay');
   const instructionText = document.getElementById('instruction-text');
   
-  if (!cutLine) return;
-
-  let isDragging = false;
-  let cutAmount = 0;
-  let isTorn = false;
+  if (!cutLine || !ticket) return;
 
   const startDrag = (e) => {
     if (isTorn) return;
     isDragging = true;
     cutLine.classList.add('cutting');
     ticket.classList.add('bending');
+    if (navigator.vibrate) navigator.vibrate(30);
     e.preventDefault();
   };
 
@@ -170,7 +198,10 @@ function initCutMechanics() {
     const rect = cutLine.getBoundingClientRect();
     const isHorizontal = window.innerWidth < 580;
     
-    let clientCoord = isHorizontal ? (e.touches ? e.touches[0].clientX : e.clientX) : (e.touches ? e.touches[0].clientY : e.clientY);
+    let clientCoord = isHorizontal 
+      ? (e.touches ? e.touches[0].clientX : e.clientX) 
+      : (e.touches ? e.touches[0].clientY : e.clientY);
+      
     let startCoord = isHorizontal ? rect.left : rect.top;
     let totalSize = isHorizontal ? rect.width : rect.height;
 
@@ -179,13 +210,15 @@ function initCutMechanics() {
 
     cutAmount = percentage;
     
-    if (isHorizontal) {
-      cutProgress.style.width = `${cutAmount}%`;
-    } else {
-      cutProgress.style.height = `${cutAmount}%`;
+    if (cutProgress) {
+      if (isHorizontal) {
+        cutProgress.style.width = `${cutAmount}%`;
+      } else {
+        cutProgress.style.height = `${cutAmount}%`;
+      }
     }
 
-    if (cutAmount >= 95 && !isTorn) {
+    if (cutAmount >= 90 && !isTorn) {
       triggerCutComplete();
     }
   };
@@ -196,10 +229,12 @@ function initCutMechanics() {
     cutLine.classList.remove('cutting');
     ticket.classList.remove('bending');
 
-    if (cutAmount < 95) {
+    if (cutAmount < 90) {
       cutAmount = 0;
-      cutProgress.style.width = '0%';
-      cutProgress.style.height = '0%';
+      if (cutProgress) {
+        cutProgress.style.width = '0%';
+        cutProgress.style.height = '0%';
+      }
     }
   };
 
@@ -215,10 +250,27 @@ function initCutMechanics() {
       setTimeout(() => { flashOverlay.style.opacity = '0'; }, 150);
     }
 
+    if (navigator.vibrate) navigator.vibrate([50, 50, 100]);
+
     if (instructionText) {
-      instructionText.innerText = '✨ ¡ACCESO VIP VALIDADO Y CORTADO! ✨';
+      instructionText.innerHTML = '✨ ¡ACCESO VIP VALIDADO Y CORTADO! ✨';
     }
-    showToast('¡Tiquete cortado con éxito!');
+
+    // ==========================================
+    // FUNCIÓN ÚTIL AL ROMPER EL TICKET:
+    // 1. Copia un código de seguridad al portapapeles.
+    // 2. Revela la caja secreta en la pantalla principal.
+    // ==========================================
+    const codeVal = document.getElementById('ticket-code-val');
+    const secretCode = codeVal ? codeVal.innerText : 'TSF-PASS-VERIFIED';
+    navigator.clipboard.writeText(secretCode).catch(() => {});
+
+    const secretRewardBox = document.getElementById('secret-reward-box');
+    if (secretRewardBox) {
+      secretRewardBox.style.display = 'block';
+    }
+
+    showToast('¡Ticket cortado! Código VIP copiado al portapapeles.');
   }
 
   cutLine.addEventListener('mousedown', startDrag);
@@ -230,7 +282,7 @@ function initCutMechanics() {
   window.addEventListener('touchend', endDrag);
 }
 
-// Descarga independiente para Frente o Atrás sin efecto espejo
+// Descarga independiente para Frente o Atrás
 async function downloadQR(side) {
   const ticketWrapper = document.getElementById('ticket-wrapper');
   const backElement = document.getElementById('ticket-back-element');
@@ -238,33 +290,34 @@ async function downloadQR(side) {
   const wasFlipped = ticketWrapper.classList.contains('flipped');
   
   try {
-    showToast(`Generando imagen de la ${side === 'front' ? 'parte delantera' : 'parte trasera'}...`);
+    showToast(`Preparando diseño de la ${side === 'front' ? 'parte delantera' : 'parte trasera'}...`);
     
     if (side === 'front') {
       if (wasFlipped) {
         ticketWrapper.classList.remove('flipped');
-        await new Promise(resolve => setTimeout(resolve, 400));
+        await new Promise(resolve => setTimeout(resolve, 500));
       }
     } else {
-      // Para descargar el reverso sin espejo, removemos el rotateY de CSS temporalmente antes de capturar
       if (backElement) {
         backElement.style.transform = 'rotateY(0deg)';
         backElement.style.position = 'relative';
       }
       if (!wasFlipped) {
         ticketWrapper.classList.add('flipped');
-        await new Promise(resolve => setTimeout(resolve, 400));
+        await new Promise(resolve => setTimeout(resolve, 500));
       }
     }
 
     const canvas = await html2canvas(ticketWrapper, {
       backgroundColor: null,
-      scale: 2,
-      useCORS: true
+      scale: 3,
+      useCORS: true,
+      logging: false,
+      allowTaint: true
     });
     
     const link = document.createElement('a');
-    link.href = canvas.toDataURL('image/png');
+    link.href = canvas.toDataURL('image/png', 1.0);
     link.download = `TSF_VIP_PASS_${alias.toUpperCase()}_${side.toUpperCase()}.png`;
     document.body.appendChild(link);
     link.click();
@@ -272,14 +325,12 @@ async function downloadQR(side) {
     
     showToast('¡Pase VIP descargado con éxito!');
   } catch (error) {
-    showToast('Error al exportar la imagen');
+    showToast('Error al exportar la imagen.');
   } finally {
-    // Restaurar estilos del reverso
     if (side === 'back' && backElement) {
       backElement.style.transform = '';
       backElement.style.position = '';
     }
-    // Restaurar estado visual original de la tarjeta
     if (wasFlipped !== ticketWrapper.classList.contains('flipped')) {
       if (wasFlipped) {
         ticketWrapper.classList.add('flipped');
@@ -292,8 +343,7 @@ async function downloadQR(side) {
 
 function visitQRLink() {
   const alias = localStorage.getItem('userName') || 'GUEST_RAVER';
-  const cleanName = alias.trim().toUpperCase();
-  showToast(`¡Pase verificado correctamente para ${cleanName}!`);
+  showToast(`¡Pase verificado correctamente para ${alias.toUpperCase()}!`);
 }
 
 // Control de Confirmación de Asistencia (RSVP)
@@ -305,30 +355,30 @@ function toggleRSVP() {
   const capBar = document.getElementById('capacity-progress');
 
   if (rsvpConfirmed) {
-    btn.classList.add('confirmed');
-    btn.innerText = '✓ ASISTENCIA CONFIRMADA';
-    capCount.innerText = '83%';
-    capBar.style.width = '83%';
+    if (btn) { btn.classList.add('confirmed'); btn.innerText = '✓ ASISTENCIA CONFIRMADA'; }
+    if (capCount) capCount.innerText = '83%';
+    if (capBar) capBar.style.width = '83%';
     showToast('¡Asistencia confirmada!');
   } else {
-    btn.classList.remove('confirmed');
-    btn.innerText = 'CONFIRMAR ASISTENCIA';
-    capCount.innerText = '82%';
-    capBar.style.width = '82%';
+    if (btn) { btn.classList.remove('confirmed'); btn.innerText = 'CONFIRMAR ASISTENCIA'; }
+    if (capCount) capCount.innerText = '82%';
+    if (capBar) capBar.style.width = '82%';
   }
 }
 
 // Utilidades para Nequi y Portapapeles
 function copyNequi() {
-  const num = document.getElementById('nequi-val').innerText;
-  navigator.clipboard.writeText(num.replace(/\s+/g, ''));
-  showToast('Número Nequi copiado');
+  const nequiVal = document.getElementById('nequi-val');
+  if (nequiVal) {
+    navigator.clipboard.writeText(nequiVal.innerText.replace(/\s+/g, ''));
+    showToast('Número Nequi copiado');
+  }
 }
 
 function openNequiApp() {
   window.location.href = 'nequi://';
   setTimeout(() => {
-    showToast('Abriendo Nequi o copia el número');
+    showToast('Abriendo Nequi...');
   }, 1000);
 }
 
@@ -349,6 +399,7 @@ function copyLink() {
 
 function showToast(msg) {
   const toast = document.getElementById('toast');
+  if (!toast) return;
   toast.innerText = msg;
   toast.classList.add('show');
   setTimeout(() => toast.classList.remove('show'), 3000);
@@ -367,29 +418,35 @@ function startCountdown() {
     const now = new Date().getTime();
     const diff = targetDate - now;
 
+    const daysEl = document.getElementById('cd-days');
+    const hoursEl = document.getElementById('cd-hours');
+    const minEl = document.getElementById('cd-minutes');
+    const secEl = document.getElementById('cd-seconds');
+
     if (diff > 0) {
-      document.getElementById('cd-days').innerText = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0');
-      document.getElementById('cd-hours').innerText = String(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
-      document.getElementById('cd-minutes').innerText = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
-      document.getElementById('cd-seconds').innerText = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
+      if (daysEl) daysEl.innerText = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0');
+      if (hoursEl) hoursEl.innerText = String(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+      if (minEl) minEl.innerText = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+      if (secEl) secEl.innerText = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
     } else {
-      document.getElementById('cd-days').innerText = '00';
-      document.getElementById('cd-hours').innerText = '00';
-      document.getElementById('cd-minutes').innerText = '00';
-      document.getElementById('cd-seconds').innerText = '00';
+      if (daysEl) daysEl.innerText = '00';
+      if (hoursEl) hoursEl.innerText = '00';
+      if (minEl) minEl.innerText = '00';
+      if (secEl) secEl.innerText = '00';
 
       const locBox = document.getElementById('location-box-container');
-      locBox.innerHTML = `
-        <p id="location-title" style="color:#00ff66;">📍 UBICACIÓN REVELADA</p>
-        <p id="location-details" style="color:#fff; font-weight:bold; margin-bottom:10px;">Parque Lineal La Frontera // Envigado, Antioquia</p>
-        <a href="https://maps.google.com/?q=Parque+Lineal+La+Frontera+Envigado" target="_blank" class="calendar-btn" style="margin-bottom:0; background:var(--accent);">
-          VER EN GOOGLE MAPS
-        </a>
-      `;
+      if (locBox) {
+        locBox.innerHTML = `
+          <p id="location-title" style="color:#00ff66;">📍 UBICACIÓN REVELADA</p>
+          <p id="location-details" style="color:#fff; font-weight:bold; margin-bottom:10px;">Parque Lineal La Frontera // Envigado, Antioquia</p>
+          <a href="https://maps.google.com/?q=Parque+Lineal+La+Frontera+Envigado" target="_blank" class="calendar-btn" style="margin-bottom:0; background:var(--accent);">
+            VER EN GOOGLE MAPS
+          </a>
+        `;
+      }
     }
   };
 
   updateTimer();
   setInterval(updateTimer, 1000);
 }
-startCountdown();
