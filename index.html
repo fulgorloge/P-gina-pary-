@@ -229,10 +229,12 @@
     }
 
     function openModal() {
-      document.getElementById('ticket-modal').style.display = 'flex';
+      const modal = document.getElementById('ticket-modal');
+      modal.style.display = 'flex';
     }
     function closeModal() {
-      document.getElementById('ticket-modal').style.display = 'none';
+      const modal = document.getElementById('ticket-modal');
+      modal.style.display = 'none';
     }
 
     function updateTicketAlias(val) {
