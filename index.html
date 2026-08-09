@@ -95,7 +95,7 @@
             </div>
 
             <!-- REVERSO DEL TICKET -->
-            <div class="ticket-back">
+            <div class="ticket-back" id="ticket-back-element">
               <div class="ticket-back-content">
                 <div class="back-title">
                   <span>CONDICIONES DE ACCESO</span>
@@ -116,10 +116,11 @@
         </div>
 
         <!-- Botones de Acción del Ticket -->
-        <div style="display: flex; gap: 8px; margin-top: 15px; justify-content: center;">
-          <button class="contribution-btn" style="font-size: 0.65rem; padding: 10px;" onclick="downloadQR()">📥 DESCARGAR PASS</button>
-          <button class="contribution-btn secondary" style="font-size: 0.65rem; padding: 10px;" onclick="visitQRLink()">🔗 VERIFICAR ACCESO</button>
-          <button class="contribution-btn secondary" style="font-size: 0.65rem; padding: 10px; background: rgba(255,255,255,0.08);" onclick="resetTicketForm()">← CAMBIAR ALIAS</button>
+        <div style="display: flex; gap: 8px; margin-top: 15px; justify-content: center; flex-wrap: wrap;">
+          <button class="contribution-btn" style="font-size: 0.65rem; padding: 10px;" onclick="downloadQR('front')">📥 DESCARGAR FRENTE</button>
+          <button class="contribution-btn" style="font-size: 0.65rem; padding: 10px; background: #d4af37; color:#000;" onclick="downloadQR('back')">📥 DESCARGAR ATRÁS</button>
+          <button class="contribution-btn secondary" style="font-size: 0.65rem; padding: 10px;" onclick="visitQRLink()">🔗 VERIFICAR</button>
+          <button class="contribution-btn secondary" style="font-size: 0.65rem; padding: 10px; background: rgba(255,255,255,0.08);" onclick="resetTicketForm()">← CAMBIAR</button>
         </div>
 
       </div>
