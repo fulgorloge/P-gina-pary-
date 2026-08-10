@@ -343,252 +343,54 @@
     .modal-content { background: #0a0a0c; border: 1px solid var(--accent); border-radius: 20px; padding: 25px; width: 90%; max-width: 620px; text-align: center; position: relative; box-shadow: 0 0 30px var(--accent-glow); }
     .close-modal { position: absolute; right: 15px; top: 10px; font-size: 1.5rem; color: #fff; cursor: pointer; }
     .ticket-badge { font-size: 0.55rem; letter-spacing: 2px; color: var(--accent); margin-bottom: 5px; font-weight: 700; }
-    .ticket-instruction { font-size: 0.7rem; color: var(--text-muted); margin: 15px 0 10px 0; }
     .ticket-input { width: 100%; padding: 10px 14px; background: rgba(255, 255, 255, 0.08); border: 1px solid var(--accent); border-radius: 8px; color: #fff; font-family: var(--font); font-size: 0.8rem; text-align: center; outline: none; margin-bottom: 12px; }
-    .ticket-input:focus { box-shadow: 0 0 10px var(--accent-glow); }
+    
+    /* CHAT GLOBAL STYLES */
+    .global-chat-box { display: flex; flex-direction: column; height: 360px; text-align: left; }
+    .chat-messages-container { flex: 1; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+    .chat-msg { font-size: 0.72rem; line-height: 1.3; color: #e0e0e0; background: rgba(255,255,255,0.04); padding: 8px 10px; border-radius: 8px; word-break: break-word; }
+    .chat-user { font-weight: 700; color: var(--accent); margin-right: 6px; font-family: var(--font-techno); font-size: 0.65rem; }
+    .chat-time { font-size: 0.55rem; color: var(--text-muted); float: right; }
+    .chat-input-row { display: flex; gap: 8px; }
+    .chat-input { flex: 1; background: rgba(255, 255, 255, 0.08); border: 1px solid var(--accent); border-radius: 8px; padding: 10px 12px; color: #fff; font-family: var(--font); font-size: 0.75rem; outline: none; }
+    .chat-send-btn { background: var(--accent); color: #fff; border: none; padding: 0 16px; border-radius: 8px; font-family: var(--font); font-weight: 700; font-size: 0.7rem; cursor: pointer; transition: 0.2s; }
+    .chat-send-btn:hover { filter: brightness(1.2); }
 
+    /* Estilos del Ticket */
     .ticket-wrapper {
-      position: relative;
-      width: 100%;
-      max-width: 580px;
-      perspective: 1200px;
+      position: relative; width: 100%; max-width: 580px; perspective: 1200px;
       filter: drop-shadow(0 0 25px rgba(212, 175, 55, 0.25)) drop-shadow(0 15px 35px rgba(0, 0, 0, 0.9));
       margin: 15px auto;
     }
-
-    .flip-card-inner {
-      position: relative;
-      width: 100%;
-      transform-style: preserve-3d;
-      transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-
-    .ticket-wrapper.flipped .flip-card-inner {
-      transform: rotateY(180deg);
-    }
-
-    .ticket-frame {
-      padding: 2px;
-      background: var(--gold-gradient);
-      border-radius: 16px;
-      position: relative;
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-    }
-
-    .ticket-back {
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: linear-gradient(145deg, #0d0003 0%, #1a0006 50%, #050203 100%);
-      border-radius: 16px;
-      padding: 2px;
-      transform: rotateY(180deg);
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-      z-index: 5;
-    }
-
-    .ticket-back-content {
-      width: 100%; height: 100%;
-      background: #0d0003;
-      border-radius: 14px;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      box-shadow: inset 0 0 30px rgba(0,0,0,0.9);
-      text-align: left;
-    }
-
-    .back-title {
-      font-family: var(--font-techno);
-      font-size: 0.85rem;
-      letter-spacing: 2px;
-      color: var(--gold-light);
-      text-transform: uppercase;
-      border-bottom: 1px solid rgba(212, 175, 55, 0.4);
-      padding-bottom: 6px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .back-rules {
-      list-style: none;
-      font-size: 0.75rem;
-      color: rgba(255, 255, 255, 0.85);
-      margin: 12px 0;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
+    .flip-card-inner { position: relative; width: 100%; transform-style: preserve-3d; transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    .ticket-wrapper.flipped .flip-card-inner { transform: rotateY(180deg); }
+    .ticket-frame { padding: 2px; background: var(--gold-gradient); border-radius: 16px; position: relative; backface-visibility: hidden; }
+    .ticket-back { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(145deg, #0d0003 0%, #1a0006 50%, #050203 100%); border-radius: 16px; padding: 2px; transform: rotateY(180deg); backface-visibility: hidden; z-index: 5; }
+    .ticket-back-content { width: 100%; height: 100%; background: #0d0003; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; text-align: left; }
+    .back-title { font-family: var(--font-techno); font-size: 0.85rem; letter-spacing: 2px; color: var(--gold-light); text-transform: uppercase; border-bottom: 1px solid rgba(212, 175, 55, 0.4); padding-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
+    .back-rules { list-style: none; font-size: 0.75rem; color: rgba(255, 255, 255, 0.85); margin: 12px 0; display: flex; flex-direction: column; gap: 8px; }
     .back-rules li::before { content: "• "; color: var(--gold-mid); }
-
-    .map-box {
-      border: 1px solid rgba(212, 175, 55, 0.4);
-      border-radius: 6px;
-      background: rgba(255, 0, 60, 0.05);
-      padding: 10px;
-      text-align: center;
-      font-family: var(--font-techno);
-      font-size: 0.65rem;
-      letter-spacing: 1px;
-      color: var(--gold-light);
-    }
-
-    .flip-trigger-btn {
-      position: absolute;
-      top: 10px; right: 10px;
-      z-index: 25;
-      background: rgba(0, 0, 0, 0.7);
-      border: 1px solid var(--gold-mid);
-      color: var(--gold-light);
-      border-radius: 50%;
-      width: 30px; height: 30px;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; font-size: 0.8rem; transition: transform 0.3s;
-    }
-    .flip-trigger-btn:hover { transform: scale(1.1) rotate(180deg); }
-
-    .ticket {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      background: linear-gradient(145deg, #120004 0%, #2a000a 50%, #0d0003 100%);
-      border-radius: 14px;
-      box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.95);
-      overflow: hidden;
-    }
-
-    .hologram-watermark-pattern {
-      position: absolute;
-      top: -50%; left: -50%; width: 200%; height: 200%;
-      transform: rotate(-25deg);
-      font-family: var(--font-techno);
-      font-size: 0.65rem;
-      font-weight: 800;
-      letter-spacing: 3px;
-      line-height: 1.8;
-      pointer-events: none;
-      z-index: 3;
-      opacity: 0.18;
-      word-break: break-all;
-      background: linear-gradient(var(--holo-angle, 45deg), #ff007f 0%, #7f00ff 33%, #00f3ff 66%, #ff007f 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      mix-blend-mode: screen;
-    }
-
-    .ticket::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background-image: radial-gradient(rgba(255, 0, 60, 0.2) 1px, transparent 0);
-      background-size: 10px 10px;
-      opacity: 0.3;
-      pointer-events: none;
-    }
-
-    .star-flare {
-      position: absolute; width: 22px; height: 22px;
-      background: radial-gradient(circle, #ffffff 15%, rgba(255, 243, 168, 0.9) 35%, transparent 70%);
-      clip-path: polygon(50% 0%, 58% 42%, 100% 50%, 58% 58%, 50% 100%, 42% 58%, 0% 50%, 42% 42%);
-      z-index: 20; pointer-events: none;
-    }
-    .flare-1 { top: -8px; left: -8px; }
-    .flare-2 { top: -8px; right: -8px; }
-    .flare-3 { bottom: -8px; left: -8px; }
-    .flare-4 { bottom: -8px; right: -8px; }
-
-    .notch {
-      position: absolute; width: 22px; height: 22px;
-      background-color: var(--bg-dark); border-radius: 50%;
-      z-index: 10; border: 2px solid #d4af37;
-      box-shadow: inset 0 0 6px rgba(0,0,0,0.9);
-      transition: transform 0.5s ease, opacity 0.5s ease;
-    }
-    .notch-left { left: -11px; top: calc(100% - 73px - 11px); }
-    .notch-right { right: -11px; top: calc(100% - 73px - 11px); }
-
-    .main-section {
-      padding: 24px 18px 28px;
-      display: flex; flex-direction: column; align-items: center; text-align: center;
-      position: relative; z-index: 4;
-      transition: transform 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.8s ease;
-      transform-origin: top center;
-    }
-
-    .stub-section {
-      height: 73px; padding: 12px 16px;
-      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
-      background: rgba(0, 0, 0, 0.4); text-align: center;
-      position: relative; z-index: 4;
-      transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1), opacity 1s ease, filter 1s ease;
-      transform-origin: bottom center;
-    }
-
-    .stub-border-interactive {
-      position: absolute; left: 0; right: 0;
-      top: calc(100% - 73px - 20px); height: 40px;
-      z-index: 30; cursor: ns-resize;
-      display: flex; align-items: center; justify-content: center;
-      touch-action: none;
-    }
-
+    .map-box { border: 1px solid rgba(212, 175, 55, 0.4); border-radius: 6px; background: rgba(255, 0, 60, 0.05); padding: 10px; text-align: center; font-family: var(--font-techno); font-size: 0.65rem; letter-spacing: 1px; color: var(--gold-light); }
+    .flip-trigger-btn { position: absolute; top: 10px; right: 10px; z-index: 25; background: rgba(0, 0, 0, 0.7); border: 1px solid var(--gold-mid); color: var(--gold-light); border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.8rem; transition: transform 0.3s; }
+    .ticket { position: relative; display: flex; flex-direction: column; background: linear-gradient(145deg, #120004 0%, #2a000a 50%, #0d0003 100%); border-radius: 14px; box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.95); overflow: hidden; }
+    .hologram-watermark-pattern { position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; transform: rotate(-25deg); font-family: var(--font-techno); font-size: 0.65rem; font-weight: 800; letter-spacing: 3px; line-height: 1.8; pointer-events: none; z-index: 3; opacity: 0.18; word-break: break-all; background: linear-gradient(var(--holo-angle, 45deg), #ff007f 0%, #7f00ff 33%, #00f3ff 66%, #ff007f 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; mix-blend-mode: screen; }
+    .star-flare { position: absolute; width: 22px; height: 22px; background: radial-gradient(circle, #ffffff 15%, rgba(255, 243, 168, 0.9) 35%, transparent 70%); clip-path: polygon(50% 0%, 58% 42%, 100% 50%, 58% 58%, 50% 100%, 42% 58%, 0% 50%, 42% 42%); z-index: 20; pointer-events: none; }
+    .flare-1 { top: -8px; left: -8px; } .flare-2 { top: -8px; right: -8px; } .flare-3 { bottom: -8px; left: -8px; } .flare-4 { bottom: -8px; right: -8px; }
+    .notch { position: absolute; width: 22px; height: 22px; background-color: var(--bg-dark); border-radius: 50%; z-index: 10; border: 2px solid #d4af37; box-shadow: inset 0 0 6px rgba(0,0,0,0.9); }
+    .notch-left { left: -11px; top: calc(100% - 73px - 11px); } .notch-right { right: -11px; top: calc(100% - 73px - 11px); }
+    .main-section { padding: 24px 18px 28px; display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; z-index: 4; }
+    .stub-section { height: 73px; padding: 12px 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; background: rgba(0, 0, 0, 0.4); text-align: center; position: relative; z-index: 4; }
+    .stub-border-interactive { position: absolute; left: 0; right: 0; top: calc(100% - 73px - 20px); height: 40px; z-index: 30; cursor: ns-resize; display: flex; align-items: center; justify-content: center; touch-action: none; }
     .stub-border-line { width: 100%; height: 2px; border-top: 2px dashed rgba(212, 175, 55, 0.85); position: relative; }
-
-    .cut-progress {
-      position: absolute; left: 0; top: -2px; height: 6px;
-      background: linear-gradient(90deg, #ff003c 0%, #ff8000 50%, #fff3a8 100%);
-      box-shadow: 0 0 15px #ff003c, 0 0 25px #ff8000;
-      width: 0%; border-radius: 4px; transition: width 0.02s linear, height 0.02s linear;
-    }
-
-    .blade-indicator {
-      position: absolute; width: 24px; height: 24px; background: #ffffff; border-radius: 50%;
-      box-shadow: 0 0 15px #ff003c, 0 0 30px #ffffff, 0 0 45px #ff8000;
-      transform: translate(-50%, -50%) scale(0); pointer-events: none; z-index: 40;
-      transition: transform 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
+    .cut-progress { position: absolute; left: 0; top: -2px; height: 6px; background: linear-gradient(90deg, #ff003c 0%, #ff8000 50%, #fff3a8 100%); width: 0%; border-radius: 4px; transition: width 0.02s linear, height 0.02s linear; }
+    .blade-indicator { position: absolute; width: 24px; height: 24px; background: #ffffff; border-radius: 50%; transform: translate(-50%, -50%) scale(0); pointer-events: none; z-index: 40; transition: transform 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
     .stub-border-interactive.cutting .blade-indicator { transform: translate(-50%, -50%) scale(1); }
-
-    .ticket.bending .main-section { transform: rotateX(10deg) translateY(-4px) scale(0.995); }
-    .ticket.bending .stub-section { transform: rotateX(-14deg) translateY(6px) scale(0.995); }
-
-    .ticket.torn .main-section {
-      transform: translateY(-25px) translateZ(30px) rotate(-2deg);
-      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.95);
-      clip-path: polygon(0% 0%, 100% 0%, 100% calc(100% - 6px), 95% 100%, 90% calc(100% - 6px), 85% 100%, 80% calc(100% - 6px), 75% 100%, 70% calc(100% - 6px), 65% 100%, 60% calc(100% - 6px), 55% 100%, 50% calc(100% - 6px), 45% 100%, 40% calc(100% - 6px), 35% 100%, 30% calc(100% - 6px), 25% 100%, 20% calc(100% - 6px), 15% 100%, 10% calc(100% - 6px), 5% 100%, 0% calc(100% - 6px));
-    }
-    .ticket.torn .stub-section {
-      transform: translateY(220px) rotate(25deg) translateZ(-80px);
-      opacity: 0; filter: blur(6px); pointer-events: none;
-    }
-    .ticket.torn .stub-border-interactive, .ticket.torn .notch { opacity: 0; pointer-events: none; }
-
-    .badge {
-      display: inline-flex; align-items: center; gap: 5px;
-      border: 1px solid #d4af37; padding: 3px 10px; border-radius: 4px;
-      font-family: var(--font-techno); font-size: 0.5rem; letter-spacing: 1.5px;
-      color: var(--gold-light); text-transform: uppercase; background: rgba(0, 0, 0, 0.75); margin-bottom: 12px;
-    }
+    .badge { display: inline-flex; align-items: center; gap: 5px; border: 1px solid #d4af37; padding: 3px 10px; border-radius: 4px; font-family: var(--font-techno); font-size: 0.5rem; letter-spacing: 1.5px; color: var(--gold-light); text-transform: uppercase; background: rgba(0, 0, 0, 0.75); margin-bottom: 12px; }
     .badge-icon { width: 6px; height: 6px; background: #ff003c; border-radius: 50%; box-shadow: 0 0 6px #ff003c; }
-
-    .main-header {
-      font-family: var(--font-techno); font-size: 1.25rem; font-weight: 900; letter-spacing: 3px;
-      background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase;
-    }
-    .event-title {
-      font-family: 'UnifrakturMaguntina', cursive; font-size: 2rem; color: #fff;
-      text-shadow: 0 0 10px rgba(255, 0, 60, 0.9), 0 0 20px rgba(255, 0, 60, 0.5); line-height: 1.1; margin: 4px 0;
-    }
+    .main-header { font-family: var(--font-techno); font-size: 1.25rem; font-weight: 900; letter-spacing: 3px; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase; }
+    .event-title { font-family: 'UnifrakturMaguntina', cursive; font-size: 2rem; color: #fff; text-shadow: 0 0 10px rgba(255, 0, 60, 0.9); line-height: 1.1; margin: 4px 0; }
     .sub-header { font-family: var(--font-techno); font-size: 0.6rem; letter-spacing: 3px; color: var(--gold-light); text-transform: uppercase; margin-bottom: 10px; }
-    .date-info {
-      font-family: var(--font-techno); font-size: 0.68rem; font-weight: 700; letter-spacing: 1.5px; color: #fff;
-      margin-bottom: 12px; border-top: 1px solid rgba(212, 175, 55, 0.5); border-bottom: 1px solid rgba(212, 175, 55, 0.5);
-      padding: 6px 14px; background: rgba(212, 175, 55, 0.08); width: 100%;
-    }
+    .date-info { font-family: var(--font-techno); font-size: 0.68rem; font-weight: 700; letter-spacing: 1.5px; color: #fff; margin-bottom: 12px; border-top: 1px solid rgba(212, 175, 55, 0.5); border-bottom: 1px solid rgba(212, 175, 55, 0.5); padding: 6px 14px; background: rgba(212, 175, 55, 0.08); width: 100%; }
     .meta-grid { display: flex; gap: 10px; align-items: center; justify-content: center; width: 100%; }
     .meta-box { flex: 1; max-width: 170px; border: 1px solid rgba(212, 175, 55, 0.6); padding: 6px 8px; border-radius: 4px; background: rgba(0, 0, 0, 0.6); }
     .meta-label { font-family: var(--font-techno); font-size: 0.45rem; color: var(--gold-light); text-transform: uppercase; letter-spacing: 1px; }
@@ -607,10 +409,7 @@
     @media (min-width: 580px) {
       .ticket { flex-direction: row; }
       .main-section { flex: 1; padding: 20px; }
-      .stub-section {
-        width: 155px; height: auto; padding: 20px 10px; justify-content: space-between;
-        border-left: 1px solid rgba(212, 175, 55, 0.2);
-      }
+      .stub-section { width: 155px; height: auto; padding: 20px 10px; justify-content: space-between; border-left: 1px solid rgba(212, 175, 55, 0.2); }
       .stub-vertical-text { writing-mode: vertical-rl; transform: rotate(180deg); font-size: 0.55rem; }
       .stub-border-interactive { left: auto; right: calc(155px - 20px); top: 0; bottom: 0; width: 40px; height: auto; cursor: ew-resize; }
       .stub-border-line { width: 2px; height: 100%; border-top: none; border-left: 2px dashed rgba(212, 175, 55, 0.85); }
@@ -619,8 +418,6 @@
       .main-header { margin-top: 10px; }
       .date-info { width: auto; }
       .notch-left, .notch-right { display: none; }
-      .notch-top { display: block; right: calc(155px - 11px); top: -11px; }
-      .notch-bottom { display: block; right: calc(155px - 11px); bottom: -11px; top: auto; }
     }
   </style>
 </head>
@@ -720,9 +517,13 @@
       <button class="ticket-btn" onclick="openModal()">OBTENER MI PASES VIP</button>
     </div>
 
-    <div style="margin-bottom: 15px;">
-      <button class="calendar-btn" style="width: 100%; background: rgba(255, 0, 60, 0.15); border-color: var(--accent); margin-bottom: 0;" onclick="openGalleryModal()">
-        🎬 VER GALERÍA Y SUBIR MULTIMEDIA
+    <!-- BOTONES DE GALERÍA Y CHAT GLOBAL -->
+    <div style="display: flex; gap: 8px; margin-bottom: 15px;">
+      <button class="calendar-btn" style="flex: 1; margin-bottom: 0; background: rgba(255, 0, 60, 0.15); border-color: var(--accent);" onclick="openGalleryModal()">
+        🎬 GALERÍA
+      </button>
+      <button class="calendar-btn" style="flex: 1; margin-bottom: 0; background: rgba(0, 255, 102, 0.15); border-color: #00ff66; color: #00ff66;" onclick="openChatModal()">
+        💬 CHAT GLOBAL
       </button>
     </div>
 
@@ -741,7 +542,26 @@
     </footer>
   </div>
 
-  <!-- MODAL DE GALERÍA Y SUBIDA DE FOTOS Y VIDEOS -->
+  <!-- MODAL DE CHAT GLOBAL -->
+  <div class="modal" id="chat-modal">
+    <div class="modal-content" style="max-width: 520px;">
+      <span class="close-modal" onclick="closeChatModal()">&times;</span>
+      <div class="ticket-badge">TRANSMISIÓN EN VIVO // CHAT CLANDESTINO</div>
+      <h2 style="font-size: 1.2rem; margin-bottom: 12px; font-family: var(--font-techno); color: #fff;">COMUNIDAD RAVE</h2>
+      
+      <div class="global-chat-box">
+        <div class="chat-messages-container" id="chat-messages-list">
+          <!-- Se cargan dinámicamente -->
+        </div>
+        <div class="chat-input-row">
+          <input type="text" id="chat-input-text" class="chat-input" placeholder="Escribe un mensaje al clan..." maxlength="120" onkeypress="handleChatKeyPress(event)" />
+          <button class="chat-send-btn" onclick="sendChatMessage()">ENVIAR</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE GALERÍA -->
   <div class="modal" id="gallery-modal">
     <div class="modal-content" style="max-width: 680px;">
       <span class="close-modal" onclick="closeGalleryModal()">&times;</span>
@@ -749,7 +569,6 @@
       <h2 style="font-size: 1.3rem; margin-bottom: 10px; font-family: var(--font-techno); color: #fff;">GALERÍA Y CLIPS EN VIVO</h2>
       <p style="font-size: 0.65rem; color: var(--text-muted); margin-bottom: 15px;">Sube tus fotos o videos cortos del rave para que aparezcan en el feed.</p>
       
-      <!-- BOTÓN PARA SUBIR ARCHIVO -->
       <div style="margin-bottom: 20px;">
         <input type="file" id="media-upload-input" accept="image/*,video/*" style="display: none;" onchange="handleMediaUpload(event)" />
         <button class="contribution-btn" style="width: 100%; padding: 12px; font-size: 0.75rem;" onclick="document.getElementById('media-upload-input').click()">
@@ -757,9 +576,7 @@
         </button>
       </div>
 
-      <!-- CONTENEDOR DE LA GALERÍA -->
       <div id="gallery-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; max-height: 360px; overflow-y: auto; padding: 5px; text-align: left;">
-        <!-- Se rellena dinámicamente -->
       </div>
 
       <button class="contribution-btn secondary" style="width: 100%; margin-top: 15px;" onclick="closeGalleryModal()">CERRAR GALERÍA</button>
@@ -771,7 +588,6 @@
     <div class="modal-content">
       <span class="close-modal" onclick="closeModal()">&times;</span>
       
-      <!-- VISTA DE FORMULARIO DE ALIAS -->
       <div id="ticket-form-view">
         <div class="ticket-badge">GENERADOR DE PASE CLANDESTINO</div>
         <h2 style="font-size: 1.2rem; margin-bottom: 15px; font-family: var(--font-techno);">INGRESA TU ALIAS / NOMBRE</h2>
@@ -779,7 +595,6 @@
         <button class="contribution-btn" style="width: 100%; padding: 12px; font-size: 0.8rem;" onclick="generateTicket()">GENERAR MI PASE VIP</button>
       </div>
 
-      <!-- VISTA DE RESULTADO CON TIQUETE -->
       <div id="ticket-result-view" style="display: none;">
         <div class="ticket-badge" id="instruction-text">✂️ DESLIZA SOBRE LA LÍNEA PARA CORTAR EL TIQUETE ✂️</div>
         
@@ -792,10 +607,9 @@
           <div class="star-flare flare-4"></div>
 
           <div class="flip-card-inner">
-            <!-- ANVERSO -->
             <div class="ticket-frame" id="ticket-frame">
-              <div class="notch notch-left notch-top"></div>
-              <div class="notch notch-right notch-bottom"></div>
+              <div class="notch notch-left"></div>
+              <div class="notch notch-right"></div>
 
               <div class="stub-border-interactive" id="cut-line">
                 <div class="blade-indicator" id="blade-indicator"></div>
@@ -833,7 +647,6 @@
               </div>
             </div>
 
-            <!-- REVERSO -->
             <div class="ticket-back" id="ticket-back-element">
               <div class="ticket-back-content">
                 <div class="back-title">
@@ -928,32 +741,92 @@
       initCutMechanics();
       startCountdown();
       loadGalleryItems();
+      loadChatMessages();
     });
 
+    // LÓGICA DEL CHAT GLOBAL
+    function openChatModal() {
+      playSound('click');
+      const modal = document.getElementById('chat-modal');
+      if (modal) modal.style.display = 'flex';
+      loadChatMessages();
+    }
+
+    function closeChatModal() {
+      playSound('click');
+      const modal = document.getElementById('chat-modal');
+      if (modal) modal.style.display = 'none';
+    }
+
+    function loadChatMessages() {
+      const list = document.getElementById('chat-messages-list');
+      if (!list) return;
+
+      let messages = JSON.parse(localStorage.getItem('globalChatMessages') || '[]');
+      if (messages.length === 0) {
+        messages = [
+          { user: "SYSTEM", text: "Transmisión iniciada. Bienvenidos al bosque.", time: "23:00" },
+          { user: "DARK_RAVER", text: "¿A qué hora suelta DJ Tucnak el set principal?", time: "23:05" },
+          { user: "VALERIA_TSF", text: "¡Listos con los pases VIP! Nos vemos en la pista.", time: "23:10" }
+        ];
+        localStorage.setItem('globalChatMessages', JSON.stringify(messages));
+      }
+
+      let html = "";
+      messages.forEach(m => {
+        html += `
+          <div class="chat-msg">
+            <span class="chat-user">[${m.user}]</span>
+            <span>${m.text}</span>
+            <span class="chat-time">${m.time}</span>
+          </div>
+        `;
+      });
+      list.innerHTML = html;
+      list.scrollTop = list.scrollHeight;
+    }
+
+    function sendChatMessage() {
+      playSound('click');
+      const input = document.getElementById('chat-input-text');
+      if (!input) return;
+      const text = input.value.trim();
+      if (!text) return;
+
+      const user = localStorage.getItem('userName') || 'ANON_RAVER';
+      const now = new Date();
+      const timeStr = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+
+      let messages = JSON.parse(localStorage.getItem('globalChatMessages') || '[]');
+      messages.push({ user: user.toUpperCase(), text: text, time: timeStr });
+      
+      if (messages.length > 50) messages.shift(); // Limitar historial
+
+      localStorage.setItem('globalChatMessages', JSON.stringify(messages));
+      input.value = '';
+      loadChatMessages();
+    }
+
+    function handleChatKeyPress(e) {
+      if (e.key === 'Enter') {
+        sendChatMessage();
+      }
+    }
+
+    // Funciones anteriores conservadas
     function promptChangeSong() {
       playSound('click');
-      const input = prompt("Pega el enlace de Spotify de la canción o el ID de la pista para dejarla predeterminada en la página (ej: 2q9Z3H25b89Fk2G9L3zQ2R):");
+      const input = prompt("Pega el enlace de Spotify o el ID de la pista:");
       if (!input) return;
-
       let trackId = input.trim();
       if (trackId.includes('spotify.com/track/')) {
         const match = trackId.match(/track\/([a-zA-Z0-9]+)/);
-        if (match && match[1]) {
-          trackId = match[1];
-        }
+        if (match && match[1]) trackId = match[1];
       }
-
-      if (trackId.length < 15) {
-        showToast('Enlace o ID de Spotify no válido');
-        return;
-      }
-
       localStorage.setItem('spotifyTrackId', trackId);
       const iframe = document.getElementById('spotify-iframe');
-      if (iframe) {
-        iframe.src = `https://open.spotify.com/embed/track/${trackId}?utm_source=generator&theme=0`;
-      }
-      showToast('¡Canción predeterminada guardada con éxito!');
+      if (iframe) iframe.src = `https://open.spotify.com/embed/track/${trackId}?utm_source=generator&theme=0`;
+      showToast('¡Canción predeterminada guardada!');
     }
 
     function openGalleryModal() {
@@ -972,29 +845,22 @@
     function handleMediaUpload(event) {
       const file = event.target.files[0];
       if (!file) return;
-
       if (file.size > 15 * 1024 * 1024) {
         showToast('El archivo es muy pesado (máximo 15MB)');
         return;
       }
-
       const reader = new FileReader();
       reader.onload = function(e) {
-        const base64Data = e.target.result;
-        const fileType = file.type.startsWith('video') ? 'video' : 'image';
-        
         const mediaItem = {
-          type: fileType,
-          data: base64Data,
+          type: file.type.startsWith('video') ? 'video' : 'image',
+          data: e.target.result,
           date: new Date().toLocaleDateString()
         };
-
         let customGallery = JSON.parse(localStorage.getItem('customGallery') || '[]');
         customGallery.unshift(mediaItem);
         localStorage.setItem('customGallery', JSON.stringify(customGallery));
-
         loadGalleryItems();
-        showToast('¡Archivo subido a la galería con éxito!');
+        showToast('¡Archivo subido con éxito!');
       };
       reader.readAsDataURL(file);
     }
@@ -1002,25 +868,15 @@
     function loadGalleryItems() {
       const grid = document.getElementById('gallery-grid');
       if (!grid) return;
-
       let html = `
         <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: 12px; overflow: hidden; padding: 8px;">
-          <div style="width: 100%; height: 110px; background: #000; border-radius: 8px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
+          <div style="width: 100%; height: 110px; background: #000; border-radius: 8px; display: flex; align-items: center; justify-content: center; position: relative;">
             <div style="position: absolute; font-size: 2rem;">🎧</div>
             <div style="position: absolute; bottom: 6px; left: 6px; font-size: 0.5rem; background: rgba(0,0,0,0.7); padding: 2px 6px; border-radius: 4px; color: var(--accent);">SET #01</div>
           </div>
           <p style="font-size: 0.65rem; color: #fff; margin-top: 8px; font-weight: 700;">Prueba de Sonido Clandestina</p>
         </div>
-
-        <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: 12px; overflow: hidden; padding: 8px;">
-          <div style="width: 100%; height: 110px; background: #000; border-radius: 8px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
-            <div style="position: absolute; font-size: 2rem;">🌲</div>
-            <div style="position: absolute; bottom: 6px; left: 6px; font-size: 0.5rem; background: rgba(0,0,0,0.7); padding: 2px 6px; border-radius: 4px; color: var(--accent);">ZONA</div>
-          </div>
-          <p style="font-size: 0.65rem; color: #fff; margin-top: 8px; font-weight: 700;">Inspección del Bosque</p>
-        </div>
       `;
-
       let customGallery = JSON.parse(localStorage.getItem('customGallery') || '[]');
       customGallery.forEach((item, index) => {
         if (item.type === 'image') {
@@ -1045,7 +901,6 @@
           `;
         }
       });
-
       grid.innerHTML = html;
     }
 
@@ -1055,7 +910,7 @@
       customGallery.splice(index, 1);
       localStorage.setItem('customGallery', JSON.stringify(customGallery));
       loadGalleryItems();
-      showToast('Archivo eliminado de la galería');
+      showToast('Archivo eliminado');
     }
 
     function initParticleCanvas() {
@@ -1063,11 +918,7 @@
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
       let particles = [];
-
-      function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-      }
+      function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
       window.addEventListener('resize', resizeCanvas);
       resizeCanvas();
 
@@ -1082,39 +933,22 @@
           this.opacity = Math.random() * 0.5 + 0.2;
         }
         update() {
-          this.x += this.speedX;
-          this.y += this.speedY;
-          if (this.x < 0) this.x = canvas.width;
-          if (this.x > canvas.width) this.x = 0;
-          if (this.y < 0) this.y = canvas.height;
-          if (this.y > canvas.height) this.y = 0;
+          this.x += this.speedX; this.y += this.speedY;
+          if (this.x < 0) this.x = canvas.width; if (this.x > canvas.width) this.x = 0;
+          if (this.y < 0) this.y = canvas.height; if (this.y > canvas.height) this.y = 0;
         }
         draw() {
-          ctx.fillStyle = this.color;
-          ctx.globalAlpha = this.opacity;
-          ctx.beginPath();
-          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-          ctx.fill();
+          ctx.fillStyle = this.color; ctx.globalAlpha = this.opacity;
+          ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
         }
       }
-
       for (let i = 0; i < 60; i++) particles.push(new Particle());
-
       function animateParticles() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         particles.forEach(p => { p.update(); p.draw(); });
         requestAnimationFrame(animateParticles);
       }
       animateParticles();
-
-      window.addEventListener('mousemove', (e) => {
-        const xRatio = e.clientX / window.innerWidth;
-        const angle = Math.floor(xRatio * 360);
-        const watermark = document.getElementById('watermark');
-        if (watermark) {
-          watermark.style.setProperty('--holo-angle', `${angle}deg`);
-        }
-      });
     }
 
     let strobeActive = false;
@@ -1133,107 +967,64 @@
       playSound('click');
       const modal = document.getElementById('ticket-modal');
       if (modal) modal.style.display = 'flex';
-      
       const savedUser = localStorage.getItem('userName');
       if (savedUser) {
-        const formView = document.getElementById('ticket-form-view');
-        const resultView = document.getElementById('ticket-result-view');
-        if (formView) formView.style.display = 'none';
-        if (resultView) resultView.style.display = 'block';
+        document.getElementById('ticket-form-view').style.display = 'none';
+        document.getElementById('ticket-result-view').style.display = 'block';
         generateTicket(savedUser);
       } else {
-        const formView = document.getElementById('ticket-form-view');
-        const resultView = document.getElementById('ticket-result-view');
-        if (formView) formView.style.display = 'block';
-        if (resultView) resultView.style.display = 'none';
+        document.getElementById('ticket-form-view').style.display = 'block';
+        document.getElementById('ticket-result-view').style.display = 'none';
       }
     }
 
     function closeModal() {
       playSound('click');
-      const modal = document.getElementById('ticket-modal');
-      if (modal) modal.style.display = 'none';
+      document.getElementById('ticket-modal').style.display = 'none';
     }
 
     function generateTicket(forcedName = null) {
       playSound('click');
-      const inputEl = document.getElementById('user-alias-input');
-      const inputVal = forcedName !== null ? forcedName : (inputEl ? inputEl.value : '');
+      const inputVal = forcedName !== null ? forcedName : (document.getElementById('user-alias-input').value || '');
       const name = inputVal.trim();
-
-      if (!name) {
-        showToast('Por favor ingresa un alias válido');
-        return;
-      }
-
+      if (!name) { showToast('Ingresa un alias válido'); return; }
       const cleanName = name.toUpperCase();
       localStorage.setItem('userName', name);
 
-      const userDisplay = document.getElementById('modal-user-display');
-      if (userDisplay) userDisplay.innerText = cleanName;
-      
-      const qrData = `ESTADO: VÁLIDO Y ACTIVO | EVENTO: THE SINISTER FOREST | TITULAR: ${cleanName} | ACCESO AUTORIZADO 2026`;
-      const encodedData = encodeURIComponent(qrData);
+      document.getElementById('modal-user-display').innerText = cleanName;
       const qrImg = document.getElementById('ticket-qr');
-      if (qrImg) {
-        qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodedData}&color=020203&bgcolor=ffffff`;
-      }
+      if (qrImg) qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(cleanName)}&color=020203&bgcolor=ffffff`;
       
       const hash = cleanName.split('').reduce((acc, char) => acc + char.charCodeAt(0), 1000);
-      const codeVal = document.getElementById('ticket-code-val');
-      if (codeVal) codeVal.innerText = `PASS-#${hash.toString().slice(-4)}`;
+      document.getElementById('ticket-code-val').innerText = `PASS-#${hash.toString().slice(-4)}`;
 
-      const formView = document.getElementById('ticket-form-view');
-      const resultView = document.getElementById('ticket-result-view');
-      if (formView) formView.style.display = 'none';
-      if (resultView) resultView.style.display = 'block';
+      document.getElementById('ticket-form-view').style.display = 'none';
+      document.getElementById('ticket-result-view').style.display = 'block';
     }
 
     function resetTicketForm() {
       playSound('click');
-      const formView = document.getElementById('ticket-form-view');
-      const resultView = document.getElementById('ticket-result-view');
-      if (formView) formView.style.display = 'block';
-      if (resultView) resultView.style.display = 'none';
-
+      document.getElementById('ticket-form-view').style.display = 'block';
+      document.getElementById('ticket-result-view').style.display = 'none';
       const ticketEl = document.getElementById('ticket');
-      const instructionText = document.getElementById('instruction-text');
-      
       if (ticketEl) {
         ticketEl.classList.remove('torn', 'bending');
-        const cutProgress = document.getElementById('cut-progress');
-        if (cutProgress) {
-          cutProgress.style.width = '0%';
-          cutProgress.style.height = '0%';
-        }
-      }
-      
-      if (instructionText) {
-        instructionText.innerHTML = '✂️ DESLIZA SOBRE LA LÍNEA PARA CORTAR EL TIQUETE ✂️';
+        document.getElementById('cut-progress').style.width = '0%';
       }
       isTorn = false;
-      cutAmount = 0;
-      const secretRewardBox = document.getElementById('secret-reward-box');
-      if (secretRewardBox) secretRewardBox.style.display = 'none';
+      document.getElementById('secret-reward-box').style.display = 'none';
     }
 
     function toggleFlipCard() {
       playSound('click');
-      const wrapper = document.getElementById('ticket-wrapper');
-      if (wrapper) wrapper.classList.toggle('flipped');
+      document.getElementById('ticket-wrapper').classList.toggle('flipped');
     }
 
-    let isTorn = false;
-    let cutAmount = 0;
-    let isDragging = false;
-
+    let isTorn = false, cutAmount = 0, isDragging = false;
     function initCutMechanics() {
       const cutLine = document.getElementById('cut-line');
       const cutProgress = document.getElementById('cut-progress');
       const ticket = document.getElementById('ticket');
-      const flashOverlay = document.getElementById('flash-overlay');
-      const instructionText = document.getElementById('instruction-text');
-      
       if (!cutLine || !ticket) return;
 
       const startDrag = (e) => {
@@ -1247,32 +1038,21 @@
 
       const onDrag = (e) => {
         if (!isDragging || isTorn) return;
-
         const rect = cutLine.getBoundingClientRect();
-        const isHorizontal = window.innerWidth < 580;
-        
-        let clientCoord = isHorizontal 
-          ? (e.touches ? e.touches[0].clientX : e.clientX) 
-          : (e.touches ? e.touches[0].clientY : e.clientY);
-          
-        let startCoord = isHorizontal ? rect.left : rect.top;
-        let totalSize = isHorizontal ? rect.width : rect.height;
-
-        let pos = clientCoord - startCoord;
-        let percentage = Math.max(0, Math.min(100, (pos / totalSize) * 100));
-
-        cutAmount = percentage;
-        
-        if (cutProgress) {
-          if (isHorizontal) {
-            cutProgress.style.width = `${cutAmount}%`;
-          } else {
-            cutProgress.style.height = `${cutAmount}%`;
-          }
-        }
+        const clientCoord = e.touches ? e.touches[0].clientX : e.clientX;
+        let pos = clientCoord - rect.left;
+        cutAmount = Math.max(0, Math.min(100, (pos / rect.width) * 100));
+        cutProgress.style.width = `${cutAmount}%`;
 
         if (cutAmount >= 85 && !isTorn) {
-          triggerCutComplete();
+          isTorn = true; isDragging = false;
+          cutLine.classList.remove('cutting');
+          ticket.classList.remove('bending');
+          ticket.classList.add('torn');
+          playSound('success');
+          document.getElementById('instruction-text').innerHTML = '✨ ¡ACCESO VIP VÁLIDO Y ACTIVO! ✨';
+          document.getElementById('secret-reward-box').style.display = 'block';
+          showToast('¡Ticket validado con éxito!');
         }
       };
 
@@ -1281,47 +1061,12 @@
         isDragging = false;
         cutLine.classList.remove('cutting');
         ticket.classList.remove('bending');
-
-        if (cutAmount < 85) {
-          cutAmount = 0;
-          if (cutProgress) {
-            cutProgress.style.width = '0%';
-            cutProgress.style.height = '0%';
-          }
-        }
+        if (cutAmount < 85) { cutAmount = 0; cutProgress.style.width = '0%'; }
       };
-
-      async function triggerCutComplete() {
-        isTorn = true;
-        isDragging = false;
-        cutLine.classList.remove('cutting');
-        ticket.classList.remove('bending');
-        ticket.classList.add('torn');
-
-        if (flashOverlay) {
-          flashOverlay.style.opacity = '1';
-          setTimeout(() => { flashOverlay.style.opacity = '0'; }, 150);
-        }
-
-        if (navigator.vibrate) navigator.vibrate([50, 50, 100]);
-        playSound('success');
-
-        if (instructionText) {
-          instructionText.innerHTML = '✨ ¡ACCESO VIP VÁLIDO Y ACTIVO! ✨';
-        }
-
-        const secretRewardBox = document.getElementById('secret-reward-box');
-        if (secretRewardBox) {
-          secretRewardBox.style.display = 'block';
-        }
-
-        showToast('¡Ticket validado con éxito!');
-      }
 
       cutLine.addEventListener('mousedown', startDrag);
       window.addEventListener('mousemove', onDrag);
       window.addEventListener('mouseup', endDrag);
-
       cutLine.addEventListener('touchstart', startDrag, { passive: false });
       window.addEventListener('touchmove', onDrag, { passive: false });
       window.addEventListener('touchend', endDrag);
@@ -1332,49 +1077,20 @@
       const ticketWrapper = document.getElementById('ticket-wrapper');
       const backElement = document.getElementById('ticket-back-element');
       const alias = localStorage.getItem('userName') || 'GUEST_RAVER';
-      const wasFlipped = ticketWrapper.classList.contains('flipped');
+      ticketWrapper.classList.remove('flipped');
+      backElement.style.transform = 'rotateY(0deg)';
+      backElement.style.position = 'relative';
+      backElement.style.display = 'block';
+      backElement.style.marginTop = '20px';
 
-      try {
-        ticketWrapper.classList.remove('flipped');
-        if (backElement) {
-          backElement.style.transform = 'rotateY(0deg)';
-          backElement.style.position = 'relative';
-          backElement.style.display = 'block';
-          backElement.style.marginTop = '20px';
-        }
-
-        await new Promise(resolve => setTimeout(resolve, 300));
-
-        const canvas = await html2canvas(ticketWrapper, {
-          backgroundColor: null,
-          scale: 3,
-          useCORS: true,
-          logging: false,
-          allowTaint: true
-        });
-
-        const link = document.createElement('a');
-        link.href = canvas.toDataURL('image/png', 1.0);
-        link.download = `TSF_VIP_PASS_${alias.toUpperCase()}_COMPLETO.png`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-
-        showToast('¡Pase completo (Frente y Atrás) descargado!');
-      } catch (error) {
-        console.error(error);
-        showToast('Error al generar la imagen combinada.');
-      } finally {
-        if (backElement) {
-          backElement.style.transform = '';
-          backElement.style.position = '';
-          backElement.style.display = '';
-          backElement.style.marginTop = '';
-        }
-        if (wasFlipped) {
-          ticketWrapper.classList.add('flipped');
-        }
-      }
+      await new Promise(r => setTimeout(r, 300));
+      const canvas = await html2canvas(ticketWrapper, { backgroundColor: null, scale: 3, useCORS: true });
+      const link = document.createElement('a');
+      link.href = canvas.toDataURL('image/png', 1.0);
+      link.download = `TSF_VIP_PASS_${alias.toUpperCase()}.png`;
+      link.click();
+      backElement.style.transform = ''; backElement.style.position = ''; backElement.style.display = ''; backElement.style.marginTop = '';
+      showToast('¡Pase descargado!');
     }
 
     let rsvpConfirmed = false;
@@ -1382,107 +1098,41 @@
       playSound('click');
       rsvpConfirmed = !rsvpConfirmed;
       const btn = document.getElementById('rsvp-trigger');
-      const capCount = document.getElementById('capacity-count');
-      const capBar = document.getElementById('capacity-progress');
-
       if (rsvpConfirmed) {
-        if (btn) { btn.classList.add('confirmed'); btn.innerText = '✓ ASISTENCIA CONFIRMADA'; }
-        if (capCount) capCount.innerText = '83%';
-        if (capBar) capBar.style.width = '83%';
+        btn.classList.add('confirmed'); btn.innerText = '✓ ASISTENCIA CONFIRMADA';
+        document.getElementById('capacity-count').innerText = '83%';
+        document.getElementById('capacity-progress').style.width = '83%';
         showToast('¡Asistencia confirmada!');
       } else {
-        if (btn) { btn.classList.remove('confirmed'); btn.innerText = 'CONFIRMAR ASISTENCIA'; }
-        if (capCount) capCount.innerText = '82%';
-        if (capBar) capBar.style.width = '82%';
+        btn.classList.remove('confirmed'); btn.innerText = 'CONFIRMAR ASISTENCIA';
+        document.getElementById('capacity-count').innerText = '82%';
+        document.getElementById('capacity-progress').style.width = '82%';
       }
     }
 
-    function copyNequi() {
-      playSound('click');
-      const nequiVal = document.getElementById('nequi-val');
-      const textToCopy = nequiVal ? nequiVal.innerText.replace(/\s+/g, '') : '3105484102';
-      navigator.clipboard.writeText(textToCopy);
-      showToast('Número Nequi copiado');
-    }
-
-    function openNequiApp() {
-      playSound('click');
-      window.location.href = 'nequi://';
-      setTimeout(() => {
-        showToast('Abriendo Nequi...');
-      }, 1000);
-    }
-
-    function shareWhatsApp() {
-      playSound('click');
-      const text = encodeURIComponent('🔥 Asiste a THE SINISTER FOREST - Underground Techno Experience. ¡Nos vemos en el rave!');
-      window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
-    }
-
-    function shareFacebook() {
-      playSound('click');
-      const url = encodeURIComponent(window.location.href);
-      window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
-    }
-
-    function copyLink() {
-      playSound('click');
-      navigator.clipboard.writeText(window.location.href);
-      showToast('Enlace del evento copiado');
-    }
-
+    function copyNequi() { playSound('click'); navigator.clipboard.writeText('3105484102'); showToast('Número Nequi copiado'); }
+    function openNequiApp() { playSound('click'); window.location.href = 'nequi://'; }
+    function shareWhatsApp() { playSound('click'); window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent('🔥 Asiste a THE SINISTER FOREST. ¡Nos vemos en el rave!')}`, '_blank'); }
+    function shareFacebook() { playSound('click'); window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`, '_blank'); }
+    function copyLink() { playSound('click'); navigator.clipboard.writeText(window.location.href); showToast('Enlace copiado'); }
     function showToast(msg) {
       const toast = document.getElementById('toast');
-      if (!toast) return;
-      toast.innerText = msg;
-      toast.classList.add('show');
+      toast.innerText = msg; toast.classList.add('show');
       setTimeout(() => toast.classList.remove('show'), 3000);
     }
-
-    function addToCalendar(e) {
-      e.preventDefault();
-      playSound('click');
-      alert('Evento añadido a la agenda.');
-    }
+    function addToCalendar(e) { e.preventDefault(); playSound('click'); alert('Evento añadido a la agenda.'); }
 
     function startCountdown() {
       const targetDate = new Date('2026-08-10T23:59:59').getTime();
-
-      const updateTimer = () => {
-        const now = new Date().getTime();
-        const diff = targetDate - now;
-
-        const daysEl = document.getElementById('cd-days');
-        const hoursEl = document.getElementById('cd-hours');
-        const minEl = document.getElementById('cd-minutes');
-        const secEl = document.getElementById('cd-seconds');
-
+      setInterval(() => {
+        const diff = targetDate - new Date().getTime();
         if (diff > 0) {
-          if (daysEl) daysEl.innerText = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0');
-          if (hoursEl) hoursEl.innerText = String(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
-          if (minEl) minEl.innerText = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
-          if (secEl) secEl.innerText = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
-        } else {
-          if (daysEl) daysEl.innerText = '00';
-          if (hoursEl) hoursEl.innerText = '00';
-          if (minEl) minEl.innerText = '00';
-          if (secEl) secEl.innerText = '00';
-
-          const locBox = document.getElementById('location-box-container');
-          if (locBox) {
-            locBox.innerHTML = `
-              <p id="location-title" style="color:#00ff66;">📍 UBICACIÓN REVELADA</p>
-              <p id="location-details" style="color:#fff; font-weight:bold; margin-bottom:10px;">Parque Lineal La Frontera // Envigado, Antioquia</p>
-              <a href="https://maps.google.com/?q=Key+Parque+Lineal+La+Frontera+Envigado" target="_blank" class="calendar-btn" style="margin-bottom:0; background:var(--accent);">
-                VER EN GOOGLE MAPS
-              </a>
-            `;
-          }
+          document.getElementById('cd-days').innerText = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0');
+          document.getElementById('cd-hours').innerText = String(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+          document.getElementById('cd-minutes').innerText = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+          document.getElementById('cd-seconds').innerText = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
         }
-      };
-
-      updateTimer();
-      setInterval(updateTimer, 1000);
+      }, 1000);
     }
   </script>
 </body>
