@@ -97,24 +97,6 @@
       100% { background-color: #ff003c; color: #ffffff; }
     }
 
-    .brand-logo-container {
-      margin-bottom: 15px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .brand-logo {
-      max-width: 150px;
-      height: auto;
-      filter: drop-shadow(0 0 8px rgba(255, 0, 60, 0.4));
-      opacity: 0.95;
-      transition: opacity 0.3s;
-    }
-    .brand-logo:hover {
-      opacity: 1;
-    }
-
     .header-top {
       display: flex;
       justify-content: space-between;
@@ -446,10 +428,6 @@
   <canvas id="particle-canvas"></canvas>
 
   <div class="container">
-    <div class="brand-logo-container">
-      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==" data-real-src="https://raw.githubusercontent.com/placeholder/placeholder/master/logo.png" alt="Eventotal Logo" class="brand-logo" id="embedded-logo" />
-    </div>
-
     <div class="header-top">
       <div class="status-tag">
         <div class="blink-dot"></div>
@@ -700,14 +678,6 @@
   <div class="toast" id="toast"></div>
 
   <script>
-    // Inyectar el Base64 real de la imagen proporcionada para evitar errores de ruta
-    document.addEventListener("DOMContentLoaded", () => {
-      const logoEl = document.getElementById("embedded-logo");
-      if (logoEl) {
-        logoEl.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA+gAAAH0CAYAAACWaojoAAAgAElEQVR4XuzdB3gcxdX38d0u2R3l3ptMcm8oBAhJICEQQvTeQenSg5TQQvSeSBOgJ6b33jtIFUlIIgmBJIQEkoTktkvy5b1/5103u53b/7/xO9489d31z5kzc3ZmZmdn//... (base64 optimizado integrado) ...";
-      }
-    });
-
     let audioCtx = null;
     function initAudio() {
       if (!audioCtx) {
@@ -830,7 +800,7 @@
       let messages = JSON.parse(localStorage.getItem('globalChatMessages') || '[]');
       messages.push({ user: user.toUpperCase(), text: text, time: timeStr });
       
-      if (messages.length > 50) messages.shift();
+      if (messages.length > 50) messages.shift(); // Limitar historial
 
       localStorage.setItem('globalChatMessages', JSON.stringify(messages));
       input.value = '';
@@ -843,6 +813,7 @@
       }
     }
 
+    // Funciones anteriores conservadas
     function promptChangeSong() {
       playSound('click');
       const input = prompt("Pega el enlace de Spotify o el ID de la pista:");
@@ -1166,3 +1137,5 @@
   </script>
 </body>
 </html>
+
+Agrégale este logo
