@@ -345,7 +345,6 @@
     .ticket-badge { font-size: 0.55rem; letter-spacing: 2px; color: var(--accent); margin-bottom: 5px; font-weight: 700; }
     .ticket-input { width: 100%; padding: 10px 14px; background: rgba(255, 255, 255, 0.08); border: 1px solid var(--accent); border-radius: 8px; color: #fff; font-family: var(--font); font-size: 0.8rem; text-align: center; outline: none; margin-bottom: 12px; }
     
-    /* CHAT GLOBAL STYLES */
     .global-chat-box { display: flex; flex-direction: column; height: 360px; text-align: left; }
     .chat-messages-container { flex: 1; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
     .chat-msg { font-size: 0.72rem; line-height: 1.3; color: #e0e0e0; background: rgba(255,255,255,0.04); padding: 8px 10px; border-radius: 8px; word-break: break-word; }
@@ -356,7 +355,6 @@
     .chat-send-btn { background: var(--accent); color: #fff; border: none; padding: 0 16px; border-radius: 8px; font-family: var(--font); font-weight: 700; font-size: 0.7rem; cursor: pointer; transition: 0.2s; }
     .chat-send-btn:hover { filter: brightness(1.2); }
 
-    /* Estilos del Ticket */
     .ticket-wrapper {
       position: relative; width: 100%; max-width: 580px; perspective: 1200px;
       filter: drop-shadow(0 0 25px rgba(212, 175, 55, 0.25)) drop-shadow(0 15px 35px rgba(0, 0, 0, 0.9));
@@ -385,4 +383,69 @@
     .cut-progress { position: absolute; left: 0; top: -2px; height: 6px; background: linear-gradient(90deg, #ff003c 0%, #ff8000 50%, #fff3a8 100%); width: 0%; border-radius: 4px; transition: width 0.02s linear, height 0.02s linear; }
     .blade-indicator { position: absolute; width: 24px; height: 24px; background: #ffffff; border-radius: 50%; transform: translate(-50%, -50%) scale(0); pointer-events: none; z-index: 40; transition: transform 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
     .stub-border-interactive.cutting .blade-indicator { transform: translate(-50%, -50%) scale(1); }
-    .badge { display: inline-flex; align-items: center; gap: 5px; bo
+    .badge { display: inline-flex; align-items: center; gap: 5px; background: rgba(212, 175, 55, 0.1); border: 1px solid var(--gold-mid); padding: 3px 10px; border-radius: 20px; font-size: 0.55rem; color: var(--gold-light); font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+  </style>
+</head>
+<body>
+  <div class="grain"></div>
+  <canvas id="particle-canvas"></canvas>
+  <div id="flash-overlay"></div>
+
+  <div class="container">
+    <div class="header-top">
+      <div class="status-tag"><div class="blink-dot"></div> LIVE RAVE</div>
+      <button class="strobe-btn" id="strobe-toggle">STROBE: OFF</button>
+    </div>
+
+    <h1 class="glitch">The Sinister Forest</h1>
+    <div class="subtitle">UNDERGROUND TECHNO EXPERIENCE</div>
+
+    <div class="audio-visualizer">
+      <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+
+    <div class="lineup-section">
+      <div class="lineup-title">Headliner Act</div>
+      <div class="dj-card headliner">
+        <span class="dj-tag">SPECIAL GUEST</span>
+        <div class="dj-name">VORAX</div>
+        <div class="dj-genre">Industrial / Hard Techno</div>
+        <div class="dj-socials">
+          <a href="#" class="dj-link" target="_blank">SOUNDCLOUD // SETS</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="capacity-bar">
+      <div class="capacity-text"><span>ACCESO LIMITADO</span> <span id="capacity-count">84% FULL</span></div>
+      <div class="progress-bg"><div class="progress-fill" style="width: 84%;"></div></div>
+    </div>
+
+    <div class="countdown-grid">
+      <div class="time-box"><span class="time-number" id="days">00</span><span class="time-label">Días</span></div>
+      <div class="time-box"><span class="time-number" id="hours">00</span><span class="time-label">Horas</span></div>
+      <div class="time-box"><span class="time-number" id="mins">00</span><span class="time-label">Min</span></div>
+      <div class="time-box"><span class="time-number" id="secs">00</span><span class="time-label">Seg</span></div>
+    </div>
+
+    <div class="action-dual-btn">
+      <button class="rsvp-btn" id="rsvp-trigger">CONFIRMAR ASISTENCIA</button>
+      <button class="ticket-btn" id="ticket-modal-trigger">VER MI TICKET</button>
+    </div>
+
+    <footer>
+      <span>THE SINISTER FOREST // SECRETS & TECHNO</span>
+    </footer>
+  </div>
+
+  <script>
+    // Script básico interactivo de ejemplo para mantener la funcionalidad
+    const strobeBtn = document.getElementById('strobe-toggle');
+    strobeBtn.addEventListener('click', () => {
+      document.body.classList.toggle('strobe-active');
+      strobeBtn.classList.toggle('active');
+      strobeBtn.textContent = document.body.classList.contains('strobe-active') ? 'STROBE: ON' : 'STROBE: OFF';
+    });
+  </script>
+</body>
+</html>
