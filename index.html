@@ -97,6 +97,24 @@
       100% { background-color: #ff003c; color: #ffffff; }
     }
 
+    .brand-logo-container {
+      margin-bottom: 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .brand-logo {
+      max-width: 130px;
+      height: auto;
+      filter: drop-shadow(0 0 8px rgba(255, 0, 60, 0.4));
+      opacity: 0.9;
+      transition: opacity 0.3s;
+    }
+    .brand-logo:hover {
+      opacity: 1;
+    }
+
     .header-top {
       display: flex;
       justify-content: space-between;
@@ -345,6 +363,7 @@
     .ticket-badge { font-size: 0.55rem; letter-spacing: 2px; color: var(--accent); margin-bottom: 5px; font-weight: 700; }
     .ticket-input { width: 100%; padding: 10px 14px; background: rgba(255, 255, 255, 0.08); border: 1px solid var(--accent); border-radius: 8px; color: #fff; font-family: var(--font); font-size: 0.8rem; text-align: center; outline: none; margin-bottom: 12px; }
     
+    /* CHAT GLOBAL STYLES */
     .global-chat-box { display: flex; flex-direction: column; height: 360px; text-align: left; }
     .chat-messages-container { flex: 1; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
     .chat-msg { font-size: 0.72rem; line-height: 1.3; color: #e0e0e0; background: rgba(255,255,255,0.04); padding: 8px 10px; border-radius: 8px; word-break: break-word; }
@@ -355,6 +374,7 @@
     .chat-send-btn { background: var(--accent); color: #fff; border: none; padding: 0 16px; border-radius: 8px; font-family: var(--font); font-weight: 700; font-size: 0.7rem; cursor: pointer; transition: 0.2s; }
     .chat-send-btn:hover { filter: brightness(1.2); }
 
+    /* Estilos del Ticket */
     .ticket-wrapper {
       position: relative; width: 100%; max-width: 580px; perspective: 1200px;
       filter: drop-shadow(0 0 25px rgba(212, 175, 55, 0.25)) drop-shadow(0 15px 35px rgba(0, 0, 0, 0.9));
@@ -383,69 +403,759 @@
     .cut-progress { position: absolute; left: 0; top: -2px; height: 6px; background: linear-gradient(90deg, #ff003c 0%, #ff8000 50%, #fff3a8 100%); width: 0%; border-radius: 4px; transition: width 0.02s linear, height 0.02s linear; }
     .blade-indicator { position: absolute; width: 24px; height: 24px; background: #ffffff; border-radius: 50%; transform: translate(-50%, -50%) scale(0); pointer-events: none; z-index: 40; transition: transform 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
     .stub-border-interactive.cutting .blade-indicator { transform: translate(-50%, -50%) scale(1); }
-    .badge { display: inline-flex; align-items: center; gap: 5px; background: rgba(212, 175, 55, 0.1); border: 1px solid var(--gold-mid); padding: 3px 10px; border-radius: 20px; font-size: 0.55rem; color: var(--gold-light); font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+    .badge { display: inline-flex; align-items: center; gap: 5px; border: 1px solid #d4af37; padding: 3px 10px; border-radius: 4px; font-family: var(--font-techno); font-size: 0.5rem; letter-spacing: 1.5px; color: var(--gold-light); text-transform: uppercase; background: rgba(0, 0, 0, 0.75); margin-bottom: 12px; }
+    .badge-icon { width: 6px; height: 6px; background: #ff003c; border-radius: 50%; box-shadow: 0 0 6px #ff003c; }
+    .main-header { font-family: var(--font-techno); font-size: 1.25rem; font-weight: 900; letter-spacing: 3px; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase; }
+    .event-title { font-family: 'UnifrakturMaguntina', cursive; font-size: 2rem; color: #fff; text-shadow: 0 0 10px rgba(255, 0, 60, 0.9); line-height: 1.1; margin: 4px 0; }
+    .sub-header { font-family: var(--font-techno); font-size: 0.6rem; letter-spacing: 3px; color: var(--gold-light); text-transform: uppercase; margin-bottom: 10px; }
+    .date-info { font-family: var(--font-techno); font-size: 0.68rem; font-weight: 700; letter-spacing: 1.5px; color: #fff; margin-bottom: 12px; border-top: 1px solid rgba(212, 175, 55, 0.5); border-bottom: 1px solid rgba(212, 175, 55, 0.5); padding: 6px 14px; background: rgba(212, 175, 55, 0.08); width: 100%; }
+    .meta-grid { display: flex; gap: 10px; align-items: center; justify-content: center; width: 100%; }
+    .meta-box { flex: 1; max-width: 170px; border: 1px solid rgba(212, 175, 55, 0.6); padding: 6px 8px; border-radius: 4px; background: rgba(0, 0, 0, 0.6); }
+    .meta-label { font-family: var(--font-techno); font-size: 0.45rem; color: var(--gold-light); text-transform: uppercase; letter-spacing: 1px; }
+    .meta-value { font-family: var(--font-techno); font-size: 0.75rem; font-weight: 700; color: #fff; letter-spacing: 1px; }
+    .stub-vertical-text { font-family: var(--font-techno); font-size: 0.62rem; letter-spacing: 2px; color: var(--gold-light); text-transform: uppercase; }
+    .stub-footer { font-family: var(--font-techno); font-size: 0.5rem; color: rgba(255, 255, 255, 0.7); letter-spacing: 1.2px; }
+
+    .toast {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px);
+      background: var(--accent); color: #fff; padding: 10px 20px; border-radius: 20px;
+      font-size: 0.75rem; font-weight: 700; opacity: 0; transition: all 0.3s; z-index: 300;
+      box-shadow: 0 0 15px var(--accent-glow); pointer-events: none;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+    @media (min-width: 580px) {
+      .ticket { flex-direction: row; }
+      .main-section { flex: 1; padding: 20px; }
+      .stub-section { width: 155px; height: auto; padding: 20px 10px; justify-content: space-between; border-left: 1px solid rgba(212, 175, 55, 0.2); }
+      .stub-vertical-text { writing-mode: vertical-rl; transform: rotate(180deg); font-size: 0.55rem; }
+      .stub-border-interactive { left: auto; right: calc(155px - 20px); top: 0; bottom: 0; width: 40px; height: auto; cursor: ew-resize; }
+      .stub-border-line { width: 2px; height: 100%; border-top: none; border-left: 2px dashed rgba(212, 175, 55, 0.85); }
+      .cut-progress { width: 6px; height: 0%; left: -2px; top: 0; background: linear-gradient(180deg, #ff003c 0%, #ff8000 50%, #fff3a8 100%); }
+      .badge { position: absolute; top: 12px; left: 15px; margin-bottom: 0; }
+      .main-header { margin-top: 10px; }
+      .date-info { width: auto; }
+      .notch-left, .notch-right { display: none; }
+    }
   </style>
 </head>
 <body>
+
+  <div id="flash-overlay"></div>
   <div class="grain"></div>
   <canvas id="particle-canvas"></canvas>
-  <div id="flash-overlay"></div>
 
   <div class="container">
-    <div class="header-top">
-      <div class="status-tag"><div class="blink-dot"></div> LIVE RAVE</div>
-      <button class="strobe-btn" id="strobe-toggle">STROBE: OFF</button>
+    <div class="brand-logo-container">
+      <img src="44667.png" alt="Eventotal Logo" class="brand-logo" />
     </div>
 
-    <h1 class="glitch">The Sinister Forest</h1>
-    <div class="subtitle">UNDERGROUND TECHNO EXPERIENCE</div>
+    <div class="header-top">
+      <div class="status-tag">
+        <div class="blink-dot"></div>
+        LIVE TRANSMISSION
+      </div>
+      <button class="strobe-btn" id="strobe-toggle" onclick="toggleStrobe()">STROBE OFF</button>
+    </div>
+
+    <h1 class="glitch" data-text="THE SINISTER FOREST">THE SINISTER FOREST</h1>
+    <p class="subtitle">UNDERGROUND TECHNO EXPERIENCE</p>
 
     <div class="audio-visualizer">
       <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
     </div>
 
     <div class="lineup-section">
-      <div class="lineup-title">Headliner Act</div>
+      <div class="lineup-title">// HEADLINER ARTIST</div>
       <div class="dj-card headliner">
         <span class="dj-tag">SPECIAL GUEST</span>
-        <div class="dj-name">VORAX</div>
-        <div class="dj-genre">Industrial / Hard Techno</div>
+        <div class="dj-name">DJ TUCNAK</div>
+        <div class="dj-genre">UNDERGROUND TECHNO</div>
         <div class="dj-socials">
-          <a href="#" class="dj-link" target="_blank">SOUNDCLOUD // SETS</a>
+          <a href="https://www.instagram.com/tucnakdj?utm_source=qr&igsh=MWpvdDFuMWk1M2txZw==" target="_blank" class="dj-link">INSTAGRAM SET</a>
         </div>
       </div>
     </div>
 
     <div class="capacity-bar">
-      <div class="capacity-text"><span>ACCESO LIMITADO</span> <span id="capacity-count">84% FULL</span></div>
-      <div class="progress-bg"><div class="progress-fill" style="width: 84%;"></div></div>
+      <div class="capacity-text">
+        <span>AFORO CLANDESTINO</span>
+        <span id="capacity-count">82%</span>
+      </div>
+      <div class="progress-bg">
+        <div class="progress-fill" id="capacity-progress" style="width: 82%;"></div>
+      </div>
     </div>
 
-    <div class="countdown-grid">
-      <div class="time-box"><span class="time-number" id="days">00</span><span class="time-label">Días</span></div>
-      <div class="time-box"><span class="time-number" id="hours">00</span><span class="time-label">Horas</span></div>
-      <div class="time-box"><span class="time-number" id="mins">00</span><span class="time-label">Min</span></div>
-      <div class="time-box"><span class="time-number" id="secs">00</span><span class="time-label">Seg</span></div>
+    <div class="spotify-embed-container">
+      <iframe id="spotify-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/2q9Z3H25b89Fk2G9L3zQ2R?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      <button class="change-song-trigger" onclick="promptChangeSong()">🎵 CAMBIAR / GUARDAR CANCIÓN PREDETERMINADA</button>
+    </div>
+
+    <div class="countdown-grid" id="countdown">
+      <div class="time-box">
+        <span class="time-number" id="cd-days">00</span>
+        <span class="time-label">Días</span>
+      </div>
+      <div class="time-box">
+        <span class="time-number" id="cd-hours">00</span>
+        <span class="time-label">Horas</span>
+      </div>
+      <div class="time-box">
+        <span class="time-number" id="cd-minutes">00</span>
+        <span class="time-label">Min</span>
+      </div>
+      <div class="time-box">
+        <span class="time-number" id="cd-seconds">00</span>
+        <span class="time-label">Seg</span>
+      </div>
+    </div>
+
+    <a href="#" class="calendar-btn" onclick="addToCalendar(event)">📅 AGENDAR EN CALENDARIO</a>
+
+    <div class="contribution-section">
+      <span class="contribution-badge">// APORTE RESPONSABLE //</span>
+      <div class="amount-container">
+        <span class="currency">$</span>
+        <span class="amount">10.000</span>
+        <span class="unit">COP</span>
+      </div>
+      <div class="nequi-number" id="nequi-box">
+        NEQUI: <span id="nequi-val">310 548 4102</span>
+      </div>
+      <div class="btn-group">
+        <button class="contribution-btn" onclick="openNequiApp()">PAGAR CON NEQUI</button>
+        <button class="contribution-btn secondary" onclick="copyNequi()">COPIAR NÚMERO</button>
+      </div>
+    </div>
+
+    <div class="location-box" id="location-box-container">
+      <p id="location-title">📍 UBICACIÓN CLANDESTINA</p>
+      <p id="location-details">Se revelará automáticamente a los titulares de pases confirmados 4 horas antes del inicio.</p>
     </div>
 
     <div class="action-dual-btn">
-      <button class="rsvp-btn" id="rsvp-trigger">CONFIRMAR ASISTENCIA</button>
-      <button class="ticket-btn" id="ticket-modal-trigger">VER MI TICKET</button>
+      <button class="rsvp-btn" id="rsvp-trigger" onclick="toggleRSVP()">CONFIRMAR ASISTENCIA</button>
+      <button class="ticket-btn" onclick="openModal()">OBTENER MI PASES VIP</button>
+    </div>
+
+    <!-- BOTONES DE GALERÍA Y CHAT GLOBAL -->
+    <div style="display: flex; gap: 8px; margin-bottom: 15px;">
+      <button class="calendar-btn" style="flex: 1; margin-bottom: 0; background: rgba(255, 0, 60, 0.15); border-color: var(--accent);" onclick="openGalleryModal()">
+        🎬 GALERÍA
+      </button>
+      <button class="calendar-btn" style="flex: 1; margin-bottom: 0; background: rgba(0, 255, 102, 0.15); border-color: #00ff66; color: #00ff66;" onclick="openChatModal()">
+        💬 CHAT GLOBAL
+      </button>
+    </div>
+
+    <div class="social-share">
+      <div class="share-title">COMPARTE EL RAVE</div>
+      <div class="social-btns">
+        <button class="s-btn wa" onclick="shareWhatsApp()">WhatsApp</button>
+        <button class="s-btn fb" onclick="shareFacebook()">Facebook</button>
+        <button class="s-btn copy" onclick="copyLink()">Copiar Enlace</button>
+      </div>
     </div>
 
     <footer>
-      <span>THE SINISTER FOREST // SECRETS & TECHNO</span>
+      <span>THE SINISTER FOREST // ENVIGADO, COLOMBIA</span>
+      <span>ESTRICTAMENTE +18 // NOS RESERVAMOS EL DERECHO DE ADMISIÓN</span>
     </footer>
   </div>
 
+  <!-- MODAL DE CHAT GLOBAL -->
+  <div class="modal" id="chat-modal">
+    <div class="modal-content" style="max-width: 520px;">
+      <span class="close-modal" onclick="closeChatModal()">&times;</span>
+      <div class="ticket-badge">TRANSMISIÓN EN VIVO // CHAT CLANDESTINO</div>
+      <h2 style="font-size: 1.2rem; margin-bottom: 12px; font-family: var(--font-techno); color: #fff;">COMUNIDAD RAVE</h2>
+      
+      <div class="global-chat-box">
+        <div class="chat-messages-container" id="chat-messages-list">
+          <!-- Se cargan dinámicamente -->
+        </div>
+        <div class="chat-input-row">
+          <input type="text" id="chat-input-text" class="chat-input" placeholder="Escribe un mensaje al clan..." maxlength="120" onkeypress="handleChatKeyPress(event)" />
+          <button class="chat-send-btn" onclick="sendChatMessage()">ENVIAR</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE GALERÍA -->
+  <div class="modal" id="gallery-modal">
+    <div class="modal-content" style="max-width: 680px;">
+      <span class="close-modal" onclick="closeGalleryModal()">&times;</span>
+      <div class="ticket-badge">ARCHIVOS CLANDESTINOS</div>
+      <h2 style="font-size: 1.3rem; margin-bottom: 10px; font-family: var(--font-techno); color: #fff;">GALERÍA Y CLIPS EN VIVO</h2>
+      <p style="font-size: 0.65rem; color: var(--text-muted); margin-bottom: 15px;">Sube tus fotos o videos cortos del rave para que aparezcan en el feed.</p>
+      
+      <div style="margin-bottom: 20px;">
+        <input type="file" id="media-upload-input" accept="image/*,video/*" style="display: none;" onchange="handleMediaUpload(event)" />
+        <button class="contribution-btn" style="width: 100%; padding: 12px; font-size: 0.75rem;" onclick="document.getElementById('media-upload-input').click()">
+          📤 SUBIR FOTO O VÍDEO
+        </button>
+      </div>
+
+      <div id="gallery-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; max-height: 360px; overflow-y: auto; padding: 5px; text-align: left;">
+      </div>
+
+      <button class="contribution-btn secondary" style="width: 100%; margin-top: 15px;" onclick="closeGalleryModal()">CERRAR GALERÍA</button>
+    </div>
+  </div>
+
+  <!-- MODAL DE TIQUETE VIP INTERACTIVO -->
+  <div class="modal" id="ticket-modal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeModal()">&times;</span>
+      
+      <div id="ticket-form-view">
+        <div class="ticket-badge">GENERADOR DE PASE CLANDESTINO</div>
+        <h2 style="font-size: 1.2rem; margin-bottom: 15px; font-family: var(--font-techno);">INGRESA TU ALIAS / NOMBRE</h2>
+        <input type="text" id="user-alias-input" class="ticket-input" placeholder="Ej: RAVER_X" maxlength="18" />
+        <button class="contribution-btn" style="width: 100%; padding: 12px; font-size: 0.8rem;" onclick="generateTicket()">GENERAR MI PASE VIP</button>
+      </div>
+
+      <div id="ticket-result-view" style="display: none;">
+        <div class="ticket-badge" id="instruction-text">✂️ DESLIZA SOBRE LA LÍNEA PARA CORTAR EL TIQUETE ✂️</div>
+        
+        <div class="ticket-wrapper" id="ticket-wrapper">
+          <button class="flip-trigger-btn" id="flip-btn" onclick="toggleFlipCard()" title="Ver Reverso">🔄</button>
+          
+          <div class="star-flare flare-1"></div>
+          <div class="star-flare flare-2"></div>
+          <div class="star-flare flare-3"></div>
+          <div class="star-flare flare-4"></div>
+
+          <div class="flip-card-inner">
+            <div class="ticket-frame" id="ticket-frame">
+              <div class="notch notch-left"></div>
+              <div class="notch notch-right"></div>
+
+              <div class="stub-border-interactive" id="cut-line">
+                <div class="blade-indicator" id="blade-indicator"></div>
+                <div class="stub-border-line">
+                  <div class="cut-progress" id="cut-progress"></div>
+                </div>
+              </div>
+
+              <div class="ticket" id="ticket">
+                <div class="hologram-watermark-pattern" id="watermark">VIP PASS // THE SINISTER FOREST // </div>
+                
+                <div class="main-section">
+                  <div class="badge"><span class="badge-icon"></span> ACCESS CONFIRMED</div>
+                  <h2 class="main-header">THE SINISTER FOREST</h2>
+                  <div class="event-title" id="modal-user-display">GUEST_RAVER</div>
+                  <p class="sub-header">UNDERGROUND TECHNO EXPERIENCE</p>
+                  
+                  <div class="date-info">10 AGOSTO 2026 // 23:59 HRS</div>
+
+                  <div class="meta-grid">
+                    <div class="meta-box">
+                      <div class="meta-label">CÓDIGO ÚNICO</div>
+                      <div class="meta-value" id="ticket-code-val">PASS-#8921</div>
+                    </div>
+                    <div class="meta-box" style="display: flex; align-items: center; justify-content: center; background: #fff; padding: 4px;">
+                      <img src="" alt="QR Code" id="ticket-qr" style="width: 55px; height: 55px; border-radius: 4px;" />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="stub-section">
+                  <span class="stub-vertical-text">CONTROL DE ACCESO</span>
+                  <span class="stub-footer">ESTRICTAMENTE SECRETO</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="ticket-back" id="ticket-back-element">
+              <div class="ticket-back-content">
+                <div class="back-title">
+                  <span>CONDICIONES DE ACCESO</span>
+                  <span>TSF-2026</span>
+                </div>
+                <ul class="back-rules">
+                  <li>Prohibido el uso de cámaras y flash en la pista principal.</li>
+                  <li>Ubicación estricta bajo confidencialidad hasta el conteo final.</li>
+                  <li>Presentar este pase digital o impreso en la entrada clandestina.</li>
+                </ul>
+                <div class="map-box">
+                  ENVIGADO // ANTIOQUIA — ZONA PROTEGIDA
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 8px; margin-top: 15px;">
+          <button class="contribution-btn secondary" onclick="resetTicketForm()">CAMBIAR ALIAS</button>
+          <button class="contribution-btn" id="secret-reward-box" style="display: none;" onclick="downloadBothSidesInOneImage()">📥 DESCARGAR PASE COMPLETO</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
   <script>
-    // Script básico interactivo de ejemplo para mantener la funcionalidad
-    const strobeBtn = document.getElementById('strobe-toggle');
-    strobeBtn.addEventListener('click', () => {
-      document.body.classList.toggle('strobe-active');
-      strobeBtn.classList.toggle('active');
-      strobeBtn.textContent = document.body.classList.contains('strobe-active') ? 'STROBE: ON' : 'STROBE: OFF';
+    let audioCtx = null;
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    function playSound(type) {
+      try {
+        initAudio();
+        if (!audioCtx) return;
+        const now = audioCtx.currentTime;
+
+        if (type === 'click') {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(580, now);
+          osc.frequency.exponentialRampToValueAtTime(880, now + 0.08);
+          gain.gain.setValueAtTime(0.08, now);
+          gain.gain.linearRampToValueAtTime(0.001, now + 0.08);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.08);
+        } else if (type === 'success') {
+          [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, now + (i * 0.05));
+            gain.gain.setValueAtTime(0.08, now + (i * 0.05));
+            gain.gain.linearRampToValueAtTime(0.001, now + (i * 0.05) + 0.25);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now + (i * 0.05));
+            osc.stop(now + (i * 0.05) + 0.25);
+          });
+        }
+      } catch(e) {}
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedUser = localStorage.getItem('userName');
+      if (savedUser) {
+        const inputEl = document.getElementById('user-alias-input');
+        if (inputEl) inputEl.value = savedUser;
+      }
+      
+      const defaultTrackId = "2q9Z3H25b89Fk2G9L3zQ2R";
+      const savedTrack = localStorage.getItem('spotifyTrackId') || defaultTrackId;
+      const iframe = document.getElementById('spotify-iframe');
+      if (iframe) {
+        iframe.src = `https://open.spotify.com/embed/track/${savedTrack}?utm_source=generator&theme=0`;
+      }
+
+      initParticleCanvas();
+      initCutMechanics();
+      startCountdown();
+      loadGalleryItems();
+      loadChatMessages();
     });
+
+    // LÓGICA DEL CHAT GLOBAL
+    function openChatModal() {
+      playSound('click');
+      const modal = document.getElementById('chat-modal');
+      if (modal) modal.style.display = 'flex';
+      loadChatMessages();
+    }
+
+    function closeChatModal() {
+      playSound('click');
+      const modal = document.getElementById('chat-modal');
+      if (modal) modal.style.display = 'none';
+    }
+
+    function loadChatMessages() {
+      const list = document.getElementById('chat-messages-list');
+      if (!list) return;
+
+      let messages = JSON.parse(localStorage.getItem('globalChatMessages') || '[]');
+      if (messages.length === 0) {
+        messages = [
+          { user: "SYSTEM", text: "Transmisión iniciada. Bienvenidos al bosque.", time: "23:00" },
+          { user: "DARK_RAVER", text: "¿A qué hora suelta DJ Tucnak el set principal?", time: "23:05" },
+          { user: "VALERIA_TSF", text: "¡Listos con los pases VIP! Nos vemos en la pista.", time: "23:10" }
+        ];
+        localStorage.setItem('globalChatMessages', JSON.stringify(messages));
+      }
+
+      let html = "";
+      messages.forEach(m => {
+        html += `
+          <div class="chat-msg">
+            <span class="chat-user">[${m.user}]</span>
+            <span>${m.text}</span>
+            <span class="chat-time">${m.time}</span>
+          </div>
+        `;
+      });
+      list.innerHTML = html;
+      list.scrollTop = list.scrollHeight;
+    }
+
+    function sendChatMessage() {
+      playSound('click');
+      const input = document.getElementById('chat-input-text');
+      if (!input) return;
+      const text = input.value.trim();
+      if (!text) return;
+
+      const user = localStorage.getItem('userName') || 'ANON_RAVER';
+      const now = new Date();
+      const timeStr = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+
+      let messages = JSON.parse(localStorage.getItem('globalChatMessages') || '[]');
+      messages.push({ user: user.toUpperCase(), text: text, time: timeStr });
+      
+      if (messages.length > 50) messages.shift(); // Limitar historial
+
+      localStorage.setItem('globalChatMessages', JSON.stringify(messages));
+      input.value = '';
+      loadChatMessages();
+    }
+
+    function handleChatKeyPress(e) {
+      if (e.key === 'Enter') {
+        sendChatMessage();
+      }
+    }
+
+    // Funciones anteriores conservadas
+    function promptChangeSong() {
+      playSound('click');
+      const input = prompt("Pega el enlace de Spotify o el ID de la pista:");
+      if (!input) return;
+      let trackId = input.trim();
+      if (trackId.includes('spotify.com/track/')) {
+        const match = trackId.match(/track\/([a-zA-Z0-9]+)/);
+        if (match && match[1]) trackId = match[1];
+      }
+      localStorage.setItem('spotifyTrackId', trackId);
+      const iframe = document.getElementById('spotify-iframe');
+      if (iframe) iframe.src = `https://open.spotify.com/embed/track/${trackId}?utm_source=generator&theme=0`;
+      showToast('¡Canción predeterminada guardada!');
+    }
+
+    function openGalleryModal() {
+      playSound('click');
+      const modal = document.getElementById('gallery-modal');
+      if (modal) modal.style.display = 'flex';
+      loadGalleryItems();
+    }
+
+    function closeGalleryModal() {
+      playSound('click');
+      const modal = document.getElementById('gallery-modal');
+      if (modal) modal.style.display = 'none';
+    }
+
+    function handleMediaUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      if (file.size > 15 * 1024 * 1024) {
+        showToast('El archivo es muy pesado (máximo 15MB)');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const mediaItem = {
+          type: file.type.startsWith('video') ? 'video' : 'image',
+          data: e.target.result,
+          date: new Date().toLocaleDateString()
+        };
+        let customGallery = JSON.parse(localStorage.getItem('customGallery') || '[]');
+        customGallery.unshift(mediaItem);
+        localStorage.setItem('customGallery', JSON.stringify(customGallery));
+        loadGalleryItems();
+        showToast('¡Archivo subido con éxito!');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function loadGalleryItems() {
+      const grid = document.getElementById('gallery-grid');
+      if (!grid) return;
+      let html = `
+        <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: 12px; overflow: hidden; padding: 8px;">
+          <div style="width: 100%; height: 110px; background: #000; border-radius: 8px; display: flex; align-items: center; justify-content: center; position: relative;">
+            <div style="position: absolute; font-size: 2rem;">🎧</div>
+            <div style="position: absolute; bottom: 6px; left: 6px; font-size: 0.5rem; background: rgba(0,0,0,0.7); padding: 2px 6px; border-radius: 4px; color: var(--accent);">SET #01</div>
+          </div>
+          <p style="font-size: 0.65rem; color: #fff; margin-top: 8px; font-weight: 700;">Prueba de Sonido Clandestina</p>
+        </div>
+      `;
+      let customGallery = JSON.parse(localStorage.getItem('customGallery') || '[]');
+      customGallery.forEach((item, index) => {
+        if (item.type === 'image') {
+          html += `
+            <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: 12px; overflow: hidden; padding: 8px; position: relative;">
+              <div style="width: 100%; height: 110px; background: #000; border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+                <img src="${item.data}" style="width: 100%; height: 100%; object-fit: cover;" />
+              </div>
+              <p style="font-size: 0.65rem; color: #fff; margin-top: 8px; font-weight: 700;">Aporte Raver (${item.date})</p>
+              <button onclick="deleteMedia(${index})" style="position:absolute; top:12px; right:12px; background:rgba(255,0,60,0.8); border:none; color:#fff; border-radius:50%; width:20px; height:20px; font-size:0.6rem; cursor:pointer;">×</button>
+            </div>
+          `;
+        } else {
+          html += `
+            <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: 12px; overflow: hidden; padding: 8px; position: relative;">
+              <div style="width: 100%; height: 110px; background: #000; border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+                <video src="${item.data}" controls style="width: 100%; height: 100%; object-fit: cover;"></video>
+              </div>
+              <p style="font-size: 0.65rem; color: #fff; margin-top: 8px; font-weight: 700;">Clip en Vivo (${item.date})</p>
+              <button onclick="deleteMedia(${index})" style="position:absolute; top:12px; right:12px; background:rgba(255,0,60,0.8); border:none; color:#fff; border-radius:50%; width:20px; height:20px; font-size:0.6rem; cursor:pointer;">×</button>
+            </div>
+          `;
+        }
+      });
+      grid.innerHTML = html;
+    }
+
+    function deleteMedia(index) {
+      playSound('click');
+      let customGallery = JSON.parse(localStorage.getItem('customGallery') || '[]');
+      customGallery.splice(index, 1);
+      localStorage.setItem('customGallery', JSON.stringify(customGallery));
+      loadGalleryItems();
+      showToast('Archivo eliminado');
+    }
+
+    function initParticleCanvas() {
+      const canvas = document.getElementById('particle-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let particles = [];
+      function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+      window.addEventListener('resize', resizeCanvas);
+      resizeCanvas();
+
+      class Particle {
+        constructor() {
+          this.x = Math.random() * canvas.width;
+          this.y = Math.random() * canvas.height;
+          this.size = Math.random() * 2 + 0.5;
+          this.speedX = (Math.random() - 0.5) * 0.8;
+          this.speedY = (Math.random() - 0.5) * 0.8;
+          this.color = Math.random() > 0.5 ? '#ff003c' : '#ffffff';
+          this.opacity = Math.random() * 0.5 + 0.2;
+        }
+        update() {
+          this.x += this.speedX; this.y += this.speedY;
+          if (this.x < 0) this.x = canvas.width; if (this.x > canvas.width) this.x = 0;
+          if (this.y < 0) this.y = canvas.height; if (this.y > canvas.height) this.y = 0;
+        }
+        draw() {
+          ctx.fillStyle = this.color; ctx.globalAlpha = this.opacity;
+          ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+        }
+      }
+      for (let i = 0; i < 60; i++) particles.push(new Particle());
+      function animateParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => { p.update(); p.draw(); });
+        requestAnimationFrame(animateParticles);
+      }
+      animateParticles();
+    }
+
+    let strobeActive = false;
+    function toggleStrobe() {
+      playSound('click');
+      strobeActive = !strobeActive;
+      document.body.classList.toggle('strobe-active', strobeActive);
+      const btn = document.getElementById('strobe-toggle');
+      if (btn) {
+        btn.classList.toggle('active', strobeActive);
+        btn.innerText = strobeActive ? 'STROBE ON' : 'STROBE OFF';
+      }
+    }
+
+    function openModal() {
+      playSound('click');
+      const modal = document.getElementById('ticket-modal');
+      if (modal) modal.style.display = 'flex';
+      const savedUser = localStorage.getItem('userName');
+      if (savedUser) {
+        document.getElementById('ticket-form-view').style.display = 'none';
+        document.getElementById('ticket-result-view').style.display = 'block';
+        generateTicket(savedUser);
+      } else {
+        document.getElementById('ticket-form-view').style.display = 'block';
+        document.getElementById('ticket-result-view').style.display = 'none';
+      }
+    }
+
+    function closeModal() {
+      playSound('click');
+      document.getElementById('ticket-modal').style.display = 'none';
+    }
+
+    function generateTicket(forcedName = null) {
+      playSound('click');
+      const inputVal = forcedName !== null ? forcedName : (document.getElementById('user-alias-input').value || '');
+      const name = inputVal.trim();
+      if (!name) { showToast('Ingresa un alias válido'); return; }
+      const cleanName = name.toUpperCase();
+      localStorage.setItem('userName', name);
+
+      document.getElementById('modal-user-display').innerText = cleanName;
+      const qrImg = document.getElementById('ticket-qr');
+      if (qrImg) qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(cleanName)}&color=020203&bgcolor=ffffff`;
+      
+      const hash = cleanName.split('').reduce((acc, char) => acc + char.charCodeAt(0), 1000);
+      document.getElementById('ticket-code-val').innerText = `PASS-#${hash.toString().slice(-4)}`;
+
+      document.getElementById('ticket-form-view').style.display = 'none';
+      document.getElementById('ticket-result-view').style.display = 'block';
+    }
+
+    function resetTicketForm() {
+      playSound('click');
+      document.getElementById('ticket-form-view').style.display = 'block';
+      document.getElementById('ticket-result-view').style.display = 'none';
+      const ticketEl = document.getElementById('ticket');
+      if (ticketEl) {
+        ticketEl.classList.remove('torn', 'bending');
+        document.getElementById('cut-progress').style.width = '0%';
+      }
+      isTorn = false;
+      document.getElementById('secret-reward-box').style.display = 'none';
+    }
+
+    function toggleFlipCard() {
+      playSound('click');
+      document.getElementById('ticket-wrapper').classList.toggle('flipped');
+    }
+
+    let isTorn = false, cutAmount = 0, isDragging = false;
+    function initCutMechanics() {
+      const cutLine = document.getElementById('cut-line');
+      const cutProgress = document.getElementById('cut-progress');
+      const ticket = document.getElementById('ticket');
+      if (!cutLine || !ticket) return;
+
+      const startDrag = (e) => {
+        if (isTorn) return;
+        isDragging = true;
+        cutLine.classList.add('cutting');
+        ticket.classList.add('bending');
+        if (navigator.vibrate) navigator.vibrate(30);
+        e.preventDefault();
+      };
+
+      const onDrag = (e) => {
+        if (!isDragging || isTorn) return;
+        const rect = cutLine.getBoundingClientRect();
+        const clientCoord = e.touches ? e.touches[0].clientX : e.clientX;
+        let pos = clientCoord - rect.left;
+        cutAmount = Math.max(0, Math.min(100, (pos / rect.width) * 100));
+        cutProgress.style.width = `${cutAmount}%`;
+
+        if (cutAmount >= 85 && !isTorn) {
+          isTorn = true; isDragging = false;
+          cutLine.classList.remove('cutting');
+          ticket.classList.remove('bending');
+          ticket.classList.add('torn');
+          playSound('success');
+          document.getElementById('instruction-text').innerHTML = '✨ ¡ACCESO VIP VÁLIDO Y ACTIVO! ✨';
+          document.getElementById('secret-reward-box').style.display = 'block';
+          showToast('¡Ticket validado con éxito!');
+        }
+      };
+
+      const endDrag = () => {
+        if (!isDragging || isTorn) return;
+        isDragging = false;
+        cutLine.classList.remove('cutting');
+        ticket.classList.remove('bending');
+        if (cutAmount < 85) { cutAmount = 0; cutProgress.style.width = '0%'; }
+      };
+
+      cutLine.addEventListener('mousedown', startDrag);
+      window.addEventListener('mousemove', onDrag);
+      window.addEventListener('mouseup', endDrag);
+      cutLine.addEventListener('touchstart', startDrag, { passive: false });
+      window.addEventListener('touchmove', onDrag, { passive: false });
+      window.addEventListener('touchend', endDrag);
+    }
+
+    async function downloadBothSidesInOneImage() {
+      playSound('click');
+      const ticketWrapper = document.getElementById('ticket-wrapper');
+      const backElement = document.getElementById('ticket-back-element');
+      const alias = localStorage.getItem('userName') || 'GUEST_RAVER';
+      ticketWrapper.classList.remove('flipped');
+      backElement.style.transform = 'rotateY(0deg)';
+      backElement.style.position = 'relative';
+      backElement.style.display = 'block';
+      backElement.style.marginTop = '20px';
+
+      await new Promise(r => setTimeout(r, 300));
+      const canvas = await html2canvas(ticketWrapper, { backgroundColor: null, scale: 3, useCORS: true });
+      const link = document.createElement('a');
+      link.href = canvas.toDataURL('image/png', 1.0);
+      link.download = `TSF_VIP_PASS_${alias.toUpperCase()}.png`;
+      link.click();
+      backElement.style.transform = ''; backElement.style.position = ''; backElement.style.display = ''; backElement.style.marginTop = '';
+      showToast('¡Pase descargado!');
+    }
+
+    let rsvpConfirmed = false;
+    function toggleRSVP() {
+      playSound('click');
+      rsvpConfirmed = !rsvpConfirmed;
+      const btn = document.getElementById('rsvp-trigger');
+      if (rsvpConfirmed) {
+        btn.classList.add('confirmed'); btn.innerText = '✓ ASISTENCIA CONFIRMADA';
+        document.getElementById('capacity-count').innerText = '83%';
+        document.getElementById('capacity-progress').style.width = '83%';
+        showToast('¡Asistencia confirmada!');
+      } else {
+        btn.classList.remove('confirmed'); btn.innerText = 'CONFIRMAR ASISTENCIA';
+        document.getElementById('capacity-count').innerText = '82%';
+        document.getElementById('capacity-progress').style.width = '82%';
+      }
+    }
+
+    function copyNequi() { playSound('click'); navigator.clipboard.writeText('3105484102'); showToast('Número Nequi copiado'); }
+    function openNequiApp() { playSound('click'); window.location.href = 'nequi://'; }
+    function shareWhatsApp() { playSound('click'); window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent('🔥 Asiste a THE SINISTER FOREST. ¡Nos vemos en el rave!')}`, '_blank'); }
+    function shareFacebook() { playSound('click'); window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`, '_blank'); }
+    function copyLink() { playSound('click'); navigator.clipboard.writeText(window.location.href); showToast('Enlace copiado'); }
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.innerText = msg; toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+    function addToCalendar(e) { e.preventDefault(); playSound('click'); alert('Evento añadido a la agenda.'); }
+
+    function startCountdown() {
+      const targetDate = new Date('2026-08-10T23:59:59').getTime();
+      setInterval(() => {
+        const diff = targetDate - new Date().getTime();
+        if (diff > 0) {
+          document.getElementById('cd-days').innerText = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0');
+          document.getElementById('cd-hours').innerText = String(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+          document.getElementById('cd-minutes').innerText = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+          document.getElementById('cd-seconds').innerText = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
+        }
+      }, 1000);
+    }
   </script>
 </body>
 </html>
