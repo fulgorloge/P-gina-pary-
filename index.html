@@ -319,64 +319,104 @@
     .contribution-btn.secondary { background: rgba(255, 255, 255, 0.1); }
     .contribution-btn:hover { filter: brightness(1.2); }
 
-    /* ESTÉTICA MEJORADA DE LA UBICACIÓN */
+    /* UBICACIÓN CLANDESTINA REVELADA Y ESTÉTICA */
     .location-box {
-      background: linear-gradient(145deg, rgba(20, 2, 8, 0.75) 0%, rgba(8, 2, 5, 0.9) 100%);
-      border: 1px solid rgba(255, 0, 60, 0.35);
+      background: linear-gradient(145deg, rgba(20, 2, 8, 0.85) 0%, rgba(8, 2, 5, 0.95) 100%);
+      border: 1px solid var(--accent);
       border-radius: 16px;
       padding: 18px 16px;
       margin-bottom: 15px;
       text-align: left;
       position: relative;
       overflow: hidden;
-      box-shadow: inset 0 0 20px rgba(255, 0, 60, 0.08), 0 8px 20px rgba(0, 0, 0, 0.6);
+      box-shadow: inset 0 0 25px rgba(255, 0, 60, 0.15), 0 10px 25px rgba(0, 0, 0, 0.8);
     }
     .location-box::before {
       content: '';
       position: absolute;
-      top: 0; left: 0; width: 3px; height: 100%;
+      top: 0; left: 0; width: 4px; height: 100%;
       background: var(--accent);
-      box-shadow: 0 0 10px var(--accent);
+      box-shadow: 0 0 12px var(--accent);
     }
     .location-header-row {
       display: flex;
       align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .location-title-wrap {
+      display: flex;
+      align-items: center;
       gap: 8px;
-      margin-bottom: 6px;
     }
     .location-icon-pulse {
       width: 8px; height: 8px;
       background: var(--accent);
       border-radius: 50%;
       box-shadow: 0 0 8px var(--accent);
-      animation: blink 1s infinite alternate;
+      animation: blink 0.8s infinite alternate;
     }
     #location-title {
       font-family: var(--font-techno);
-      font-size: 0.75rem;
-      font-weight: 800;
+      font-size: 0.72rem;
+      font-weight: 900;
       letter-spacing: 1.5px;
       color: #fff;
       text-shadow: 0 0 8px var(--accent-glow);
     }
+    .location-unlocked-badge {
+      font-family: var(--font-techno);
+      font-size: 0.5rem;
+      letter-spacing: 1px;
+      color: #00ff66;
+      background: rgba(0, 255, 102, 0.12);
+      border: 1px solid rgba(0, 255, 102, 0.4);
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-weight: 700;
+    }
     #location-details {
-      font-size: 0.68rem;
-      line-height: 1.4;
-      color: var(--text-muted);
-      margin-top: 4px;
+      font-size: 0.75rem;
+      line-height: 1.5;
+      color: #fff;
+      margin-top: 6px;
+      font-weight: 600;
       letter-spacing: 0.5px;
     }
+    .location-subtext {
+      font-size: 0.6rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .location-footer-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 12px;
+      padding-top: 8px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
     .location-zone-tag {
-      display: inline-block;
-      margin-top: 10px;
       font-family: var(--font-techno);
       font-size: 0.55rem;
       letter-spacing: 1.5px;
       color: var(--gold-light);
-      background: rgba(212, 175, 55, 0.1);
-      border: 1px solid rgba(212, 175, 55, 0.3);
-      padding: 3px 8px;
+    }
+    .map-link-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      text-decoration: none;
+      font-family: var(--font-techno);
+      font-size: 0.55rem;
+      letter-spacing: 1px;
+      padding: 4px 10px;
       border-radius: 6px;
+      transition: 0.2s;
+    }
+    .map-link-btn:hover {
+      background: var(--accent);
+      border-color: var(--accent);
     }
 
     .action-dual-btn { display: flex; gap: 8px; margin-bottom: 15px; }
@@ -563,14 +603,21 @@
       </div>
     </div>
 
-    <!-- UBICACIÓN CLANDESTINA REDISEÑADA -->
+    <!-- UBICACIÓN CLANDESTINA REVELADA -->
     <div class="location-box" id="location-box-container">
       <div class="location-header-row">
-        <div class="location-icon-pulse"></div>
-        <p id="location-title">UBICACIÓN CLANDESTINA</p>
+        <div class="location-title-wrap">
+          <div class="location-icon-pulse"></div>
+          <p id="location-title">UBICACIÓN REVELADA</p>
+        </div>
+        <div class="location-unlocked-badge">ACREDITADO</div>
       </div>
-      <p id="location-details">Se revelará automáticamente a los titulares de pases confirmados 4 horas antes del inicio.</p>
-      <div class="location-zone-tag">ENVIGADO // ANTIOQUIA</div>
+      <p id="location-details">Parque Lineal La Frontera (Zona boscosa oculta)</p>
+      <p class="location-subtext">Punto de encuentro y control de acceso principal sobre el corredor verde.</p>
+      <div class="location-footer-row">
+        <span class="location-zone-tag">ENVIGADO // ANTIOQUIA</span>
+        <a href="https://maps.google.com/?q=Parque+La+Frontera+Envigado" target="_blank" class="map-link-btn">🗺️ VER MAPA</a>
+      </div>
     </div>
 
     <div class="action-dual-btn">
@@ -720,7 +767,7 @@
                   <li>Presentar este pase digital o impreso en la entrada clandestina.</li>
                 </ul>
                 <div class="map-box">
-                  ENVIGADO // ANTIOQUIA — ZONA PROTEGIDA
+                  PARQUE LINEAL LA FRONTERA — ENVIGADO
                 </div>
               </div>
             </div>
@@ -825,9 +872,9 @@
       let messages = JSON.parse(localStorage.getItem('globalChatMessages') || '[]');
       if (messages.length === 0) {
         messages = [
-          { user: "SYSTEM", text: "Transmisión iniciada. Bienvenidos al bosque.", time: "23:00" },
-          { user: "DARK_RAVER", text: "¿A qué hora suelta DJ Tucnak el set principal?", time: "23:05" },
-          { user: "VALERIA_TSF", text: "¡Listos con los pases VIP! Nos vemos en la pista.", time: "23:10" }
+          { user: "SYSTEM", text: "Ubicación oficial revelada: Parque Lineal La Frontera.", time: "23:00" },
+          { user: "DARK_RAVER", text: "¡Nos vemos en La Frontera! Todo listo.", time: "23:05" },
+          { user: "VALERIA_TSF", text: "Lleguen temprano para evitar filas en el acceso.", time: "23:10" }
         ];
         localStorage.setItem('globalChatMessages', JSON.stringify(messages));
       }
